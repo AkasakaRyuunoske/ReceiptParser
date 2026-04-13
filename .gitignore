@@ -44,6 +44,11 @@ venv/
 *.jinja
 *.safetensors
 *.model
+
+# Images
+*.png
+*.jpg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 **/__pycache__/

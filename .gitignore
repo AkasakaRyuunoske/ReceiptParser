@@ -51,6 +51,9 @@ venv/
 
 !*.drawio.png
 
+# Ignore all user submitted media
+**/receipt_parser
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 **/__pycache__/
@@ -63,4 +66,3 @@ __pycache__/
 
 ### VS Code ###
 .vscode/
-/TagManager/mvp_tagging/cache/

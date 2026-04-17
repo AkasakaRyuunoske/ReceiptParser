@@ -1,24 +1,18 @@
-from ollama import chat
+import base64
 
+import requests
 
-def get_temperature(city: str) -> str:
-    temperatures = {
-        "New York": "22°C",
-        "London": "15°C",
-        "Tokyo": "18°C",
-    }
-    return temperatures.get(city, "Unknown")
+if __name__ == "__main__":
+    print(f"Starting querying model LLAVA")
+    url = "http://localhost:11434/api/generate"
 
+    with open("config/media/receipt_parser/IMG20260412161515.jpg", "rb") as f:
+        image_base64 = base64.b64encode(f.read()).decode("utf-8")
 
-messages = [{"role": "user", "content": "What is the temperature in Tokyo?"}]
+    response = requests.post(url, json={
+        "model": "llava",
+        "prompt": "Describe this image",
+        "images": [image_base64]
+    })
 
-response = chat(model="gemma4:e2b", messages=messages, tools=[get_temperature], think=True)
-
-messages.append(response.message)
-if response.message.tool_calls:
-    call = response.message.tool_calls[0]
-    result = get_temperature(**call.function.arguments)
-    messages.append({"role": "tool", "tool_name": call.function.name, "content": str(result)})
-
-    final_response = chat(model="gemma4:e2b", messages=messages, tools=[get_temperature], think=True)
-    print(final_response.message.content)
+    print(response.json()["response"])

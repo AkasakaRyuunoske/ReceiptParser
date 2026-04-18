@@ -10,9 +10,10 @@ if __name__ == "__main__":
         image_base64 = base64.b64encode(f.read()).decode("utf-8")
 
     response = requests.post(url, json={
-        "model": "llava",
+        "model": "gemma4:e4b",
         "prompt": "Describe this image",
-        "images": [image_base64]
+        "images": [image_base64],
+        "stream": False,
     })
 
     print(response.json()["response"])

@@ -1,7 +1,7 @@
 from django import forms
-from .models import Receipt
+from .models import ReceiptView
 
 class ReceiptForm(forms.ModelForm):
     class Meta:
-        model = Receipt
+        model = ReceiptView
         fields = ['image']

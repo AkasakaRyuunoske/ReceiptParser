@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     response = requests.post(url, json={
         "model": "gemma4:e4b",
-        "prompt": "Describe this image",
+        "prompt": "Return a json file containing information on the image.",
         "images": [image_base64],
         "stream": False,
     })

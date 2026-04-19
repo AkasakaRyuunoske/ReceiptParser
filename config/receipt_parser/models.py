@@ -4,21 +4,17 @@ class ReceiptView(models.Model):
     image = models.ImageField(upload_to='receipt_parser/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-# class Receipt(models.Model):
-#     receipt_id = models.IntegerField(primary_key=True)
-#     receipt_reference = models.CharField(max_length=100, unique=True, null=False)
-
 class ItemCategories(models.Model):
     item_category_id = models.IntegerField(primary_key=True)
     item_category_name = models.CharField(max_length=100, unique=True, null=False)
     item_category_description = models.CharField(max_length=255, unique=False, null=True)
-    item_categories_insert_datetime = models.DateTimeField(auto_now_add=True)
+    item_categorie_insert_datetime = models.DateTimeField(auto_now_add=True)
 
 class StoreNames(models.Model):
     store_name_id = models.IntegerField(primary_key=True)
     store_name = models.CharField(max_length=100, unique=True, null=False)
     store_name_description = models.CharField(max_length=255, unique=False, null=True)
-    store_names_insert_datetime = models.DateTimeField(auto_now_add=True)
+    store_name_insert_datetime = models.DateTimeField(auto_now_add=True)
 
 class Items(models.Model):
     item_id = models.IntegerField(primary_key=True)
@@ -32,7 +28,7 @@ class Items(models.Model):
     item_name = models.CharField(max_length=100, unique=True, null=False)
     price = models.IntegerField(null=False)
     item_description = models.CharField(max_length=255, unique=False, null=True)
-    items_insert_datetime = models.DateTimeField(auto_now_add=True)
+    item_insert_datetime = models.DateTimeField(auto_now_add=True)
 
 class Stores(models.Model):
     store_id = models.IntegerField(primary_key=True)
@@ -45,4 +41,57 @@ class Stores(models.Model):
     )
     address = models.CharField(max_length=100, unique=False, null=False)
     city = models.CharField(max_length=100, unique=True, null=False)
-    stores_insert_datetime = models.DateTimeField(auto_now_add=True)
+    store_insert_datetime = models.DateTimeField(auto_now_add=True)
+
+class PaymentMethods(models.Model):
+    payment_method_id = models.IntegerField(primary_key=True)
+    payment_method_name = models.CharField(max_length=100, unique=True, null=False)
+    payment_method_description = models.CharField(max_length=255, unique=False, null=True)
+    payment_method_insert_datetime = models.DateTimeField(auto_now_add=True)
+
+class ReceiptResources(models.Model):
+    receipt_resource_id = models.IntegerField(primary_key=True)
+    original_image_path = models.CharField(max_length=150, unique=True, null=False)
+    grayscale_image_path = models.CharField(max_length=150, unique=True, null=True)
+    visualization_image_path = models.CharField(max_length=150, unique=True, null=True)
+    raw_text_json = models.CharField(max_length=150, unique=True, null=False)
+    receipt_resource_insert_datetime = models.DateTimeField(auto_now_add=True)
+
+class Receipt(models.Model):
+    receipt_id = models.IntegerField(primary_key=True)
+    item_id_fk = models.ForeignKey(
+        Items,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="items_id_fk",
+    )
+
+    store_id_fk = models.ForeignKey(
+        Stores,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="stores_id_fk",
+    )
+
+    payment_method_id_fk = models.ForeignKey(
+        PaymentMethods,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="payment_methods_id_fk",
+    )
+
+    receipt_resource_id_fk = models.ForeignKey(
+        ReceiptResources,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="receipt_resources_id_fk",
+    )
+
+    receipt_datetime = models.DateTimeField(auto_now_add=False, null=False)
+    receipt_insert_datetime = models.DateTimeField(auto_now_add=True)
+    receipt_reference = models.CharField(max_length=100, unique=True, null=False)
+    receipt_description = models.CharField(max_length=255, unique=False, null=True)

@@ -1,9 +1,10 @@
 import base64
+import datetime
 
 import requests
 
 if __name__ == "__main__":
-    print(f"Starting querying model LLAVA")
+    print(f"[{datetime.datetime.now()}]Starting querying model LLAVA")
     url = "http://localhost:11434/api/generate"
 
     with open("config/media/receipt_parser/IMG20260412161515.jpg", "rb") as f:
@@ -16,4 +17,5 @@ if __name__ == "__main__":
         "stream": False,
     })
 
+    print(f"[{datetime.datetime.now()}] Got response from the model")
     print(response.json()["response"])

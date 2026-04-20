@@ -11,10 +11,30 @@
 <head>
     <meta charset="UTF-8">
     <title>ReceiptParser - Home</title>
+
+        <script src="https://unpkg.com/htmx.org@1.9.10"
+            integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+            crossorigin="anonymous">
+    </script>
 </head>
-<body>
+<body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite">
 
-<h1 style="font-family:'OldEnglishTextMT'">Parsing your Receipts</h1>
+<h1>Parsing your Receipts</h1>
 
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+
+<div>
+    <h1>Model Response</h1>
+    <legend>
+        {{ model_response }}
+    </legend>
+
+    <img src="{{ image_path.url }}" style="width: 20rem;"/>
+
+</div>
 </body>
 </html>

@@ -17,7 +17,7 @@
             crossorigin="anonymous">
     </script>
 </head>
-<body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite">
+<body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite" onload="startStream()">
 
 <h1>Parsing your Receipts</h1>
 
@@ -29,12 +29,31 @@
 
 <div>
     <h1>Model Response</h1>
-    <legend>
-        {{ model_response }}
-    </legend>
 
+    <div id="stream-container">
+
+    </div>
     <img src="{{ image_path.url }}" style="width: 20rem;"/>
-
 </div>
+
+<script>
+function startStream() {
+    const evtSource = new EventSource("/stream/");
+    console.log("Starting Stream")
+
+    let output = "";
+
+    evtSource.onmessage = function(event) {
+        console.log(event.data)
+        output += event.data;
+        document.getElementById("stream-container").innerText = output;
+    };
+
+    evtSource.onerror = function() {
+        console.log("Error streaming")
+        evtSource.close();
+    };
+}
+</script>
 </body>
 </html>

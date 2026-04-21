@@ -30,6 +30,9 @@
 <div>
     <h1>Model Response</h1>
 
+    <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span>
+    </h2>
+
     <div id="stream-container">
 
     </div>
@@ -37,6 +40,32 @@
 </div>
 
 <script>
+function getRandomVisibleColor() {
+    // Generate random RGB values
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+
+    // Calculate luminance (perceived brightness)
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    // Minimum luminance for good contrast (4.5:1 WCAG ratio)
+    const minLuminance = 44.625;
+
+    // If luminance is too low, try again
+    if (luminance < minLuminance) {
+        return getRandomVisibleColor();
+    }
+
+    // Convert RGB to hex
+    const toHex = (c) => {
+        let hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
 function startStream() {
     const evtSource = new EventSource("/stream/");
     console.log("Starting Stream")
@@ -46,7 +75,11 @@ function startStream() {
     evtSource.onmessage = function(event) {
         console.log(event.data)
         output += event.data;
+
         document.getElementById("stream-container").innerText = output;
+        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
+        document.getElementById("LoadingIndicator").innerText = "";
+
     };
 
     evtSource.onerror = function() {

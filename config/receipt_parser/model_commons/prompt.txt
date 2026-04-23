@@ -1,0 +1,2 @@
+If provided image is not a receipt, please return a simple message informing of the problem.
+Return a json file containing information on the image following this json schema:

@@ -30,8 +30,7 @@
 <div>
     <h1>Model Response</h1>
 
-    <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span>
-    </h2>
+    <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span></h2>
 
     <div id="stream-container">
 
@@ -78,11 +77,11 @@ function startStream() {
 
         document.getElementById("stream-container").innerText = output;
         document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
-        document.getElementById("LoadingIndicator").innerText = "";
 
     };
 
     evtSource.onerror = function() {
+        document.getElementById("LoadingIndicator").innerText = "";
         console.log("Error streaming")
         evtSource.close();
     };

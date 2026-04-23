@@ -1,3 +1,6 @@
+***0.3.1***
+- Added separate files for prompt and json schema
+
 ***0.3.0***
 - Added minimal usable front-end
 - Added Upload -> Inference -> Display workflow working

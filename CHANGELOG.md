@@ -1,3 +1,8 @@
+***0.4.0***
+- Added __str__ methods to all models
+- Added insert of inference results
+- Added E-R diagram ver 0_2
+
 ***0.3.1***
 - Added separate files for prompt and json schema
 
@@ -14,7 +19,6 @@
 - Added support for English Text MT (crucial)
 
 ***0.1.0***
-
 - Added database design that includes entities: Receipts, Items, Stores, Payment Methods, Item Categories, Store Names
 - Added mock of input workflow
 - Added patch-notes 

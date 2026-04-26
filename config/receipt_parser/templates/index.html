@@ -28,6 +28,20 @@
 </form>
 
 <div>
+    <h1>Registered Receipts</h1>
+
+    <div>
+        {% for receipt in receipts %}
+            <h3>Receipt {{ receipt.receipt_id }}</h3>
+            <p>Store: {{ receipt.store_id_fk.store_name_id_fk.store_name }}
+                at {{ receipt.store_id_fk.address }}, {{ receipt.store_id_fk.city }}</p>
+            <p>Item: {{ receipt.item_id_fk.item_name }} - {{ receipt.item_id_fk.price }}</p>
+            <p>Category: {{ receipt.item_id_fk.category_id_fk.item_category_name }}</p>
+            <p>Payment: {{ receipt.payment_method_id_fk.payment_method_name }}</p>
+        {% endfor %}
+    </div>
+</div>
+<div>
     <h1>Model Response</h1>
 
     <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span></h2>

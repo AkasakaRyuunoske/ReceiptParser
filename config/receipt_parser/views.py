@@ -21,7 +21,8 @@ def home(request):
         form = ReceiptForm()
 
     return render(request, 'index.html',
-                  {'form': form, "image_path": ReceiptView.objects.last().image})
+                  {'form': form, "image_path": ReceiptView.objects.last().image,
+                   "receipts": Receipt.objects.all()})
 
 def debugg(request):
     inference_json = """
@@ -32,49 +33,51 @@ def debugg(request):
 
 def stream_inference(request):
     def event_stream():
-        url = "http://localhost:11434/api/generate"
-        print(f"Stream was triggered....")
+        skip_inference: bool = True
+        if not skip_inference:
+            url = "http://localhost:11434/api/generate"
+            print(f"Stream was triggered....")
 
-        # Loading last updated image
-        with open(f"../config/media/{ReceiptView.objects.last().image}", "rb") as image:
-            image_base64 = base64.b64encode(image.read()).decode("utf-8")
+            # Loading last updated image
+            with open(f"../config/media/{ReceiptView.objects.last().image}", "rb") as image:
+                image_base64 = base64.b64encode(image.read()).decode("utf-8")
 
-        # Loading JSON schema
-        with open('receipt_parser/model_commons/schema.json') as schema_json:
-            schema = json.load(schema_json)
+            # Loading JSON schema
+            with open('receipt_parser/model_commons/schema.json') as schema_json:
+                schema = json.load(schema_json)
 
-        # Loading prompt
-        with open('receipt_parser/model_commons/prompt.txt') as prompt_txt:
-            prompt = prompt_txt.read()
+            # Loading prompt
+            with open('receipt_parser/model_commons/prompt.txt') as prompt_txt:
+                prompt = prompt_txt.read()
 
-        final_prompt = f"{prompt}\n\n{schema}"
+            final_prompt = f"{prompt}\n\n{schema}"
 
-        response = requests.post(
-            url,
-            json={
-                "model": "gemma4:e4b",
-                "prompt": final_prompt,
-                "images": [image_base64],
-                "stream": True
-            },
-            stream=True
-        )
+            response = requests.post(
+                url,
+                json={
+                    "model": "gemma4:e4b",
+                    "prompt": final_prompt,
+                    "images": [image_base64],
+                    "stream": True
+                },
+                stream=True
+            )
 
-        response_buffer = ""
+            response_buffer = ""
 
-        print(f"Stream started")
-        for line in response.iter_lines():
-            if line:
-                data = json.loads(line.decode("utf-8"))
-                chunk = data.get("response", "")
+            print(f"Stream started")
+            for line in response.iter_lines():
+                if line:
+                    data = json.loads(line.decode("utf-8"))
+                    chunk = data.get("response", "")
 
-                print(f"Stream streamed:{chunk}")
-                response_buffer += chunk
-                yield f"data: {chunk}\n\n"
+                    print(f"Stream streamed:{chunk}")
+                    response_buffer += chunk
+                    yield f"data: {chunk}\n\n"
 
-                if data.get("done"):
-                    print("Stream finished")
-                    print("FINAL:", insert_inference_response(response_buffer))
+                    if data.get("done"):
+                        print("Stream finished")
+                        print("FINAL:", insert_inference_response(response_buffer))
 
     return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
 

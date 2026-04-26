@@ -1,3 +1,7 @@
+***0.4.1***
+- Added view of inserted Receipts
+- Added a condition to reduce useless interferences on the model
+
 ***0.4.0***
 - Added __str__ methods to all models
 - Added insert of inference results

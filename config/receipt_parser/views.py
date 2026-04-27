@@ -8,7 +8,7 @@ from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from receipt_parser.forms import ReceiptForm
 from receipt_parser.models import ReceiptView, StoreNames, Stores, Items, ItemCategories, PaymentMethods, \
-    ReceiptResources, Receipt
+    ReceiptResources, Receipt, ReceiptItems
 
 
 def home(request):
@@ -102,7 +102,7 @@ def inference_model():
     return response.json()["response"]
 
 
-def insert_inference_response(inference_json: str):
+def insert_inference_response(inference_json: str) -> None:
     inference_json_dict: dict = parse_inference_json(inference_json)
 
     merchant_info: dict = inference_json_dict["merchant_info"]
@@ -119,21 +119,24 @@ def insert_inference_response(inference_json: str):
     try:
         receipt: Receipt = Receipt.objects.get(receipt_reference=transaction_info["document_number"])
     except ObjectDoesNotExist:
-        receipt = Receipt(item_id_fk=item, store_id_fk=store,
+        receipt = Receipt(store_id_fk=store,
                           payment_method_id_fk=payment_method,
                           receipt_resource_id_fk=receipt_resource,
                           receipt_datetime=datetime.datetime.now(),
                           receipt_reference=transaction_info["document_number"])
         receipt.save()
 
+    receipt_item = Receipt(item_id_fk=item, receipt_id_fk=receipt)
+    receipt_item.save()
 
-def parse_inference_json(inference_json: str):
+
+def parse_inference_json(inference_json: str) -> dict:
     inference_json_dict: dict = json.loads(inference_json.replace("```json", "").replace("```", ""))
 
     return inference_json_dict
 
 
-def save_store_name(merchant_info: dict):
+def save_store_name(merchant_info: dict) -> StoreNames:
     try:
         store_name: StoreNames = StoreNames.objects.get(store_name=merchant_info["name"])
     except ObjectDoesNotExist:
@@ -143,7 +146,7 @@ def save_store_name(merchant_info: dict):
     return store_name
 
 
-def save_store(merchant_info: dict):
+def save_store(merchant_info: dict) -> Stores:
     store_name: StoreNames = StoreNames.objects.get(store_name=merchant_info["name"])
 
     try:
@@ -159,7 +162,7 @@ def save_store(merchant_info: dict):
     return store
 
 
-def save_items(line_items: list):
+def save_items(line_items: list) -> Items:
     uncategorized: ItemCategories = ItemCategories.objects.get(item_category_name="uncategorized")
 
     for line_item in line_items:
@@ -175,7 +178,7 @@ def save_items(line_items: list):
 
     return item
 
-def save_payment_method(payment_info: dict):
+def save_payment_method(payment_info: dict) -> PaymentMethods:
     try:
         payment_method: PaymentMethods = PaymentMethods.objects.get(
             payment_method_name=payment_info["payment_method"], )
@@ -186,7 +189,7 @@ def save_payment_method(payment_info: dict):
     return payment_method
 
 
-def save_receipt_resource(inference_json_dict: dict):
+def save_receipt_resource(inference_json_dict: dict) -> ReceiptResources:
     try:
         receipt_resource: ReceiptResources = ReceiptResources.objects.get(
             original_image_path=f"../config/media/{ReceiptView.objects.last().image}", )

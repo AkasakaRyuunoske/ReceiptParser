@@ -92,13 +92,6 @@ class ReceiptResources(models.Model):
 
 class Receipt(models.Model):
     receipt_id = models.IntegerField(primary_key=True)
-    item_id_fk = models.ForeignKey(
-        Items,
-        on_delete=models.DO_NOTHING,
-        null=False,
-        blank=False,
-        related_name="items_id_fk",
-    )
 
     store_id_fk = models.ForeignKey(
         Stores,
@@ -128,6 +121,29 @@ class Receipt(models.Model):
     receipt_insert_datetime = models.DateTimeField(auto_now_add=True)
     receipt_reference = models.CharField(max_length=100, unique=True, null=False)
     receipt_description = models.CharField(max_length=255, unique=False, null=True)
+
+    def __str__(self):
+        fields = ", ".join(f"{f.name}={getattr(self, f.name)!r}" for f in self._meta.fields)
+        return f"<{self.__class__.__name__} {fields}>"
+
+class ReceiptItems(models.Model):
+    item_id_fk = models.ForeignKey(
+        Items,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="items_id_fk",
+    )
+
+    receipt_id_fk = models.ForeignKey(
+        Receipt,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="receipt_id_fk",
+    )
+
+    insert_datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         fields = ", ".join(f"{f.name}={getattr(self, f.name)!r}" for f in self._meta.fields)

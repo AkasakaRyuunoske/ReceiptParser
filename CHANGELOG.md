@@ -1,3 +1,6 @@
+***0.4.3***
+- Added application icon (placeholder)
+
 ***0.4.2***
 - Added new ReceiptItems model
 

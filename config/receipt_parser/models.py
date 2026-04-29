@@ -36,9 +36,9 @@ class Items(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="items_category_id_fk",
+        related_name="rel_items_category_id_fk",
     )
-    item_name = models.CharField(max_length=100, unique=True, null=False)
+    item_name = models.CharField(max_length=100, unique=False, null=False)
     price = models.IntegerField(null=False)
     item_description = models.CharField(max_length=255, unique=False, null=True)
     item_insert_datetime = models.DateTimeField(auto_now_add=True)
@@ -55,10 +55,10 @@ class Stores(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="stores_name_id_fk",
+        related_name="rel_stores_name_id_fk",
     )
     address = models.CharField(max_length=100, unique=False, null=False)
-    city = models.CharField(max_length=100, unique=True, null=False)
+    city = models.CharField(max_length=100, unique=False, null=False)
     store_insert_datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -79,9 +79,9 @@ class PaymentMethods(models.Model):
 
 class ReceiptResources(models.Model):
     receipt_resource_id = models.IntegerField(primary_key=True)
-    original_image_path = models.CharField(max_length=150, unique=True, null=False)
-    grayscale_image_path = models.CharField(max_length=150, unique=True, null=True)
-    visualization_image_path = models.CharField(max_length=150, unique=True, null=True)
+    original_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=False)
+    grayscale_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=True)
+    visualization_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=True)
     raw_text_json = models.CharField(max_length=150, unique=True, null=False)
     receipt_resource_insert_datetime = models.DateTimeField(auto_now_add=True)
 
@@ -98,7 +98,7 @@ class Receipt(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="stores_id_fk",
+        related_name="rel_stores_id_fk",
     )
 
     payment_method_id_fk = models.ForeignKey(
@@ -106,7 +106,7 @@ class Receipt(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="payment_methods_id_fk",
+        related_name="rel_payment_methods_id_fk",
     )
 
     receipt_resource_id_fk = models.ForeignKey(
@@ -114,7 +114,7 @@ class Receipt(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="receipt_resources_id_fk",
+        related_name="rel_receipt_resources_id_fk",
     )
 
     receipt_datetime = models.DateTimeField(auto_now_add=False, null=False)
@@ -132,7 +132,7 @@ class ReceiptItems(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="items_id_fk",
+        related_name="rel_items_id_fk",
     )
 
     receipt_id_fk = models.ForeignKey(
@@ -140,7 +140,7 @@ class ReceiptItems(models.Model):
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
-        related_name="receipt_id_fk",
+        related_name="rel_receipt_id_fk",
     )
 
     insert_datetime = models.DateTimeField(auto_now_add=True)

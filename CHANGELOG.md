@@ -1,3 +1,12 @@
+***0.5.0***
+- Added icon to browser tab
+- Added service to handle receipt inserting logic
+- Added pretty print of inserted receipts
+- Changed item_name to no longer have UNIQUE constraint 
+- Changed city to no longer have UNIQUE constraint 
+- Changed save receipt logic to use v0_3 db e-r
+- Changed original_image_path field to ImageField type
+
 ***0.4.3***
 - Added application icon (placeholder)
 

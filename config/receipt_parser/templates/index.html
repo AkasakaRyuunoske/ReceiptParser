@@ -15,7 +15,9 @@
         <script src="https://unpkg.com/htmx.org@1.9.10"
             integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
             crossorigin="anonymous">
-    </script>
+        </script>
+
+        <link rel="icon" type="image/x-icon" href="{% static 'icons/main_icon.png' %}">
 </head>
 <body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite" onload="startStream()">
 
@@ -28,20 +30,6 @@
 </form>
 
 <div>
-    <h1>Registered Receipts</h1>
-
-    <div>
-        {% for receipt in receipts %}
-            <h3>Receipt {{ receipt.receipt_id }}</h3>
-            <p>Store: {{ receipt.store_id_fk.store_name_id_fk.store_name }}
-                at {{ receipt.store_id_fk.address }}, {{ receipt.store_id_fk.city }}</p>
-            <p>Item: {{ receipt.item_id_fk.item_name }} - {{ receipt.item_id_fk.price }}</p>
-            <p>Category: {{ receipt.item_id_fk.category_id_fk.item_category_name }}</p>
-            <p>Payment: {{ receipt.payment_method_id_fk.payment_method_name }}</p>
-        {% endfor %}
-    </div>
-</div>
-<div>
     <h1>Model Response</h1>
 
     <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span></h2>
@@ -50,6 +38,64 @@
 
     </div>
     <img src="{{ image_path.url }}" style="width: 20rem;"/>
+</div>
+
+<div style="overflow: auto;
+    height: 50rem;
+    width: 50%;">
+    <h1>Registered Receipts</h1>
+        {% for receipt in receipts %}
+            <div style="border:1px solid #ccc; padding:1rem; margin-bottom:1rem; border-radius:8px;">
+
+                <h3>
+                    {{ receipt.store_id_fk.store_name_id_fk.store_name }}
+                </h3>
+
+                <p>
+                    {{ receipt.store_id_fk.address }}
+                    <br>
+                    {{ receipt.store_id_fk.city }}
+                </p>
+
+                <p>
+                    <strong>Receipt Reference:</strong> {{ receipt.receipt_reference }}
+                    <br>
+                    <strong>Receipt Datetime:</strong> {{ receipt.receipt_datetime }}
+                    <strong>Receipt Insert Datetime:</strong> {{ receipt.receipt_datetime }}
+                    <br>
+                    <strong>Payment Method:</strong> {{ receipt.payment_method_id_fk.payment_method_name }}
+                </p>
+
+                <h4>Items</h4>
+                <ul>
+                    {% for rel in receipt.rel_receipt_id_fk.all %}
+                        <li>
+                            {{ rel.item_id_fk.item_name }}
+                            (€{{ rel.item_id_fk.price }})
+                            <small>
+                                [{{ rel.item_id_fk.category_id_fk.item_category_name }}]
+                            </small>
+                        </li>
+                    {% empty %}
+                        <li>No items inserted</li>
+                    {% endfor %}
+                </ul>
+
+                <details>
+                    <summary>Raw Inference Data</summary>
+                    <pre style="white-space: pre-wrap;">
+                        {{ receipt.receipt_resource_id_fk.raw_text_json }}
+                    </pre>
+                    <summary>Raw Inference Data</summary>
+                    <pre style="white-space: pre-wrap;">
+                        {{ receipt.receipt_resource_id_fk.original_image_path }}
+                        <img src="{{ receipt.receipt_resource_id_fk.original_image_path.url }}" style="width: 20rem;"/>
+
+                    </pre>
+                </details>
+
+            </div>
+        {% endfor %}
 </div>
 
 <script>

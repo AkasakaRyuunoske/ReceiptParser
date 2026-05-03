@@ -1,0 +1,25 @@
+{% load static %}
+<nav>
+    <header class="sidebar_header header_layout">
+        <img src="{% static 'icons/main_icon.png' %}" style="width: 3rem;">
+        <a href="/">Receipt Parser</a>
+    </header>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="sidebar_header">
+        <div><a href="/dashboard">Dashboard</a></div>
+
+        <div>
+            <a href="/receipts">Receipts</a>
+            <div class="sidebar_subsection">
+                <div><a href="/receipts/add_receipt">Add Receipt</a></div>
+                <div><a href="/receipts/storage">Receipt Storage</a></div>
+            </div>
+        </div>
+
+        <div><a href="/settings">Settings</a></div>
+    </div>
+</nav>

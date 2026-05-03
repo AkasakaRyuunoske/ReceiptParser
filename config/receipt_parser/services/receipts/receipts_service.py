@@ -83,7 +83,7 @@ class ReceiptService(BaseModel):
                 original_image_path=f"{ReceiptView.objects.last().image}",
                 grayscale_image_path=f"{ReceiptView.objects.last().image}",
                 visualization_image_path=f"{ReceiptView.objects.last().image}",
-                raw_text_json=inference_json_dict,
+                raw_text_json=json.dumps(inference_json_dict),
             )
 
             receipt_resource.save()

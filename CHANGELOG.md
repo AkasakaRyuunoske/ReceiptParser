@@ -1,3 +1,14 @@
+***0.6.0***
+- Added base html component
+- Added navbar
+- Added receipts page
+- Added receipts storage page
+- Added add receipt page
+- Added add model input overview html component
+- Added settings page
+- Added dashboard page
+- Added ui figma design
+
 ***0.5.0***
 - Added icon to browser tab
 - Added service to handle receipt inserting logic

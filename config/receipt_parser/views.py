@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from receipt_parser.forms import ReceiptForm
-from receipt_parser.models import ReceiptView, StoreNames, Stores, Items, ItemCategories, PaymentMethods, \
+from receipt_parser.models import ReceiptView, StoreNames, Stores, PaymentMethods, \
     ReceiptResources, Receipt, ReceiptItems
 
 from .services.receipts.receipts_service import ReceiptService
@@ -24,9 +24,27 @@ def home(request):
 
     image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
 
-    return render(request, 'index.html',
-                  {'form': form, "image_path": image_path,
-                   "receipts": Receipt.objects.all()})
+    return render(request, 'index.html', context={'form': form, "image_path": image_path,
+                                                  "receipts": Receipt.objects.all()})
+
+
+def add_receipt_page(request):
+    image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
+    raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
+    return render(request, 'add_receipt_page.html', context={"image_path": image_path, "raw_text_json": raw_text_json})
+
+
+def dashboard_page(request):
+    return render(request, 'dashboard.html', )
+
+
+def receipts_page(request):
+    return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})
+
+
+def receipts_storage(request):
+    return render(request, 'receipts_storage.html', context={"receipts": Receipt.objects.all()})
+
 
 def debugg(request):
     inference_json = """
@@ -35,6 +53,7 @@ def debugg(request):
                     """
     insert_inference_response(inference_json)
     return HttpResponse("")
+
 
 def stream_inference(request):
     def event_stream():
@@ -138,3 +157,7 @@ def insert_inference_response(inference_json: str) -> None:
     for item in items:
         receipt_item: ReceiptItems = ReceiptItems(item_id_fk=item, receipt_id_fk=receipt)
         receipt_item.save()
+
+
+def settings_page(request):
+    return render(request, 'settings.html', )

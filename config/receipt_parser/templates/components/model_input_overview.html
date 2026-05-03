@@ -1,0 +1,45 @@
+{% load static %}
+<main class="model_input_overview_layout">
+    <div class="img">
+        <img src="{{ image_path.url }}" style="width: 100%;"/>
+    </div>
+
+    <div class="json">
+        <pre id="json"></pre>
+    </div>
+
+    <div class="controls" style="display: grid; grid-template-rows: 50% 1fr;">
+        <div>
+            <span>Image path: {{ image_path.url }}</span>
+        </div>
+
+        <div>
+            <button>Load Image</button>
+            <button>Reinference</button>
+            <select>
+                <option>gemma4:e2b</option>
+                <option>gemma4:e4b</option>
+                <option>gemma4:e26b</option>
+                <option>gemma4:e31b</option>
+            </select>
+        </div>
+    </div>
+</main>
+
+
+
+<div id="jsoneditor" style="height: 400px;"></div>
+
+<script>
+const container = document.getElementById("jsoneditor");
+
+const options = {
+    mode: "view",
+    expanded: true
+};
+
+const editor = new JSONEditor(container, options);
+
+const data = JSON.parse('{{ raw_text_json|safe }}');
+editor.set(data);
+</script>

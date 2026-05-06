@@ -1,0 +1,75 @@
+{% load static %}
+
+<div class="receipt-card">
+  <form>
+      <div class="receipt-header">
+        <div class="store-box">
+            {{ receipt.store_id_fk.store_name_id_fk.store_name }}
+        </div>
+
+        <div class="receipt-meta">
+            <div>{{ receipt.store_id_fk.address }}</div>
+            <div>{{ receipt.store_id_fk.city }}</div>
+            <div>Receipt Date: {{ receipt.receipt_datetime|date:"d/m/Y H:i" }}</div>
+            <div>Reference: {{ receipt.receipt_reference }}</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="items-section">
+        <div class="items-header grid grid-cols-8">
+            <span>Item</span>
+            <span></span>
+            <span>Category</span>
+            <span></span>
+            <span>IVA</span>
+            <span>Qty</span>
+            <span>UP</span>
+            <span>Price</span>
+        </div>
+
+        <div class="items-body">
+            {% for rel in receipt.rel_receipt_id_fk.all %}
+            <div class="item-row grid grid-cols-8">
+                <span class="col-span-2">{{ rel.item_id_fk.item_name }}</span>
+                <span class="col-span-2">{{ rel.item_id_fk.category_id_fk.item_category_name }}</span>
+                <span>{{ rel.item_id_fk.category_id_fk.item_category_description|default:"-" }}</span>
+                <span>1</span>
+                <span>{{ rel.item_id_fk.price|floatformat:2 }}</span>
+                <span>{{ rel.item_id_fk.price|floatformat:2 }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="item-controls">
+            <button>+</button>
+            <button>-</button>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="receipt-footer grid grid-cols-2">
+        <div class="totals grid grid-cols-3">
+            <div>
+                <strong>Grand Total</strong><br>
+                {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.grand_total_tax_inclusive|default:"-" }}
+            </div>
+            <div>
+                <strong>Total IVA</strong><br>
+                {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.tax_details.vat_total|default:"-" }}
+            </div>
+            <div>
+                <strong>Amount Paid</strong><br>
+                {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.payment_info.paid_amount|default:"-" }}
+            </div>
+        </div>
+
+        <div class="notes">
+            {{ receipt.receipt_description|default:"No notes" }}
+        </div>
+    </div>
+  </form>
+
+</div>

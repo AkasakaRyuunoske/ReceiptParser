@@ -1,11 +1,11 @@
 {% load static %}
 <main class="model_input_overview_layout">
     <div class="img">
-        <img src="{{ image_path.url }}" style="width: 100%;"/>
+        <img src="{{ image_path.url }}" style="width: 50%;"/>
     </div>
 
     <div class="json">
-        <pre id="json"></pre>
+        <pre id="json"> </pre>
     </div>
 
     <div class="controls" style="display: grid; grid-template-rows: 50% 1fr;">
@@ -40,6 +40,6 @@ const options = {
 
 const editor = new JSONEditor(container, options);
 
-const data = JSON.parse('{{ raw_text_json|safe }}');
+const data = {{ raw_text_json|safe }};
 editor.set(data);
 </script>

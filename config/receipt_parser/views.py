@@ -31,7 +31,9 @@ def home(request):
 def add_receipt_page(request):
     image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
     raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
-    return render(request, 'add_receipt_page.html', context={"image_path": image_path, "raw_text_json": raw_text_json})
+    return render(request, 'add_receipt_page.html', context={"image_path": image_path,
+                                                             "raw_text_json": raw_text_json,
+                                                             "receipt": Receipt.objects.last()})
 
 
 def dashboard_page(request):

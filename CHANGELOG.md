@@ -1,3 +1,7 @@
+***0.6.1***
+- Added tailwindcss
+- Added initial code for receipt card
+
 ***0.6.0***
 - Added base html component
 - Added navbar

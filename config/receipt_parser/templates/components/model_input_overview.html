@@ -1,22 +1,22 @@
 {% load static %}
-<main class="model_input_overview_layout">
+<main>
     <div class="img">
         <img src="{{ image_path.url }}" style="width: 50%;"/>
     </div>
 
     <div class="json">
-        <pre id="json"> </pre>
+        <pre id="jsoneditor"></pre>
     </div>
 
-    <div class="controls" style="display: grid; grid-template-rows: 50% 1fr;">
+    <div class="controls">
         <div>
             <span>Image path: {{ image_path.url }}</span>
         </div>
 
         <div>
-            <button>Load Image</button>
-            <button>Reinference</button>
-            <select>
+            <button class="border border-white text-white">Load Image</button>
+            <button class="border border-white text-white">Reinference</button>
+            <select class="border border-white text-white">
                 <option>gemma4:e2b</option>
                 <option>gemma4:e4b</option>
                 <option>gemma4:e26b</option>
@@ -28,7 +28,7 @@
 
 
 
-<div id="jsoneditor" style="height: 400px;"></div>
+<!--<div id="jsoneditor" style="height: 400px;"></div>-->
 
 <script>
 const container = document.getElementById("jsoneditor");
@@ -40,6 +40,6 @@ const options = {
 
 const editor = new JSONEditor(container, options);
 
-const data = {{ raw_text_json|safe }};
+const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};
 editor.set(data);
 </script>

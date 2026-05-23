@@ -4,8 +4,10 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
-<main>
-<!--        {% include "components/model_input_overview.html" %}-->
-        {% include "components/receipt_card.html" with receipt=receipt %}
+<main class="item-row grid grid-cols-3">
+        {% include "components/model_input_overview.html" %}
+        <div class="col-span-2">
+                {% include "components/receipt_card.html" with receipt=receipt %}
+        </div>
 </main>
 {% endblock %}

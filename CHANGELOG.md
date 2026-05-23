@@ -1,3 +1,6 @@
+***0.6.2***
+- Changed layout of add receipt page
+- Changed image upload logic
 ***0.6.1***
 - Added tailwindcss
 - Added initial code for receipt card

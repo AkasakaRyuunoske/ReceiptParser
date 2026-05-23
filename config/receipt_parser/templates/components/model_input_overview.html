@@ -2,6 +2,9 @@
 <main>
     <div class="img">
         <img src="{{ image_path.url }}" style="width: 50%;"/>
+
+        <h2 id="LoadingIndicator">Model Currently Afk<span>...</span></h2>
+        <div id="stream-container"></div>
     </div>
 
     <div class="json">
@@ -10,13 +13,38 @@
 
     <div class="controls">
         <div>
-            <span>Image path: {{ image_path.url }}</span>
+            <span> Image path: </span>
+            <span id="fileName"> {{ image_path.url }}</span>
         </div>
 
         <div>
-            <button class="border border-white text-white">Load Image</button>
-            <button class="border border-white text-white">Reinference</button>
-            <select class="border border-white text-white">
+
+        <div class="flex items-center gap-4">
+
+            <form id="imageInputForm" method="POST" enctype="multipart/form-data" action="add_receipt/upload_input_image">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input
+                    type="file"
+                    id="fileInput"
+                    class="hidden"
+                    name="image"
+                    accept="image/*">
+            </form>
+
+
+            <button
+                type="button"
+                id="uploadButton"
+                class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition"
+            >
+                Load Image
+            </button>
+
+        </div>
+
+            <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">Reinference</button>
+            <select class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">
                 <option>gemma4:e2b</option>
                 <option>gemma4:e4b</option>
                 <option>gemma4:e26b</option>
@@ -25,10 +53,6 @@
         </div>
     </div>
 </main>
-
-
-
-<!--<div id="jsoneditor" style="height: 400px;"></div>-->
 
 <script>
 const container = document.getElementById("jsoneditor");
@@ -40,6 +64,76 @@ const options = {
 
 const editor = new JSONEditor(container, options);
 
-const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};
-editor.set(data);
+<!--const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};-->
+<!--editor.set(data);-->
+</script>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const uploadButton = document.getElementById("uploadButton");
+const fileName = document.getElementById("fileName");
+const imageInputForm = document.getElementById("imageInputForm");
+
+uploadButton.addEventListener("click", () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+        fileName.textContent = "/media/receipt_parser/" + fileInput.files[0].name;
+        imageInputForm.submit();
+    } else {
+        fileName.textContent = "{{ image_path.url }}";
+    }
+});
+</script>
+
+<script>
+function getRandomVisibleColor() {
+    // Generate random RGB values
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+
+    // Calculate luminance (perceived brightness)
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    // Minimum luminance for good contrast (4.5:1 WCAG ratio)
+    const minLuminance = 44.625;
+
+    // If luminance is too low, try again
+    if (luminance < minLuminance) {
+        return getRandomVisibleColor();
+    }
+
+    // Convert RGB to hex
+    const toHex = (c) => {
+        let hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function startStream() {
+    const evtSource = new EventSource("/stream/");
+    console.log("Starting Stream")
+
+    let output = "";
+
+    evtSource.onmessage = function(event) {
+        console.log(event.data)
+        output += event.data;
+
+        document.getElementById("stream-container").innerText = output;
+        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
+
+    };
+
+    evtSource.onerror = function() {
+        document.getElementById("LoadingIndicator").innerText = "";
+        console.log("Error streaming")
+        evtSource.close();
+    };
+}
 </script>

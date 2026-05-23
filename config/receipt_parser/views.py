@@ -4,7 +4,7 @@ import json
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import StreamingHttpResponse, HttpResponse
+from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from receipt_parser.forms import ReceiptForm
 from receipt_parser.models import ReceiptView, StoreNames, Stores, PaymentMethods, \
@@ -31,6 +31,7 @@ def home(request):
 def add_receipt_page(request):
     image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
     raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
+
     return render(request, 'add_receipt_page.html', context={"image_path": image_path,
                                                              "raw_text_json": raw_text_json,
                                                              "receipt": Receipt.objects.last()})
@@ -60,6 +61,7 @@ def debugg(request):
 def stream_inference(request):
     def event_stream():
         skip_inference: bool = True
+
         if not skip_inference:
             url = "http://localhost:11434/api/generate"
             print(f"Stream was triggered....")
@@ -163,3 +165,12 @@ def insert_inference_response(inference_json: str) -> None:
 
 def settings_page(request):
     return render(request, 'settings.html', )
+
+def upload_input_image(request):
+    form = ReceiptForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect("/receipts/add_receipt")
+    else:
+        print(form.errors)
+        return HttpResponse(form.errors)

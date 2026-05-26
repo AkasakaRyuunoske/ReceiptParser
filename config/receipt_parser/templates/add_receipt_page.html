@@ -4,10 +4,39 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+<div id="stream-container"></div>
+
 <main class="item-row grid grid-cols-3">
         {% include "components/model_input_overview.html" %}
+
         <div class="col-span-2">
                 {% include "components/receipt_card.html" with receipt=receipt %}
         </div>
 </main>
+
+<script>
+function startStream() {
+    const evtSource = new EventSource("/stream/");
+    console.log("Starting Stream")
+
+    let output = "";
+
+    evtSource.onmessage = function(event) {
+        console.log(event.data)
+        output += event.data;
+
+        document.getElementById("stream-container").innerText = output;
+        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
+
+    };
+
+    evtSource.onerror = function() {
+        document.getElementById("LoadingIndicator").innerText = "";
+        console.log("Error streaming")
+        evtSource.close();
+    };
+}
+
+startStream()
+</script>
 {% endblock %}

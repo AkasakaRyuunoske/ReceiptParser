@@ -1,3 +1,7 @@
+***0.6.3***
+- Added input fields to receipt card
+- Added inference scripts to add_receipt_page
+
 ***0.6.2***
 - Changed layout of add receipt page
 - Changed image upload logic

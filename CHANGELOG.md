@@ -1,3 +1,6 @@
+***0.6.4***
+- Added full glitch text effect css
+
 ***0.6.3***
 - Added input fields to receipt card
 - Added inference scripts to add_receipt_page

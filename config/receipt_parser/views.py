@@ -6,7 +6,7 @@ import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from receipt_parser.forms import ReceiptForm
+from receipt_parser.forms import ReceiptImageForm
 from receipt_parser.models import ReceiptView, StoreNames, Stores, PaymentMethods, \
     ReceiptResources, Receipt, ReceiptItems
 
@@ -15,12 +15,12 @@ from .services.receipts.receipts_service import ReceiptService
 
 def home(request):
     if request.method == 'POST':
-        form = ReceiptForm(request.POST, request.FILES)
+        form = ReceiptImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/')
     else:
-        form = ReceiptForm()
+        form = ReceiptImageForm()
 
     image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
 
@@ -118,7 +118,7 @@ def inference_model():
         image_base64 = base64.b64encode(f.read()).decode("utf-8")
 
     response = requests.post(url, json={
-        "model": "gemma4:e4b",
+        "model": "gemma4:e2b",
         "prompt": "Return a json file containing information on the image.",
         "images": [image_base64],
         "stream": False,
@@ -167,7 +167,16 @@ def settings_page(request):
     return render(request, 'settings.html', )
 
 def upload_input_image(request):
-    form = ReceiptForm(request.POST, request.FILES)
+    form = ReceiptImageForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect("/receipts/add_receipt")
+    else:
+        print(form.errors)
+        return HttpResponse(form.errors)
+
+def post_receipt(request):
+    form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
         return redirect("/receipts/add_receipt")

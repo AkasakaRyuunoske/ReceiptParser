@@ -6,12 +6,19 @@
 {% block content %}
 <div id="stream-container"></div>
 
-<main class="item-row grid grid-cols-3">
+<main>
+    <form  class="item-row grid grid-cols-3"
+                id="addReceiptForm" method="POST"
+                enctype="multipart/form-data" action="add_receipt/upload_input_image">
+        {% csrf_token %}
+        {{ form.as_p }}
+
         {% include "components/model_input_overview.html" %}
 
         <div class="col-span-2">
                 {% include "components/receipt_card.html" with receipt=receipt %}
         </div>
+    </form>
 </main>
 
 <script>

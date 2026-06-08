@@ -1,7 +1,6 @@
 {% load static %}
 
 <div class="receipt-card">
-  <form>
       <div class="receipt-header">
         <div class="store-box">
             {{ receipt.store_id_fk.store_name_id_fk.store_name }}
@@ -70,6 +69,10 @@
             {{ receipt.receipt_description|default:"No notes" }}
         </div>
     </div>
-  </form>
+    <div style="font-family: OldEnglishTextMT">
+        <button type="submit" formaction="/publish">
+            Update Receipt
+        </button>
+    </div>
 
 </div>

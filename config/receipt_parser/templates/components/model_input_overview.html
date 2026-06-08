@@ -21,25 +21,20 @@
 
         <div class="flex items-center gap-4">
 
-            <form id="imageInputForm" method="POST" enctype="multipart/form-data" action="add_receipt/upload_input_image">
-                {% csrf_token %}
-                {{ form.as_p }}
                 <input
                     type="file"
                     id="fileInput"
                     class="hidden"
                     name="image"
-                    accept="image/*">
-            </form>
+                    accept="image/*"/>
 
-
-            <button
-                type="button"
+                <button
                 id="uploadButton"
                 class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition"
-            >
-                Load Image
-            </button>
+                type="button"
+                >
+                    Load Image
+                </button>
 
         </div>
 
@@ -72,7 +67,7 @@ const editor = new JSONEditor(container, options);
 const fileInput = document.getElementById("fileInput");
 const uploadButton = document.getElementById("uploadButton");
 const fileName = document.getElementById("fileName");
-const imageInputForm = document.getElementById("imageInputForm");
+const addReceiptForm = document.getElementById("addReceiptForm");
 
 uploadButton.addEventListener("click", () => {
     fileInput.click();
@@ -81,7 +76,7 @@ uploadButton.addEventListener("click", () => {
 fileInput.addEventListener("change", () => {
     if (fileInput.files.length > 0) {
         fileName.textContent = "/media/receipt_parser/" + fileInput.files[0].name;
-        imageInputForm.submit();
+        addReceiptForm.submit();
     } else {
         fileName.textContent = "{{ image_path.url }}";
     }

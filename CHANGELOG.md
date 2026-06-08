@@ -1,4 +1,9 @@
-***0.6.4***
+***0.6.5***
+- Changed receipt card adding new button to submit
+- Changed image and receipt forms to be single form
+- Added new models to manage the old separation
+
+- ***0.6.4***
 - Added full glitch text effect css
 
 ***0.6.3***

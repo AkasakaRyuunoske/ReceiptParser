@@ -1,5 +1,7 @@
 from django import forms
-from .models import ReceiptImageView, Receipt
+from django.forms import inlineformset_factory
+
+from .models import ReceiptImageView, Receipt, ReceiptItems
 
 
 class ReceiptImageForm(forms.ModelForm):
@@ -12,7 +14,26 @@ class ReceiptForm(forms.ModelForm):
     class Meta:
         model = Receipt
         fields = [
-                    'image', 'store_name', 'store_address', 'store_city',
-                    'receipt_datetime', 'receipt_reference', 'item_name', 'item_category_name',
-                    'item_category_description', 'item_qty', 'item_unit_price', 'item_total_price',
+            "store_id_fk",
+            "payment_method_id_fk",
+            "receipt_datetime",
+            "receipt_reference",
+            "receipt_description",
         ]
+
+
+class ReceiptItemForm(forms.ModelForm):
+    class Meta:
+        model = ReceiptItems
+        fields = [
+            "item_id_fk",
+        ]
+
+
+ReceiptItemFormSet = inlineformset_factory(
+    Receipt,
+    ReceiptItems,
+    fields=["item_id_fk"],
+    extra=1,
+    can_delete=True
+)

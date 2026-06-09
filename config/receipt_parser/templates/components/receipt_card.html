@@ -3,14 +3,18 @@
 <div class="receipt-card">
       <div class="receipt-header">
         <div class="store-box">
-            {{ receipt.store_id_fk.store_name_id_fk.store_name }}
+            <input type="text" value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}" name="store_id_fk"/>
         </div>
 
         <div class="receipt-meta">
             <div>{{ receipt.store_id_fk.address }}</div>
             <div>{{ receipt.store_id_fk.city }}</div>
-            <div>Receipt Date: {{ receipt.receipt_datetime|date:"d/m/Y H:i" }}</div>
-            <div>Reference: {{ receipt.receipt_reference }}</div>
+            <div>Receipt Date:
+                <input type="text" value="{{ receipt.receipt_datetime|date:'d/m/Y H:i' }}" name="receipt_datetime"/>
+            </div>
+            <div>Reference:
+                <input type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>
+            </div>
         </div>
     </div>
 
@@ -66,11 +70,11 @@
         </div>
 
         <div class="notes">
-            {{ receipt.receipt_description|default:"No notes" }}
+            <input type="text" value="{{ receipt.receipt_description|default:'No notes' }}" name="receipt_description"/>
         </div>
     </div>
     <div style="font-family: OldEnglishTextMT">
-        <button type="submit" formaction="/publish">
+        <button type="submit" formaction="/receipts/add_full_receipt">
             Update Receipt
         </button>
     </div>

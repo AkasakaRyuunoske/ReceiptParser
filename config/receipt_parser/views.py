@@ -4,12 +4,14 @@ import json
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from receipt_parser.forms import ReceiptImageForm
-from receipt_parser.models import ReceiptView, StoreNames, Stores, PaymentMethods, \
+from receipt_parser.models import ReceiptImageView, StoreNames, Stores, PaymentMethods, \
     ReceiptResources, Receipt, ReceiptItems
 
+from .forms import ReceiptForm, ReceiptItemFormSet
 from .services.receipts.receipts_service import ReceiptService
 
 
@@ -22,14 +24,14 @@ def home(request):
     else:
         form = ReceiptImageForm()
 
-    image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
+    image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
 
     return render(request, 'index.html', context={'form': form, "image_path": image_path,
                                                   "receipts": Receipt.objects.all()})
 
 
 def add_receipt_page(request):
-    image_path = ReceiptView.objects.last().image if not ReceiptView.objects.last() is None else "image_path_not_found"
+    image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
     raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
 
     return render(request, 'add_receipt_page.html', context={"image_path": image_path,
@@ -67,7 +69,7 @@ def stream_inference(request):
             print(f"Stream was triggered....")
 
             # Loading last updated image
-            with open(f"../config/media/{ReceiptView.objects.last().image}", "rb") as image:
+            with open(f"../config/media/{ReceiptImageView.objects.last().image}", "rb") as image:
                 image_base64 = base64.b64encode(image.read()).decode("utf-8")
 
             # Loading JSON schema
@@ -114,7 +116,7 @@ def inference_model():
     print(f"[{datetime.datetime.now()}]Starting querying model LLAVA")
     url = "http://localhost:11434/api/generate"
 
-    with open(f"../config/media/{ReceiptView.objects.last().image}", "rb") as f:
+    with open(f"../config/media/{ReceiptImageView.objects.last().image}", "rb") as f:
         image_base64 = base64.b64encode(f.read()).decode("utf-8")
 
     response = requests.post(url, json={
@@ -183,3 +185,37 @@ def post_receipt(request):
     else:
         print(form.errors)
         return HttpResponse(form.errors)
+
+@transaction.atomic
+def create_receipt(request):
+
+    if request.method == "POST":
+
+        receipt_form = ReceiptForm(request.POST)
+
+        if receipt_form.is_valid():
+
+            receipt = receipt_form.save()
+
+            item_formset = ReceiptItemFormSet(
+                request.POST,
+                instance=receipt
+            )
+
+            if item_formset.is_valid():
+                item_formset.save()
+
+                return redirect("receipts/add_receipt")
+
+    else:
+        receipt_form = ReceiptForm()
+        item_formset = ReceiptItemFormSet()
+
+    return render(
+        request,
+        "receipt_form.html",
+        {
+            "receipt_form": receipt_form,
+            "item_formset": item_formset
+        }
+    )

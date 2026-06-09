@@ -1,3 +1,6 @@
+***0.6.6***
+- Changes to the receipt form
+
 ***0.6.5***
 - Changed receipt card adding new button to submit
 - Changed image and receipt forms to be single form

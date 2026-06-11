@@ -3,17 +3,17 @@
 <div class="receipt-card">
       <div class="receipt-header">
         <div class="store-box">
-            <input type="text" value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}" name="store_id_fk"/>
+            <input type="text" value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}" name="store_id_fk" style="background-color:black; max-width: 100%;"/>
         </div>
 
         <div class="receipt-meta">
             <div>{{ receipt.store_id_fk.address }}</div>
             <div>{{ receipt.store_id_fk.city }}</div>
             <div>Receipt Date:
-                <input type="text" value="{{ receipt.receipt_datetime|date:'d/m/Y H:i' }}" name="receipt_datetime"/>
+                <input style="background-color:black" type="text" value="{{ receipt.receipt_datetime|date:'d/m/Y H:i' }}" name="receipt_datetime"/>
             </div>
             <div>Reference:
-                <input type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>
+                <input style="background-color:black" type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@
         </div>
 
         <div class="notes">
-            <input type="text" value="{{ receipt.receipt_description|default:'No notes' }}" name="receipt_description"/>
+            <input type="text" value="{{ receipt.receipt_description|default:'No notes' }}" name="receipt_description" style="background-color:black"/>
         </div>
     </div>
     <div style="font-family: OldEnglishTextMT">

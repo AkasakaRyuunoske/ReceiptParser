@@ -5,73 +5,73 @@
 
 {% block content %}
 
-<h1>Parsing your Receipts</h1>
+<!--<h1>Parsing your Receipts</h1>-->
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
+<!--<form method="POST" enctype="multipart/form-data">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <button type="submit">Upload</button>-->
+<!--</form>-->
 
-<div>
-    <h1>Model Response</h1>
+<!--<div>-->
+<!--    <h1>Model Response</h1>-->
 
-    <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span></h2>
+<!--    <h2 id="LoadingIndicator">Model Currently Inferencing<span>...</span></h2>-->
 
-    <div id="stream-container">
+<!--    <div id="stream-container">-->
 
-    </div>
-    <img src="{{ image_path.url }}" style="width: 20rem;"/>
-</div>
+<!--    </div>-->
+<!--    <img src="{{ image_path.url }}" style="width: 20rem;"/>-->
+<!--</div>-->
 
-<script>
-function getRandomVisibleColor() {
-    // Generate random RGB values
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
+<!--<script>-->
+<!--function getRandomVisibleColor() {-->
+<!--    // Generate random RGB values-->
+<!--    const r = Math.floor(Math.random() * 256);-->
+<!--    const g = Math.floor(Math.random() * 256);-->
+<!--    const b = Math.floor(Math.random() * 256);-->
 
-    // Calculate luminance (perceived brightness)
-    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+<!--    // Calculate luminance (perceived brightness)-->
+<!--    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;-->
 
-    // Minimum luminance for good contrast (4.5:1 WCAG ratio)
-    const minLuminance = 44.625;
+<!--    // Minimum luminance for good contrast (4.5:1 WCAG ratio)-->
+<!--    const minLuminance = 44.625;-->
 
-    // If luminance is too low, try again
-    if (luminance < minLuminance) {
-        return getRandomVisibleColor();
-    }
+<!--    // If luminance is too low, try again-->
+<!--    if (luminance < minLuminance) {-->
+<!--        return getRandomVisibleColor();-->
+<!--    }-->
 
-    // Convert RGB to hex
-    const toHex = (c) => {
-        let hex = c.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-    };
+<!--    // Convert RGB to hex-->
+<!--    const toHex = (c) => {-->
+<!--        let hex = c.toString(16);-->
+<!--        return hex.length === 1 ? "0" + hex : hex;-->
+<!--    };-->
 
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
+<!--    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;-->
+<!--}-->
 
-function startStream() {
-    const evtSource = new EventSource("/stream/");
-    console.log("Starting Stream")
+<!--function startStream() {-->
+<!--    const evtSource = new EventSource("/stream/");-->
+<!--    console.log("Starting Stream")-->
 
-    let output = "";
+<!--    let output = "";-->
 
-    evtSource.onmessage = function(event) {
-        console.log(event.data)
-        output += event.data;
+<!--    evtSource.onmessage = function(event) {-->
+<!--        console.log(event.data)-->
+<!--        output += event.data;-->
 
-        document.getElementById("stream-container").innerText = output;
-        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
+<!--        document.getElementById("stream-container").innerText = output;-->
+<!--        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();-->
 
-    };
+<!--    };-->
 
-    evtSource.onerror = function() {
-        document.getElementById("LoadingIndicator").innerText = "";
-        console.log("Error streaming")
-        evtSource.close();
-    };
-}
-</script>
+<!--    evtSource.onerror = function() {-->
+<!--        document.getElementById("LoadingIndicator").innerText = "";-->
+<!--        console.log("Error streaming")-->
+<!--        evtSource.close();-->
+<!--    };-->
+<!--}-->
+<!--</script>-->
 
 {% endblock %}

@@ -1,3 +1,9 @@
+***0.6.8***
+- Added onclick header change location to /
+- Changed input boxes for reference dates, store and notest to have correct sizes and backgrounds on receipt_card
+- Changed model selection box to have correct background
+- Changed index
+
 ***0.6.6***
 - Changes to the receipt form
 

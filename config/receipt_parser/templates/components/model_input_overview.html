@@ -1,6 +1,6 @@
 {% load static %}
 <main>
-    <div class="img">
+    <div class="img grid grid-cold-2">
         <img src="{{ image_path.url }}" style="width: 50%;"/>
 
         <h2 id="LoadingIndicator">Model Currently Afk<span>...</span></h2>
@@ -18,8 +18,7 @@
         </div>
 
         <div>
-
-        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4">
 
                 <input
                     type="file"
@@ -31,21 +30,21 @@
                 <button
                 id="uploadButton"
                 class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition"
-                type="button"
-                >
+                type="button">
                     Load Image
                 </button>
 
-        </div>
+                <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">Reinference</button>
+                <select class="border border-white text-white bg-black px-4 py-2 hover:bg-white hover:text-black transition">
+                    <option>gemma4:e2b</option>
+                    <option>gemma4:e4b</option>
+                    <option>gemma4:e26b</option>
+                    <option>gemma4:e31b</option>
+                </select>
+            </div>
+            </div>
 
-            <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">Reinference</button>
-            <select class="border border-white text-white bg-black px-4 py-2 hover:bg-white hover:text-black transition">
-                <option>gemma4:e2b</option>
-                <option>gemma4:e4b</option>
-                <option>gemma4:e26b</option>
-                <option>gemma4:e31b</option>
-            </select>
-        </div>
+
     </div>
 </main>
 

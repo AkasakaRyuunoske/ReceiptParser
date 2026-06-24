@@ -11,13 +11,14 @@ class ReceiptImageForm(forms.ModelForm):
 
 
 class ReceiptForm(forms.ModelForm):
+    store_id_fk = forms.CharField()
+
     class Meta:
         model = Receipt
         fields = [
-            "store_id_fk",
+            "receipt_parser_receipt.receipt_resource_id_fk_id"
             "payment_method_id_fk",
             "receipt_datetime",
-            "receipt_reference",
             "receipt_description",
         ]
 

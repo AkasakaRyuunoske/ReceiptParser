@@ -10,7 +10,7 @@
             <div>{{ receipt.store_id_fk.address }}</div>
             <div>{{ receipt.store_id_fk.city }}</div>
             <div>Receipt Date:
-                <input style="background-color:black" type="text" value="{{ receipt.receipt_datetime|date:'d/m/Y H:i' }}" name="receipt_datetime"/>
+                <input style="background-color:black" type="text" value="{{ receipt.receipt_datetime|date:'Y-m-d\\TH:i' }}" name="receipt_datetime"/>
             </div>
             <div>Reference:
                 <input style="background-color:black" type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>
@@ -72,6 +72,7 @@
         <div class="notes">
             <input type="text" value="{{ receipt.receipt_description|default:'No notes' }}" name="receipt_description" style="background-color:black"/>
         </div>
+        <input type="text" value="1" name="payment_method_id_fk" id="payment_method_id_fk">
     </div>
     <div style="font-family: OldEnglishTextMT">
         <button type="submit" formaction="/receipts/add_full_receipt" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">

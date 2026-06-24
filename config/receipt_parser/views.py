@@ -192,10 +192,24 @@ def create_receipt(request):
     if request.method == "POST":
 
         receipt_form = ReceiptForm(request.POST)
+        receipt_form_data = receipt_form.data
 
         if receipt_form.is_valid():
 
-            receipt = receipt_form.save()
+            receipt = receipt_form.save(commit=False)
+
+            store_name = receipt_form_data['store_id_fk']
+
+            store_name_obj, _ = StoreNames.objects.get_or_create(
+                store_name=store_name
+            )
+
+            store_obj, _ = Stores.objects.get_or_create(
+                store_name_id_fk=store_name_obj
+            )
+
+            receipt.store_id_fk = store_obj
+            receipt.save()
 
             item_formset = ReceiptItemFormSet(
                 request.POST,

@@ -1,3 +1,6 @@
+***0.6.10***
+- Changed prompt.txt simplifying the instructions
+
 ***0.6.9***
 - minor cleaning
 

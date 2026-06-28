@@ -16,7 +16,6 @@ class ReceiptForm(forms.ModelForm):
     class Meta:
         model = Receipt
         fields = [
-            "receipt_parser_receipt.receipt_resource_id_fk_id"
             "payment_method_id_fk",
             "receipt_datetime",
             "receipt_description",

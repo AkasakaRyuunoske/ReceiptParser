@@ -1,3 +1,6 @@
+***0.6.11***
+- Changed notes field input type="text" -> textarea
+
 ***0.6.10***
 - Changed prompt.txt simplifying the instructions
 

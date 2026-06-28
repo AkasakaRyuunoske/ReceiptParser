@@ -70,10 +70,18 @@
         </div>
 
         <div class="notes">
-            <input type="text" value="{{ receipt.receipt_description|default:'No notes' }}" name="receipt_description" style="background-color:black"/>
+            <textarea name="receipt_description" style="background-color:black; max-height: 30%;">
+                {{ receipt.receipt_description|default:'No notes' }}
+            </textarea>
         </div>
-        <input type="text" value="1" name="payment_method_id_fk" id="payment_method_id_fk">
+
+        <label for="payment_method_id_fk">Payment Method:</label>
+        <br>
+        <input type="text" value="Cash" name="payment_method_id_fk" id="payment_method_id_fk" style="background-color:black">
     </div>
+
+    <br>
+
     <div style="font-family: OldEnglishTextMT">
         <button type="submit" formaction="/receipts/add_full_receipt" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">
             Update Receipt

@@ -32,22 +32,22 @@
             <span>Price</span>
         </div>
 
-        <div class="items-body">
+        <div class="items-body" id="receipt_items">
             {% for rel in receipt.rel_receipt_id_fk.all %}
-            <div class="item-row grid grid-cols-8">
-                <input type="text" class="col-span-2" id="item_name_{{ rel.id }}" name="item_name_{{ rel.id }}" value="{{ rel.item_id_fk.item_name }}" style="background-color:black" />
-                <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black" />
-                <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
-                <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="1" style="background-color:black" />
-                <input type="number" id="item_unit_price_{{ rel.id }}" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-                <input type="number" id="item_total_price_{{ rel.id }}" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-            </div>
+                <div class="receipt-item-row item-row grid grid-cols-8">
+                    <input type="text" class="col-span-2" id="item_name_{{ rel.id }}" name="item_name_{{ rel.id }}" value="{{ rel.item_id_fk.item_name }}" style="background-color:black" />
+                    <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black" />
+                    <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
+                    <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="1" style="background-color:black" />
+                    <input type="number" id="item_unit_price_{{ rel.id }}" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                    <input type="number" id="item_total_price_{{ rel.id }}" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                </div>
             {% endfor %}
         </div>
 
         <div class="item-controls">
-            <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">+</button>
-            <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">-</button>
+            <a id="add_receipt_item" onclick="addReceiptItem()" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">+</a>
+            <a id="remove_receipt_item" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">-</a>
         </div>
     </div>
 
@@ -89,3 +89,89 @@
     </div>
 
 </div>
+
+<div id="receiptContextMenu" style="
+        display:none;
+        position:absolute;
+        background:#222;
+        border:1px solid white;
+        color:white;
+        padding:4px;
+        cursor:pointer;
+        z-index:1000;">
+    <div class="menu-item" id="menuAdd">Add</div>
+    <div class="menu-item" id="menuDuplicate">Duplicate</div>
+    <div class="menu-item" id="menuMoveUp">Move Up</div>
+    <div class="menu-item" id="menuMoveDown">Move Down</div>
+    <div class="menu-item" id="menuAskIfSoslo">Soslo?</div>
+    <div class="menu-item" id="menuDelete">Delete</div>
+</div>
+
+<script>
+    var newItemsAddedCounter = 0;
+
+    function addReceiptItem() {
+
+        const newItem =
+            '<div class="receipt-item-row item-row grid grid-cols-8">' +
+            '    <input type="text" class="col-span-2" id="item_name_new_' + newItemsAddedCounter + '" name="item_name_new_' + newItemsAddedCounter + '" value="New Item" style="background-color:black" />' +
+            '    <input type="text" class="col-span-2" id="item_category_name_new_' + newItemsAddedCounter + '" name="item_category_name_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
+            '    <input type="text" id="item_category_description_new_' + newItemsAddedCounter + '" name="item_category_description_new_' + newItemsAddedCounter + '" value="-" style="background-color:black" />' +
+            '    <input type="number" id="item_qty_new_' + newItemsAddedCounter + '" name="item_qty_new_' + newItemsAddedCounter + '" value="1" style="background-color:black" />' +
+            '    <input type="number" id="item_unit_price_new_' + newItemsAddedCounter + '" name="item_unit_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
+            '    <input type="number" id="item_total_price_new_' + newItemsAddedCounter + '" name="item_total_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
+            '</div>';
+
+        selectedRow.insertAdjacentHTML("afterend", newItem);
+
+        newItemsAddedCounter++;
+    }
+
+    const menu = document.getElementById("receiptContextMenu");
+
+    let selectedRow = null;
+    document.addEventListener("contextmenu", function (e) {
+
+        if(selectedRow != null){
+            selectedRow.style = "none"
+        }
+
+        const row = e.target.closest(".receipt-item-row");
+
+        if (!row)
+            return;
+
+        e.preventDefault();
+        selectedRow = row;
+
+        selectedRow.style = "border-style: dotted; border-width: 3px; border-color: red;"
+
+        menu.style.left = e.pageX + "px";
+        menu.style.top = e.pageY + "px";
+        menu.style.display = "block";
+    });
+
+    document.addEventListener("click", function () {
+        selectedRow.style = "none"
+
+        menu.style.display = "none";
+    });
+
+    document.getElementById("menuDelete").addEventListener("click", function () {
+
+        if (selectedRow)
+            selectedRow.remove();
+
+        menu.style.display = "none";
+    });
+
+    document.getElementById("menuAskIfSoslo").addEventListener("click", function () {
+        confirm("https://youtu.be/o5TrzdJ9Xss?si=0iZxyyRTM5rYPjfc");
+        menu.style.display = "none";
+    });
+
+    document.getElementById("menuAdd").addEventListener("click", function () {
+        menu.style.display = "none";
+        addReceiptItem()
+    });
+</script>

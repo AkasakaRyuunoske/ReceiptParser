@@ -1,3 +1,12 @@
+***0.7.0***
+- Added context menu with following functions:
+  - Delete: Deletes selected row
+  - Add: Adds new receipt item after selected row
+  - Soslo;
+- Added highlighting for selected row which will be 
+affected by action from context menu
+- Added placeholders for moving elements through context menu
+
 ***0.6.11***
 - Changed notes field input type="text" -> textarea
 

@@ -57,7 +57,7 @@ def debugg(request):
                     
                     """
     # insert_inference_response(inference_json)
-    return HttpResponse("")
+    return HttpResponse(inference_json)
 
 
 def stream_inference(request):

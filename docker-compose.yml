@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+
+  django:
+    build: .
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:latest
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf

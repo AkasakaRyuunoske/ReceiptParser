@@ -1,3 +1,6 @@
+***0.7.1***
+- Added basic deploy config resources
+
 ***0.7.0***
 - Added context menu with following functions:
   - Delete: Deletes selected row

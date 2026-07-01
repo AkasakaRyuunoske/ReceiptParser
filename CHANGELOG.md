@@ -1,3 +1,6 @@
+***0.7.2***
+- Added entrypoint script
+
 ***0.7.1***
 - Added basic deploy config resources
 

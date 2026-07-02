@@ -8,10 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-WORKDIR /config/config
-
-RUN python manage.py collectstatic --noinput
-
 COPY ohayogozaimas.sh /ohayogozaimas.sh
 RUN chmod +x /ohayogozaimas.sh
 

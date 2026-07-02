@@ -12,4 +12,7 @@ WORKDIR /config/config
 
 RUN python manage.py collectstatic --noinput
 
-CMD gunicorn --bind 0.0.0.0:8000 config.wsgi:application
+COPY ohayogozaimas.sh /ohayogozaimas.sh
+RUN chmod +x /ohayogozaimas.sh
+
+ENTRYPOINT ["/ohayogozaimas.sh"]

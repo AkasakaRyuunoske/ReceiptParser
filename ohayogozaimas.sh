@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WORKDIR /config/config
+
 
 RUN python manage.py collectstatic --noinput
 

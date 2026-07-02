@@ -8,7 +8,10 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-COPY ohayogozaimas.sh /ohayogozaimas.sh
+COPY ohayogozaimas.sh config/ohayogozaimas.sh
+
+WORKDIR /config
+
 RUN chmod +x /ohayogozaimas.sh
 
 ENTRYPOINT ["/ohayogozaimas.sh"]

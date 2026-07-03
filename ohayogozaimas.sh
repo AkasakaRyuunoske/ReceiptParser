@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo "\n\n======\n\n"
-
-exec ls -a
 exec pwd
 
 python manage.py collectstatic --noinput

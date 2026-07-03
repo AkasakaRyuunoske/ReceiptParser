@@ -1,8 +1,11 @@
 #!/bin/sh
 
+echo "\n\n======\n\n"
 
+exec ls -a
+exec pwd
 
-RUN python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput
 
 echo "Django models migration"
 python manage.py migrate --noinput

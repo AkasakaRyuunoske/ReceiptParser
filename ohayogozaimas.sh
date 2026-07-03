@@ -1,9 +1,5 @@
 #!/bin/sh
 
-exec pwd
-
-python manage.py collectstatic --noinput
-
 echo "Django models migration"
 python manage.py migrate --noinput
 

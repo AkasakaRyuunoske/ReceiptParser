@@ -1,7 +1,5 @@
 FROM python:3.13-slim
 
-WORKDIR /config
-
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt

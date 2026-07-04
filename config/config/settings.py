@@ -115,8 +115,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "/receipt_parser/static/"
-STATIC_ROOT = BASE_DIR / "receipt_parser/static"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "receipt_parser/"
+
+print("LEAVE YOU IN NEVADA")
+print(STATIC_ROOT)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

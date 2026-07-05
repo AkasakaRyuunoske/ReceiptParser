@@ -1,3 +1,7 @@
+***0.7.3***
+- Removed item-controls
+- Added on-hover animations for custom context menu
+
 ***0.7.2***
 - Added entrypoint script
 

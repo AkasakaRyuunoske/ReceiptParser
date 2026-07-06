@@ -20,13 +20,6 @@
         <div>
             <div class="flex items-center gap-4">
 
-                <input
-                    type="file"
-                    id="fileInput"
-                    class="hidden"
-                    name="image"
-                    accept="image/*"/>
-
                 <button
                 id="uploadButton"
                 class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition"
@@ -66,7 +59,7 @@ const editor = new JSONEditor(container, options);
 const fileInput = document.getElementById("fileInput");
 const uploadButton = document.getElementById("uploadButton");
 const fileName = document.getElementById("fileName");
-const addReceiptForm = document.getElementById("addReceiptForm");
+const loadImageForm = document.getElementById("loadImageForm");
 
 uploadButton.addEventListener("click", () => {
     fileInput.click();
@@ -75,7 +68,7 @@ uploadButton.addEventListener("click", () => {
 fileInput.addEventListener("change", () => {
     if (fileInput.files.length > 0) {
         fileName.textContent = "/media/receipt_parser/" + fileInput.files[0].name;
-        addReceiptForm.submit();
+        loadImageForm.submit();
     } else {
         fileName.textContent = "{{ image_path.url }}";
     }

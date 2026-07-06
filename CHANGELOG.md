@@ -1,5 +1,6 @@
 ***0.7.4***
 - Fixed NPE in add receipt
+- Changed load image input position to be in separate form
 
 ***0.7.3***
 - Removed item-controls

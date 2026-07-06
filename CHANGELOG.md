@@ -1,3 +1,6 @@
+***0.7.4***
+- Fixed NPE in add receipt
+
 ***0.7.3***
 - Removed item-controls
 - Added on-hover animations for custom context menu

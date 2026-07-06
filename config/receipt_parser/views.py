@@ -32,7 +32,7 @@ def home(request):
 
 def add_receipt_page(request):
     image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
-    raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
+    raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json if not ReceiptImageView.objects.last() is None else "No json yet"
 
     return render(request, 'add_receipt_page.html', context={"image_path": image_path,
                                                              "raw_text_json": raw_text_json,

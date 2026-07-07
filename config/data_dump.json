@@ -1,0 +1,1227 @@
+[
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 4,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 4,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 4,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 4,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 5,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 5,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 5,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 5,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 6,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 6,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 6,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 6,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add receipt",
+      "content_type": 7,
+      "codename": "add_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change receipt",
+      "content_type": 7,
+      "codename": "change_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete receipt",
+      "content_type": 7,
+      "codename": "delete_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view receipt",
+      "content_type": 7,
+      "codename": "view_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add item categories",
+      "content_type": 8,
+      "codename": "add_itemcategories"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change item categories",
+      "content_type": 8,
+      "codename": "change_itemcategories"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete item categories",
+      "content_type": 8,
+      "codename": "delete_itemcategories"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view item categories",
+      "content_type": 8,
+      "codename": "view_itemcategories"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add store names",
+      "content_type": 9,
+      "codename": "add_storenames"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change store names",
+      "content_type": 9,
+      "codename": "change_storenames"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete store names",
+      "content_type": 9,
+      "codename": "delete_storenames"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view store names",
+      "content_type": 9,
+      "codename": "view_storenames"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add receipt view",
+      "content_type": 7,
+      "codename": "add_receiptview"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change receipt view",
+      "content_type": 7,
+      "codename": "change_receiptview"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete receipt view",
+      "content_type": 7,
+      "codename": "delete_receiptview"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view receipt view",
+      "content_type": 7,
+      "codename": "view_receiptview"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add items",
+      "content_type": 10,
+      "codename": "add_items"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change items",
+      "content_type": 10,
+      "codename": "change_items"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete items",
+      "content_type": 10,
+      "codename": "delete_items"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view items",
+      "content_type": 10,
+      "codename": "view_items"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add stores",
+      "content_type": 11,
+      "codename": "add_stores"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change stores",
+      "content_type": 11,
+      "codename": "change_stores"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete stores",
+      "content_type": 11,
+      "codename": "delete_stores"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view stores",
+      "content_type": 11,
+      "codename": "view_stores"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add payment methods",
+      "content_type": 12,
+      "codename": "add_paymentmethods"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change payment methods",
+      "content_type": 12,
+      "codename": "change_paymentmethods"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete payment methods",
+      "content_type": 12,
+      "codename": "delete_paymentmethods"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view payment methods",
+      "content_type": 12,
+      "codename": "view_paymentmethods"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add receipt resources",
+      "content_type": 13,
+      "codename": "add_receiptresources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change receipt resources",
+      "content_type": 13,
+      "codename": "change_receiptresources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete receipt resources",
+      "content_type": 13,
+      "codename": "delete_receiptresources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view receipt resources",
+      "content_type": 13,
+      "codename": "view_receiptresources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add receipt",
+      "content_type": 14,
+      "codename": "add_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change receipt",
+      "content_type": 14,
+      "codename": "change_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete receipt",
+      "content_type": 14,
+      "codename": "delete_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view receipt",
+      "content_type": 14,
+      "codename": "view_receipt"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add receipt items",
+      "content_type": 15,
+      "codename": "add_receiptitems"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change receipt items",
+      "content_type": 15,
+      "codename": "change_receiptitems"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete receipt items",
+      "content_type": 15,
+      "codename": "delete_receiptitems"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view receipt items",
+      "content_type": 15,
+      "codename": "view_receiptitems"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$ek1UJRSvTTSrqFHHKIYqj5$RjR91OCSx2XqHJRagY4rAXgQ9IZXDogJm3ZpbjRoFsY=",
+      "last_login": "2026-04-16T18:23:41.275Z",
+      "is_superuser": true,
+      "username": "akasaka",
+      "first_name": "",
+      "last_name": "",
+      "email": "akasaka@cringe.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-04-16T18:23:17.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "auth",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "receiptview"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "itemcategories"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "storenames"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "items"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "stores"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "paymentmethods"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "receiptresources"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "receipt"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "receipt_parser",
+      "model": "receiptitems"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "azkl1g65zqbptw41qyt2vlok0sg40nxd",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQRO_iGln-RPGakp4zRLveNQ4gW8qnirg7iZQCNN28N7OpAdelDOss0zCyuiqrLr8dYXpJPQA_sT6aTq0u00j6UPRJZ31vLO_b6f4dFJzLvib2ghGcSyB9t4cTI3BvKQMYTyaCcIqWAQWM6dgBkSBmH0JIIavPFwB9ONM:1wDRNN:oM24XwMyW7RBAmzkWLR8D3cmzeB5pJmWZIhliKYBM2s",
+      "expire_date": "2026-04-30T18:23:41.282Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 1,
+    "fields": {
+      "image": "receipt_parser/input_image_workflow_ver_0_1_SP5lcXE.drawio.png",
+      "uploaded_at": "2026-04-16T19:38:50.071Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 2,
+    "fields": {
+      "image": "receipt_parser/input_image_workflow_ver_0_1_0y5a5vk.drawio.png",
+      "uploaded_at": "2026-04-16T19:39:02.266Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 3,
+    "fields": {
+      "image": "receipt_parser/input_image_workflow_ver_0_1_pIhsmvo.drawio.png",
+      "uploaded_at": "2026-04-16T19:39:49.060Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 4,
+    "fields": {
+      "image": "receipt_parser/Screenshot_2026-04-18_203658_LV4944O.png",
+      "uploaded_at": "2026-04-20T18:35:55.516Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 5,
+    "fields": {
+      "image": "receipt_parser/situation.png",
+      "uploaded_at": "2026-04-20T20:10:47.605Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 6,
+    "fields": {
+      "image": "receipt_parser/t7ZP-dmdi1k.jpg",
+      "uploaded_at": "2026-04-20T20:36:27.470Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 7,
+    "fields": {
+      "image": "receipt_parser/Screenshot_2026-04-21_204437.png",
+      "uploaded_at": "2026-04-21T18:45:22.975Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 8,
+    "fields": {
+      "image": "receipt_parser/gTtvfnt2QeE.png",
+      "uploaded_at": "2026-04-21T18:48:20.242Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 9,
+    "fields": {
+      "image": "receipt_parser/Screenshot_2024-01-25_064615.png",
+      "uploaded_at": "2026-04-21T18:51:11.117Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 10,
+    "fields": {
+      "image": "receipt_parser/faO0dqQ0i6k.jpg",
+      "uploaded_at": "2026-04-21T18:53:59.739Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 11,
+    "fields": {
+      "image": "receipt_parser/Screenshot_2025-04-09_213305.png",
+      "uploaded_at": "2026-04-21T19:24:50.811Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 12,
+    "fields": {
+      "image": "receipt_parser/IMG20260412161515_afeiGmd.jpg",
+      "uploaded_at": "2026-04-21T19:32:51.939Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 13,
+    "fields": {
+      "image": "receipt_parser/aCAxBdV75WM.jpg",
+      "uploaded_at": "2026-04-23T12:39:18.073Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 14,
+    "fields": {
+      "image": "receipt_parser/IMG20260412161515_PJWpZeu.jpg",
+      "uploaded_at": "2026-04-25T15:47:30.991Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptview",
+    "pk": 15,
+    "fields": {
+      "image": "receipt_parser/IMG20260429165717.jpg",
+      "uploaded_at": "2026-04-29T14:58:26.635Z"
+    }
+  },
+  {
+    "model": "receipt_parser.itemcategories",
+    "pk": 1,
+    "fields": {
+      "item_category_name": "uncategorized",
+      "item_category_description": null,
+      "item_categorie_insert_datetime": "2026-04-25T17:16:34.803Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 2,
+    "fields": {
+      "store_name": "SUPERMERCATO CONAD",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-25T16:42:07.576Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 3,
+    "fields": {
+      "store_name": "SUPERMERCATO CONAD AFEA IRNO SRL",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-25T17:53:32.996Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 4,
+    "fields": {
+      "store_name": "H&M Rennes & Mauritz S.R.L",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:00:41.005Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 5,
+    "fields": {
+      "store_name": "H&M Hennes & Mauritz S.R.L",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:06:48.808Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 6,
+    "fields": {
+      "store_name": "H&M Rennes & Mauritz S.R.L.",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:14:40.211Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 7,
+    "fields": {
+      "store_name": "Hennes & Mauritz S.R.L",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:26:03.877Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 8,
+    "fields": {
+      "store_name": "H&M Hennes & Mauritz S.R.L.",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:29:30.850Z"
+    }
+  },
+  {
+    "model": "receipt_parser.storenames",
+    "pk": 9,
+    "fields": {
+      "store_name": "Hennes & Mauritz S.R.L.",
+      "store_name_description": null,
+      "store_name_insert_datetime": "2026-04-29T15:36:53.329Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 1,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "HAMBURGER TACCHINO A",
+      "price": 4,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-25T17:55:55.034Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 2,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Bianco XL",
+      "price": 8,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:00:41.032Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 3,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Other Sales",
+      "price": 8,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:31:22.369Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 4,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Blanco XL",
+      "price": 9,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:37:06.253Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 5,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Bianco di cui IVA",
+      "price": 8,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:39:47.714Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 6,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Other Sales / Bianco XL",
+      "price": 9,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:42:26.812Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 7,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Item Sale",
+      "price": 8,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:47:35.712Z"
+    }
+  },
+  {
+    "model": "receipt_parser.items",
+    "pk": 8,
+    "fields": {
+      "category_id_fk": 1,
+      "item_name": "Blanco XL",
+      "price": 8,
+      "item_description": null,
+      "item_insert_datetime": "2026-04-29T15:49:54.834Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 1,
+    "fields": {
+      "store_name_id_fk": 3,
+      "address": "Corso Garibaldi, 209",
+      "city": "84081 Baronissi (SA)",
+      "store_insert_datetime": "2026-04-25T17:53:33.007Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 2,
+    "fields": {
+      "store_name_id_fk": 4,
+      "address": "VI A del Greco 5",
+      "city": "Salerno (SA)",
+      "store_insert_datetime": "2026-04-29T15:00:41.020Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 3,
+    "fields": {
+      "store_name_id_fk": 5,
+      "address": "Viale Verdi 1",
+      "city": "64135 Salerno (SA)",
+      "store_insert_datetime": "2026-04-29T15:07:04.736Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 4,
+    "fields": {
+      "store_name_id_fk": 6,
+      "address": "Via del Greco 5",
+      "city": "Salerno",
+      "store_insert_datetime": "2026-04-29T15:15:37.404Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 5,
+    "fields": {
+      "store_name_id_fk": 8,
+      "address": "Via Salerola 1/1",
+      "city": "Salerno (SA)",
+      "store_insert_datetime": "2026-04-29T15:30:05.708Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 6,
+    "fields": {
+      "store_name_id_fk": 9,
+      "address": "www.hm.com / Via del Sacro 5",
+      "city": "84135 Salerno",
+      "store_insert_datetime": "2026-04-29T15:36:57.669Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 7,
+    "fields": {
+      "store_name_id_fk": 5,
+      "address": "V.le del Greco 5",
+      "city": "84135 Salerno",
+      "store_insert_datetime": "2026-04-29T15:39:47.697Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 8,
+    "fields": {
+      "store_name_id_fk": 5,
+      "address": "Viale della Vittoria 4",
+      "city": "Salerno",
+      "store_insert_datetime": "2026-04-29T15:42:26.796Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 9,
+    "fields": {
+      "store_name_id_fk": 5,
+      "address": "V.le dei Gracchi 5",
+      "city": "Salerno (SA)",
+      "store_insert_datetime": "2026-04-29T15:47:35.698Z"
+    }
+  },
+  {
+    "model": "receipt_parser.stores",
+    "pk": 10,
+    "fields": {
+      "store_name_id_fk": 4,
+      "address": "VIA DELLI GRACI 5",
+      "city": "84135 Salerno",
+      "store_insert_datetime": "2026-04-29T15:49:54.820Z"
+    }
+  },
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 1,
+    "fields": {
+      "payment_method_name": "Cash",
+      "payment_method_description": null,
+      "payment_method_insert_datetime": "2026-04-25T17:55:58.937Z"
+    }
+  },
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 2,
+    "fields": {
+      "payment_method_name": "Contanti",
+      "payment_method_description": null,
+      "payment_method_insert_datetime": "2026-04-29T15:31:48.535Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptresources",
+    "pk": 1,
+    "fields": {
+      "original_image_path": "../config/media/receipt_parser/IMG20260412161515_PJWpZeu.jpg",
+      "grayscale_image_path": "../config/media/receipt_parser/IMG20260412161515_PJWpZeu.jpg",
+      "visualization_image_path": "../config/media/receipt_parser/IMG20260412161515_PJWpZeu.jpg",
+      "raw_text_json": "{'merchant_info': {'name': 'SUPERMERCATO CONAD AFEA IRNO SRL', 'address': 'Corso Garibaldi, 209', 'tax_id': '04827130651', 'postal_city': '84081 Baronissi (SA)'}, 'transaction_meta': {'document_type': 'DOCUMENTO COMMERCIALE', 'document_number': '2549-0013', 'date': '2026-03-18', 'datetime': '2026-03-18T08:48:00', 'terminal_id': '07795-002-001066-0027', 'item_count': 2}, 'line_items': [{'description': 'HAMBURGER TACCHINO A', 'quantity': 1, 'unit_price': 4.58, 'tax_percentage': 10, 'total_price': 2.38}], 'financial_summary': {'subtotal': 2.16, 'discount_total': 2.29, 'tax_details': {'vat_total': 0.22, 'vat_breakdown': [{'percentage': 10, 'amount': 0.22}]}, 'grand_total_tax_inclusive': 2.38, 'payment_info': {'payment_method': 'Cash', 'paid_amount': 2.38, 'change_due': 0.0}}}",
+      "receipt_resource_insert_datetime": "2026-04-25T17:55:59.754Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receiptresources",
+    "pk": 2,
+    "fields": {
+      "original_image_path": "../config/media/receipt_parser/IMG20260429165717.jpg",
+      "grayscale_image_path": "../config/media/receipt_parser/IMG20260429165717.jpg",
+      "visualization_image_path": "../config/media/receipt_parser/IMG20260429165717.jpg",
+      "raw_text_json": "{'merchant_info': {'name': 'H&M Rennes & Mauritz S.R.L', 'address': 'VI A del Greco 5', 'tax_id': '84135', 'postal_city': 'Salerno (SA)'}, 'transaction_meta': {'document_type': 'DOCUMENTO COMMERCIALE', 'document_number': '401', 'date': '2026-04-18', 'datetime': '2026-04-18T11:02:00', 'terminal_id': None, 'item_count': 1}, 'line_items': [{'description': 'Bianco XL', 'quantity': 1, 'unit_price': 8.19, 'tax_percentage': 22, 'total_price': 9.99}], 'financial_summary': {'subtotal': 8.19, 'discount_total': 0, 'tax_details': {'vat_total': 1.8, 'vat_breakdown': [{'percentage': 22, 'amount': 1.8}]}, 'grand_total_tax_inclusive': 9.99, 'payment_info': {'payment_method': 'Cash', 'paid_amount': 10.0, 'change_due': 0.01}}}",
+      "receipt_resource_insert_datetime": "2026-04-29T15:00:41.046Z"
+    }
+  },
+  {
+    "model": "receipt_parser.receipt",
+    "pk": 1,
+    "fields": {
+      "store_id_fk": 1,
+      "payment_method_id_fk": 1,
+      "receipt_resource_id_fk": 1,
+      "receipt_datetime": "2026-04-25T19:56:29.763Z",
+      "receipt_insert_datetime": "2026-04-25T17:56:29.776Z",
+      "receipt_reference": "2549-0013",
+      "receipt_description": null
+    }
+  },
+  {
+    "model": "receipt_parser.receipt",
+    "pk": 2,
+    "fields": {
+      "store_id_fk": 6,
+      "payment_method_id_fk": 2,
+      "receipt_resource_id_fk": 2,
+      "receipt_datetime": "2026-04-29T17:37:38.373Z",
+      "receipt_insert_datetime": "2026-04-29T15:37:40.566Z",
+      "receipt_reference": "1.199-0008",
+      "receipt_description": null
+    }
+  },
+  {
+    "model": "receipt_parser.receipt",
+    "pk": 3,
+    "fields": {
+      "store_id_fk": 7,
+      "payment_method_id_fk": 2,
+      "receipt_resource_id_fk": 2,
+      "receipt_datetime": "2026-04-29T17:39:47.730Z",
+      "receipt_insert_datetime": "2026-04-29T15:39:47.734Z",
+      "receipt_reference": "N. 173325",
+      "receipt_description": null
+    }
+  },
+  {
+    "model": "receipt_parser.receipt",
+    "pk": 4,
+    "fields": {
+      "store_id_fk": 8,
+      "payment_method_id_fk": 2,
+      "receipt_resource_id_fk": 2,
+      "receipt_datetime": "2026-04-29T17:42:26.827Z",
+      "receipt_insert_datetime": "2026-04-29T15:42:26.831Z",
+      "receipt_reference": "1199-0008",
+      "receipt_description": null
+    }
+  },
+  {
+    "model": "receipt_parser.receipt",
+    "pk": 5,
+    "fields": {
+      "store_id_fk": 10,
+      "payment_method_id_fk": 2,
+      "receipt_resource_id_fk": 2,
+      "receipt_datetime": "2026-04-29T17:49:54.847Z",
+      "receipt_insert_datetime": "2026-04-29T15:49:54.852Z",
+      "receipt_reference": "401",
+      "receipt_description": null
+    }
+  },
+  {
+    "model": "receipt_parser.receiptitems",
+    "pk": 1,
+    "fields": {
+      "item_id_fk": 8,
+      "receipt_id_fk": 5,
+      "insert_datetime": "2026-04-29T15:49:54.861Z"
+    }
+  }
+]

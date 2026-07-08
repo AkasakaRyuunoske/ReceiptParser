@@ -1,3 +1,6 @@
+***0.7.5***
+- Changed entrypoint script to stop apache2 (port 80)
+
 ***0.7.4***
 - Fixed NPE in add receipt
 - Changed load image input position to be in separate form

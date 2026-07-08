@@ -16,5 +16,19 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - static_volume:/static:ro
 
+  rp-postgres:
+    image: postgres:15.2
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rp_default
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    volumes:
+      - rp-volume:/var/lib/postgresql/data
+
 volumes:
   static_volume:
+  rp-volume:

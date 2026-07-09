@@ -1,3 +1,6 @@
+***0.7.6***
+- Changed receipt_card to handle case when there are no receipts. Now creates empty New Item
+
 ***0.7.5***
 - Changed entrypoint script to stop apache2 (port 80)
 - Changed default database SQLite -> PostreSQL

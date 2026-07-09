@@ -34,14 +34,24 @@
 
         <div class="items-body" id="receipt_items">
             {% for rel in receipt.rel_receipt_id_fk.all %}
-                <div class="receipt-item-row item-row grid grid-cols-8">
-                    <input type="text" class="col-span-2" id="item_name_{{ rel.id }}" name="item_name_{{ rel.id }}" value="{{ rel.item_id_fk.item_name }}" style="background-color:black" />
-                    <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black" />
-                    <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
-                    <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="1" style="background-color:black" />
-                    <input type="number" id="item_unit_price_{{ rel.id }}" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-                    <input type="number" id="item_total_price_{{ rel.id }}" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-                </div>
+                    <div class="receipt-item-row item-row grid grid-cols-8">
+                        <input type="text" class="col-span-2" id="item_name_{{ rel.id }}" name="item_name_{{ rel.id }}" value="{{ rel.item_id_fk.item_name }}" style="background-color:black" />
+                        <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black" />
+                        <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
+                        <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="1" style="background-color:black" />
+                        <input type="number" id="item_unit_price_{{ rel.id }}" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                        <input type="number" id="item_total_price_{{ rel.id }}" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                    </div>
+                {% empty %}
+                    <div class="receipt-item-row item-row grid grid-cols-8">
+                        <input type="text" class="col-span-2" id="item_name_new_1" name="item_name_new_1" value="New Item" style="background-color:black" />
+                        <input type="text" class="col-span-2" id="item_category_name_new_1" name="item_category_name_new_1" value="0" style="background-color:black" />
+                        <input type="text" id="item_category_description_new_1" name="item_category_description_new_1" value="-" style="background-color:black" />
+                        <input type="number" id="item_qty_new_1" name="item_qty_new_1" value="1" style="background-color:black" />
+                        <input type="number" id="item_unit_price_new_1" name="item_unit_price_new_1" value="0" style="background-color:black" />
+                        <input type="number" id="item_total_price_new_1" name="item_total_price_new_1"
+                        value="0" style="background-color:black" />
+                    </div>
             {% endfor %}
         </div>
 
@@ -108,7 +118,7 @@
 </div>
 
 <script>
-    var newItemsAddedCounter = 0;
+    var newItemsAddedCounter = 2;
 
     function addReceiptItem() {
 

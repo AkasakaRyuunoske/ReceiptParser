@@ -325,42 +325,6 @@
   },
   {
     "model": "auth.permission",
-    "pk": 37,
-    "fields": {
-      "name": "Can add receipt view",
-      "content_type": 7,
-      "codename": "add_receiptview"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 38,
-    "fields": {
-      "name": "Can change receipt view",
-      "content_type": 7,
-      "codename": "change_receiptview"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 39,
-    "fields": {
-      "name": "Can delete receipt view",
-      "content_type": 7,
-      "codename": "delete_receiptview"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 40,
-    "fields": {
-      "name": "Can view receipt view",
-      "content_type": 7,
-      "codename": "view_receiptview"
-    }
-  },
-  {
-    "model": "auth.permission",
     "pk": 41,
     "fields": {
       "name": "Can add items",
@@ -643,14 +607,6 @@
   },
   {
     "model": "contenttypes.contenttype",
-    "pk": 7,
-    "fields": {
-      "app_label": "receipt_parser",
-      "model": "receiptview"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
     "pk": 8,
     "fields": {
       "app_label": "receipt_parser",
@@ -719,126 +675,6 @@
     "fields": {
       "session_data": ".eJxVjDsOwjAQRO_iGln-RPGakp4zRLveNQ4gW8qnirg7iZQCNN28N7OpAdelDOss0zCyuiqrLr8dYXpJPQA_sT6aTq0u00j6UPRJZ31vLO_b6f4dFJzLvib2ghGcSyB9t4cTI3BvKQMYTyaCcIqWAQWM6dgBkSBmH0JIIavPFwB9ONM:1wDRNN:oM24XwMyW7RBAmzkWLR8D3cmzeB5pJmWZIhliKYBM2s",
       "expire_date": "2026-04-30T18:23:41.282Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 1,
-    "fields": {
-      "image": "receipt_parser/input_image_workflow_ver_0_1_SP5lcXE.drawio.png",
-      "uploaded_at": "2026-04-16T19:38:50.071Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 2,
-    "fields": {
-      "image": "receipt_parser/input_image_workflow_ver_0_1_0y5a5vk.drawio.png",
-      "uploaded_at": "2026-04-16T19:39:02.266Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 3,
-    "fields": {
-      "image": "receipt_parser/input_image_workflow_ver_0_1_pIhsmvo.drawio.png",
-      "uploaded_at": "2026-04-16T19:39:49.060Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 4,
-    "fields": {
-      "image": "receipt_parser/Screenshot_2026-04-18_203658_LV4944O.png",
-      "uploaded_at": "2026-04-20T18:35:55.516Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 5,
-    "fields": {
-      "image": "receipt_parser/situation.png",
-      "uploaded_at": "2026-04-20T20:10:47.605Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 6,
-    "fields": {
-      "image": "receipt_parser/t7ZP-dmdi1k.jpg",
-      "uploaded_at": "2026-04-20T20:36:27.470Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 7,
-    "fields": {
-      "image": "receipt_parser/Screenshot_2026-04-21_204437.png",
-      "uploaded_at": "2026-04-21T18:45:22.975Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 8,
-    "fields": {
-      "image": "receipt_parser/gTtvfnt2QeE.png",
-      "uploaded_at": "2026-04-21T18:48:20.242Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 9,
-    "fields": {
-      "image": "receipt_parser/Screenshot_2024-01-25_064615.png",
-      "uploaded_at": "2026-04-21T18:51:11.117Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 10,
-    "fields": {
-      "image": "receipt_parser/faO0dqQ0i6k.jpg",
-      "uploaded_at": "2026-04-21T18:53:59.739Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 11,
-    "fields": {
-      "image": "receipt_parser/Screenshot_2025-04-09_213305.png",
-      "uploaded_at": "2026-04-21T19:24:50.811Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 12,
-    "fields": {
-      "image": "receipt_parser/IMG20260412161515_afeiGmd.jpg",
-      "uploaded_at": "2026-04-21T19:32:51.939Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 13,
-    "fields": {
-      "image": "receipt_parser/aCAxBdV75WM.jpg",
-      "uploaded_at": "2026-04-23T12:39:18.073Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 14,
-    "fields": {
-      "image": "receipt_parser/IMG20260412161515_PJWpZeu.jpg",
-      "uploaded_at": "2026-04-25T15:47:30.991Z"
-    }
-  },
-  {
-    "model": "receipt_parser.receiptview",
-    "pk": 15,
-    "fields": {
-      "image": "receipt_parser/IMG20260429165717.jpg",
-      "uploaded_at": "2026-04-29T14:58:26.635Z"
     }
   },
   {

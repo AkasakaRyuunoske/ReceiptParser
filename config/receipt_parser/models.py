@@ -10,7 +10,7 @@ class ReceiptImageView(models.Model):
 
 
 class ItemCategories(models.Model):
-    item_category_id = models.IntegerField(primary_key=True)
+    item_category_id = models.AutoField(primary_key=True)
     item_category_name = models.CharField(max_length=100, unique=True, null=False)
     item_category_description = models.CharField(max_length=255, unique=False, null=True)
     item_categorie_insert_datetime = models.DateTimeField(auto_now_add=True)
@@ -20,7 +20,7 @@ class ItemCategories(models.Model):
         return f"<{self.__class__.__name__} {fields}>"
 
 class StoreNames(models.Model):
-    store_name_id = models.IntegerField(primary_key=True)
+    store_name_id = models.AutoField(primary_key=True)
     store_name = models.CharField(max_length=100, unique=True, null=False)
     store_name_description = models.CharField(max_length=255, unique=False, null=True)
     store_name_insert_datetime = models.DateTimeField(auto_now_add=True)
@@ -30,7 +30,7 @@ class StoreNames(models.Model):
         return f"<{self.__class__.__name__} {fields}>"
 
 class Items(models.Model):
-    item_id = models.IntegerField(primary_key=True)
+    item_id = models.AutoField(primary_key=True)
     category_id_fk = models.ForeignKey(
         ItemCategories,
         on_delete=models.DO_NOTHING,
@@ -49,7 +49,7 @@ class Items(models.Model):
 
 
 class Stores(models.Model):
-    store_id = models.IntegerField(primary_key=True)
+    store_id = models.AutoField(primary_key=True)
     store_name_id_fk = models.ForeignKey(
         StoreNames,
         on_delete=models.DO_NOTHING,
@@ -67,7 +67,7 @@ class Stores(models.Model):
 
 
 class PaymentMethods(models.Model):
-    payment_method_id = models.IntegerField(primary_key=True)
+    payment_method_id = models.AutoField(primary_key=True)
     payment_method_name = models.CharField(max_length=100, unique=True, null=False)
     payment_method_description = models.CharField(max_length=255, unique=False, null=True)
     payment_method_insert_datetime = models.DateTimeField(auto_now_add=True)
@@ -78,7 +78,7 @@ class PaymentMethods(models.Model):
 
 
 class ReceiptResources(models.Model):
-    receipt_resource_id = models.IntegerField(primary_key=True)
+    receipt_resource_id = models.AutoField(primary_key=True)
     original_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=False)
     grayscale_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=True)
     visualization_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=True)
@@ -91,7 +91,7 @@ class ReceiptResources(models.Model):
 
 
 class Receipt(models.Model):
-    receipt_id = models.IntegerField(primary_key=True)
+    receipt_id = models.AutoField(primary_key=True)
 
     store_id_fk = models.ForeignKey(
         Stores,

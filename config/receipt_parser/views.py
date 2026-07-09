@@ -197,10 +197,9 @@ def create_receipt(request):
 
         receipt_form = ReceiptForm(request.POST)
         receipt_form_data = receipt_form.data
+        item_formset = None
 
         if receipt_form.is_valid():
-
-            receipt = receipt_form.save(commit=False)
 
             store_name = receipt_form_data['store_id_fk']
 
@@ -212,6 +211,13 @@ def create_receipt(request):
                 store_name_id_fk=store_name_obj
             )
 
+            receipt_resource = ReceiptResources(original_image_path="hmhm",
+                                                raw_text_json="{\"message\":\"is dying\"}")
+            receipt_resource.save()
+
+            receipt = receipt_form.save(commit=False)
+
+            receipt.receipt_resource_id_fk = receipt_resource
             receipt.store_id_fk = store_obj
             receipt.save()
 
@@ -223,7 +229,7 @@ def create_receipt(request):
             if item_formset.is_valid():
                 item_formset.save()
 
-                return redirect("receipts/add_receipt")
+                return render(request, "add_receipt_page.html")
 
     else:
         receipt_form = ReceiptForm()
@@ -231,7 +237,7 @@ def create_receipt(request):
 
     return render(
         request,
-        "receipt_form.html",
+        "add_receipt_page.html",
         {
             "receipt_form": receipt_form,
             "item_formset": item_formset

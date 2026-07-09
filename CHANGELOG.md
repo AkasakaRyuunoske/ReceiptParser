@@ -1,5 +1,6 @@
 ***0.7.6***
 - Changed receipt_card to handle case when there are no receipts. Now creates empty New Item
+- Changed receipt form: Almost able to save correctly a hand inserted receipt
 
 ***0.7.5***
 - Changed entrypoint script to stop apache2 (port 80)
@@ -53,7 +54,7 @@ affected by action from context menu
 - Changed image and receipt forms to be single form
 - Added new models to manage the old separation
 
-- ***0.6.4***
+***0.6.4***
 - Added full glitch text effect css
 
 ***0.6.3***
@@ -63,6 +64,7 @@ affected by action from context menu
 ***0.6.2***
 - Changed layout of add receipt page
 - Changed image upload logic
+
 ***0.6.1***
 - Added tailwindcss
 - Added initial code for receipt card

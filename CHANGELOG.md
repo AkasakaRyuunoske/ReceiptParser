@@ -1,3 +1,6 @@
+***0.7.7***
+- Changed receipt form submit to correctly save receipt_resource relation along with some other fields
+
 ***0.7.6***
 - Changed receipt_card to handle case when there are no receipts. Now creates empty New Item
 - Changed receipt form: Almost able to save correctly a hand inserted receipt

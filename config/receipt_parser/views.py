@@ -63,6 +63,17 @@ def debugg(request):
     # insert_inference_response(inference_json)
     return HttpResponse(inference_json)
 
+def prepare_promt():
+    # Loading JSON schema
+    with open('receipt_parser/model_commons/schema.json') as schema_json:
+        schema = json.load(schema_json)
+
+    # Loading prompt
+    with open('receipt_parser/model_commons/prompt.txt') as prompt_txt:
+        prompt = prompt_txt.read()
+
+    final_prompt: str = f"{prompt}\n\n{schema}"
+    return final_prompt
 
 def stream_inference(request):
     def event_stream():
@@ -76,15 +87,7 @@ def stream_inference(request):
             with open(f"../config/media/{ReceiptImageView.objects.last().image}", "rb") as image:
                 image_base64 = base64.b64encode(image.read()).decode("utf-8")
 
-            # Loading JSON schema
-            with open('receipt_parser/model_commons/schema.json') as schema_json:
-                schema = json.load(schema_json)
-
-            # Loading prompt
-            with open('receipt_parser/model_commons/prompt.txt') as prompt_txt:
-                prompt = prompt_txt.read()
-
-            final_prompt = f"{prompt}\n\n{schema}"
+            final_prompt: str = prepare_promt()
 
             response = requests.post(
                 url,
@@ -117,15 +120,17 @@ def stream_inference(request):
 
 
 def inference_model():
-    print(f"[{datetime.datetime.now()}]Starting querying model LLAVA")
+    print(f"[{datetime.datetime.now()}] Starting querying model LLAVA")
     url = "http://localhost:11434/api/generate"
 
     with open(f"../config/media/{ReceiptImageView.objects.last().image}", "rb") as f:
         image_base64 = base64.b64encode(f.read()).decode("utf-8")
 
+    final_prompt = prepare_promt()
+
     response = requests.post(url, json={
         "model": "gemma4:e2b",
-        "prompt": "Return a json file containing information on the image.",
+        "prompt": final_prompt,
         "images": [image_base64],
         "stream": False,
     })
@@ -176,6 +181,11 @@ def upload_input_image(request):
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
+        image_name: str = form.cleaned_data["image"].name
+        receipt_resource = ReceiptResources(original_image_path="config/config/media/receipt_parser/" + image_name,
+                                            raw_text_json=inference_model())
+
+        receipt_resource.save()
         return redirect("/receipts/add_receipt")
     else:
         print(form.errors)
@@ -211,9 +221,8 @@ def create_receipt(request):
                 store_name_id_fk=store_name_obj
             )
 
-            receipt_resource = ReceiptResources(original_image_path="hmhm",
-                                                raw_text_json="{\"message\":\"is dying\"}")
-            receipt_resource.save()
+            receipt_resource = ReceiptResources.objects.last()
+            # receipt_resource.save()
 
             receipt = receipt_form.save(commit=False)
 

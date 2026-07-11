@@ -1,3 +1,8 @@
+***0.7.9***
+- Changed database to simplify some fields
+- Added django extensions
+- Added receipt reference to saved receipt fields
+
 ***0.7.7***
 - Changed receipt form submit to correctly save receipt_resource relation along with some other fields
 

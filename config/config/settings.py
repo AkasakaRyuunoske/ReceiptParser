@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'receipt_parser'
+    'django_extensions',
+    'receipt_parser',
 ]
 
 MIDDLEWARE = [

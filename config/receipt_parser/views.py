@@ -181,8 +181,8 @@ def upload_input_image(request):
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        image_name: str = form.cleaned_data["image"].name
-        receipt_resource = ReceiptResources(original_image_path="config/config/media/receipt_parser/" + image_name,
+
+        receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
                                             raw_text_json=inference_model())
 
         receipt_resource.save()
@@ -222,7 +222,6 @@ def create_receipt(request):
             )
 
             receipt_resource = ReceiptResources.objects.last()
-            # receipt_resource.save()
 
             receipt = receipt_form.save(commit=False)
 

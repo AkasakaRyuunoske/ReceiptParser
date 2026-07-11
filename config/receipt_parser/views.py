@@ -1,17 +1,19 @@
 import base64
 import datetime
 import json
+import logging
+import re
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
+from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from receipt_parser.forms import ReceiptImageForm
 from receipt_parser.models import ReceiptImageView, StoreNames, Stores, PaymentMethods, \
-    ReceiptResources, Receipt, ReceiptItems
+    ReceiptResources, Receipt, ReceiptItems, ItemCategories, Items
 
-from .forms import ReceiptForm, ReceiptItemFormSet
+from .forms import ReceiptForm
 from .services.receipts.receipts_service import ReceiptService
 
 
@@ -63,6 +65,7 @@ def debugg(request):
     # insert_inference_response(inference_json)
     return HttpResponse(inference_json)
 
+
 def prepare_promt():
     # Loading JSON schema
     with open('receipt_parser/model_commons/schema.json') as schema_json:
@@ -74,6 +77,7 @@ def prepare_promt():
 
     final_prompt: str = f"{prompt}\n\n{schema}"
     return final_prompt
+
 
 def stream_inference(request):
     def event_stream():
@@ -177,6 +181,7 @@ def insert_inference_response(inference_json: str) -> None:
 def settings_page(request):
     return render(request, 'settings.html', )
 
+
 def upload_input_image(request):
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
@@ -191,6 +196,7 @@ def upload_input_image(request):
         print(form.errors)
         return HttpResponse(form.errors)
 
+
 def post_receipt(request):
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
@@ -200,54 +206,86 @@ def post_receipt(request):
         print(form.errors)
         return HttpResponse(form.errors)
 
+
 @transaction.atomic
 def create_receipt(request):
-
     if request.method == "POST":
+        receipt_reference = request.POST.get("receipt_reference", "").strip()
 
-        receipt_form = ReceiptForm(request.POST)
-        receipt_form_data = receipt_form.data
-        item_formset = None
+        existing_receipt = Receipt.objects.filter(
+            receipt_reference=receipt_reference
+        ).first()
+
+        receipt_form = ReceiptForm(request.POST, instance=existing_receipt)
 
         if receipt_form.is_valid():
-
-            store_name = receipt_form_data['store_id_fk']
-
-            store_name_obj, _ = StoreNames.objects.get_or_create(
-                store_name=store_name
-            )
-
-            store_obj, _ = Stores.objects.get_or_create(
-                store_name_id_fk=store_name_obj
-            )
-
+            store_name = receipt_form.cleaned_data["store_id_fk"]
+            store_name_obj, _ = StoreNames.objects.get_or_create(store_name=store_name)
+            store_obj, _ = Stores.objects.get_or_create(store_name_id_fk=store_name_obj)
             receipt_resource = ReceiptResources.objects.last()
 
             receipt = receipt_form.save(commit=False)
-
             receipt.receipt_resource_id_fk = receipt_resource
             receipt.store_id_fk = store_obj
             receipt.save()
 
-            item_formset = ReceiptItemFormSet(
-                request.POST,
-                instance=receipt
-            )
+            if existing_receipt:
+                ReceiptItems.objects.filter(receipt_id_fk=receipt).delete()
 
-            if item_formset.is_valid():
-                item_formset.save()
+            row_pattern = re.compile(r"^item_name_(?:new_)?(\d+)$")
+            indices = [
+                int(m.group(1))
+                for key in request.POST
+                if (m := row_pattern.match(key))
+            ]
 
-                return render(request, "add_receipt_page.html")
+            request_row_pattern = re.compile(r"^item_name_(new_)?(\d+)$")
+
+            for key in request.POST:
+                m = request_row_pattern.match(key)
+                if not m:
+                    continue
+
+                is_new = m.group(1) is not None
+                index = m.group(2)
+
+                prefix = "item_name_new_" if is_new else "item_name_"
+
+                item_name = request.POST.get(f"{prefix}{index}", "").strip()
+                if not item_name:
+                    continue
+
+                if is_new:
+                    category_name = request.POST.get(f"item_category_name_new_{index}", "").strip()
+                    category_description = request.POST.get(f"item_category_description_new_{index}", "")
+                    qty = int(request.POST.get(f"item_qty_new_{index}", 1) or 1)
+                    unit_price = float(request.POST.get(f"item_unit_price_new_{index}", 0) or 0)
+                else:
+                    category_name = request.POST.get(f"item_category_name_{index}", "").strip()
+                    category_description = request.POST.get(f"item_category_description_{index}", "")
+                    qty = int(request.POST.get(f"item_qty_{index}", 1) or 1)
+                    unit_price = float(request.POST.get(f"item_unit_price_{index}", 0) or 0)
+
+                category_obj, _ = ItemCategories.objects.get_or_create(
+                    item_category_name=category_name,
+                    defaults={"item_category_description": category_description},
+                )
+
+                item_obj, _ = Items.objects.get_or_create(
+                    item_name=item_name,
+                    category_id_fk=category_obj,
+                    defaults={"price": unit_price},
+                )
+
+                ReceiptItems.objects.create(
+                    item_id_fk=item_obj,
+                    receipt_id_fk=receipt,
+                    quantity=qty,
+                )
+
+            return render(request, "add_receipt_page.html")
 
     else:
         receipt_form = ReceiptForm()
-        item_formset = ReceiptItemFormSet()
 
-    return render(
-        request,
-        "add_receipt_page.html",
-        {
-            "receipt_form": receipt_form,
-            "item_formset": item_formset
-        }
-    )
+    return render(request, "add_receipt_page.html", {"receipt_form": receipt_form})

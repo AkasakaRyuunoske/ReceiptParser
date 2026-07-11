@@ -143,6 +143,7 @@ class ReceiptItems(models.Model):
         related_name="rel_receipt_id_fk",
     )
 
+    quantity = models.PositiveIntegerField(default=1)
     insert_datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

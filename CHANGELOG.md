@@ -1,3 +1,9 @@
+***0.8.0***
+- Changed receipt submit to correctly save items
+- Changed receipt submit to update receipts
+- Changed receipt submit to preserve order between new and old items
+- Added qty field to relation object receiptItems
+
 ***0.7.9***
 - Changed database to simplify some fields
 - Added django extensions

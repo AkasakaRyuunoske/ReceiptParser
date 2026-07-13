@@ -8,7 +8,7 @@ Receipt Parser allows users to parse their receipt using **AI**
 3. <a href="#set-up-linux">Set up (Linux) </a>
 
 # Current Features
-<h3 id="current-features">Currently implemented featuers are:</h3>
+<h3 id="current-features">Currently implemented features are:</h3>
 
 * Receipt upload
 * Receipt parsing using locally running agent (mostly used gemma4:e2b and gemma4:e4b)
@@ -26,4 +26,5 @@ Receipt Parser allows users to parse their receipt using **AI**
      * `$ py manage.py runserver`
 
 # Set up (Linux)
-<h3 id="set-up-linux">Currently implemented featuers are:</h3>
+<h3 id="set-up-linux">Set up (Linux):</h3>
+tbd

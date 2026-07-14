@@ -142,7 +142,10 @@ def inference_model():
     print(f"[{datetime.datetime.now()}] Got response from the model")
     print(response.json()["response"])
 
-    return response.json()["response"]
+    response_json = response.json()["response"]
+    response_json = response_json.replace("```json", "").replace("```", "")
+
+    return response_json
 
 
 def insert_inference_response(inference_json: str) -> None:

@@ -1,0 +1,156 @@
+/* Main container */
+.jsoneditor {
+    background-color: #000;
+    color: wheat;
+    border: 1px solid #444;
+
+    --jse-theme-color: wheat;
+    --jse-theme-color-highlight: #333;
+    --jse-background-color: #111;
+    --jse-panel-background: #111;
+    --jse-selection-background-color: #333;
+}
+
+/* Tree view */
+.jsoneditor-tree {
+    background-color: #000;
+    color: wheat;
+}
+
+/* Values */
+.jsoneditor-value,
+.jsoneditor-string,
+.jsoneditor-number,
+.jsoneditor-boolean,
+.jsoneditor-null {
+    color: white !important;
+}
+
+/* Object keys */
+.jsoneditor-field {
+    color: wheat !important;
+}
+
+/* Editable values */
+.jsoneditor textarea,
+.jsoneditor input {
+    background-color: #000;
+    border: 1px solid #555;
+}
+
+
+
+/* Toolbar */
+.jsoneditor-menu {
+    background: #111;
+    border-bottom: 1px solid #444;
+}
+
+/* Search box */
+.jsoneditor-search input {
+    background: #000;
+    color: wheat;
+    border: 1px solid #555;
+}
+
+jsoneditor-field[contenteditable=true]:focus, jsoneditor-field[contenteditable=true]:hover {
+    background-color: #000 !important;
+}
+
+/* Hover over rows/cells */
+.jsoneditor td:hover,
+.jsoneditor tr:hover,
+.jsoneditor .jsoneditor-tree tr:hover {
+    background-color: #222 !important;
+    color: wheat !important;
+}
+
+/* Selected/focused cell */
+.jsoneditor td:focus,
+.jsoneditor .jsoneditor-tree td:focus,
+.jsoneditor .jsoneditor-field:focus,
+.jsoneditor .jsoneditor-value:focus {
+    background-color: #333 !important;
+    color: wheat !important;
+    outline: none;
+}
+
+.jsoneditor input:focus,
+.jsoneditor textarea:focus {
+    background-color: #222 !important;
+    color: wheat !important;
+    border-color: wheat;
+}
+
+.jsoneditor-search input:hover,
+.jsoneditor-search input:focus {
+    background-color: #222 !important;
+    color: wheat !important;
+}
+
+.jsoneditor-contextmenu li:hover {
+    background-color: #333 !important;
+    color: wheat !important;
+}
+
+.jsoneditor-menu button:hover,
+.jsoneditor-menu button:focus {
+    background-color: #333 !important;
+}
+
+.jsoneditor td:hover,
+.jsoneditor tr:hover,
+.jsoneditor .jsoneditor-tree tr:hover {
+    background-color: #222 !important;
+    color: wheat !important;
+}
+
+.jsoneditor td:focus,
+.jsoneditor .jsoneditor-tree td:focus,
+.jsoneditor .jsoneditor-field:focus,
+.jsoneditor .jsoneditor-value:focus {
+    background-color: #333 !important;
+    color: wheat !important;
+    outline: none;
+}
+
+.jsoneditor input:focus,
+.jsoneditor textarea:focus {
+    background-color: #222 !important;
+    color: wheat !important;
+    border-color: wheat;
+}
+
+.jsoneditor-search input:hover,
+.jsoneditor-search input:focus {
+    background-color: #222 !important;
+    color: wheat !important;
+}
+
+.jsoneditor-contextmenu li:hover {
+    background-color: #333 !important;
+    color: wheat !important;
+}
+
+.jsoneditor-menu button:hover,
+.jsoneditor-menu button:focus {
+    background-color: #333 !important;
+}
+
+div.jsoneditor-field.jsoneditor-highlight,
+div.jsoneditor-field[contenteditable="true"]:focus,
+div.jsoneditor-field[contenteditable="true"]:hover,
+div.jsoneditor-value.jsoneditor-highlight,
+div.jsoneditor-value[contenteditable="true"]:focus,
+div.jsoneditor-value[contenteditable="true"]:hover {
+    background-color: #333 !important;
+    border: 1px solid #fe0 !important;
+    border-radius: 2px;
+    color: wheat !important;
+}
+
+
+.jsoneditor *::selection {
+    background: #666;
+    color: wheat;
+}

@@ -1,4 +1,8 @@
-***0.8.0***
+***0.8.2***
+- Added json rendering
+- Added custom jsoneditor css
+
+- ***0.8.0***
 - Changed receipt submit to correctly save items
 - Changed receipt submit to update receipts
 - Changed receipt submit to preserve order between new and old items

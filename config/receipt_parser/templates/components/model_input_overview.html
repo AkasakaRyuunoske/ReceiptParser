@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'custom_jsoneditor.css' %}">
+
 <main>
     <div class="img grid grid-cold-2">
         <img src="{{ image_path.url }}" style="width: 50%;"/>
@@ -8,7 +10,7 @@
     </div>
 
     <div class="json">
-        <pre id="jsoneditor"></pre>
+        <pre id="jsoneditor" class="jsoneditor"></pre>
     </div>
 
     <div class="controls">
@@ -45,14 +47,19 @@
 const container = document.getElementById("jsoneditor");
 
 const options = {
-    mode: "view",
-    expanded: true
+    mode: "tree",
+    mainMenuBar: false,
+    navigationBar: true,
+    statusBar: false,
+    search: true,
+    sortObjectKeys: false,
+    expanded: false
 };
 
 const editor = new JSONEditor(container, options);
 
-<!--const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};-->
-<!--editor.set(data);-->
+const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};
+editor.set(data);
 </script>
 
 <script>

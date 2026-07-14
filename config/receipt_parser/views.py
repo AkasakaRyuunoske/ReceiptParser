@@ -190,8 +190,11 @@ def upload_input_image(request):
     if form.is_valid():
         form.save()
 
+        inference_response = inference_model()
+        insert_inference_response(inference_response)
+
         receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
-                                            raw_text_json=inference_model())
+                                            raw_text_json=inference_response)
 
         receipt_resource.save()
         return redirect("/receipts/add_receipt")

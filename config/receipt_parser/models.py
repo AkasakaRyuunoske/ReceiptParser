@@ -82,7 +82,7 @@ class ReceiptResources(models.Model):
     original_image_path = models.ImageField(upload_to='receipt_parser/', unique=True, null=False)
     grayscale_image_path = models.ImageField(upload_to='receipt_parser/', unique=False, null=True)
     visualization_image_path = models.ImageField(upload_to='receipt_parser/', unique=False, null=True)
-    raw_text_json = models.CharField(max_length=1500, unique=True, null=False)
+    raw_text_json = models.CharField(max_length=9000, unique=True, null=False)
     receipt_resource_insert_datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

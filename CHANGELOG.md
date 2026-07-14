@@ -1,3 +1,6 @@
+***0.8.3***
+- Fixed model's inference result saving
+
 ***0.8.2***
 - Added json rendering
 - Added custom jsoneditor css

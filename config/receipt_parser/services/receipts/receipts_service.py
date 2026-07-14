@@ -1,4 +1,3 @@
-import base64
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +8,7 @@ from receipt_parser.models import ReceiptImageView, StoreNames, Stores, Items, I
 
 class ReceiptService(BaseModel):
     def parse_inference_json(self, inference_json: str) -> dict:
+
         inference_json_dict: dict = json.loads(inference_json.replace("```json", "").replace("```", ""))
 
         return inference_json_dict
@@ -26,22 +26,26 @@ class ReceiptService(BaseModel):
     def save_store(self, merchant_info: dict) -> Stores:
         store_name: StoreNames = StoreNames.objects.get(store_name=merchant_info["name"])
 
+        city: str = merchant_info.get("postal_city", "MODEL ERROR")
+        if not city:
+            city = "MODEL ERROR"
+
         try:
             store: Stores = Stores.objects.get(store_name_id_fk=store_name,
                                                address=merchant_info["address"],
-                                               city=merchant_info["postal_city"], )
+                                               city=city, )
         except ObjectDoesNotExist:
             store = Stores(store_name_id_fk=store_name,
                            address=merchant_info["address"],
-                           city=merchant_info["postal_city"], )
+                           city=city, )
             store.save()
             store: Stores = Stores.objects.get(store_name_id_fk=store_name,
                                                address=merchant_info["address"],
-                                               city=merchant_info["postal_city"], )
+                                               city=city, )
         return store
 
     def save_items(self, line_items: list) -> list[Items]:
-        uncategorized: ItemCategories = ItemCategories.objects.get(item_category_name="uncategorized")
+        uncategorized: ItemCategories = ItemCategories.objects.get_or_create(item_category_name="uncategorized")[0]
 
         items: list[Items] = list()
         for line_item in line_items:

@@ -1,3 +1,7 @@
+***0.8.4***
+- Changed number of visible receipt items 4 -> 10
+- 
+
 ***0.8.3***
 - Fixed model's inference result saving
 

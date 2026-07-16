@@ -118,7 +118,7 @@ a {
 }
 
 .items-body {
-    max-height: 200px;
+    max-height: 20rem;
     overflow-y: auto;
 }
 

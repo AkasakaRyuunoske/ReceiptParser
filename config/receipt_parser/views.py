@@ -53,9 +53,11 @@ def dashboard_page(request):
 
     store_spending_data = get_store_spending_pie_data()
     pie_data = get_category_spending_pie_data()
+    item_spending_data = get_item_spending_pie_chart()
 
     return render(request, 'dashboard.html', context={"pie_data": pie_data,
-                                                      "store_spending_data": store_spending_data})
+                                                      "store_spending_data": store_spending_data,
+                                                      "item_spending_data": item_spending_data})
 
 def get_category_spending_pie_data():
     category_spending = (
@@ -102,6 +104,28 @@ def get_store_spending_pie_data():
     ]
 
     return store_spending_data
+
+def get_item_spending_pie_chart():
+    item_spending = (
+        ReceiptItems.objects
+        .values(
+            item=F("item_id_fk__item_name")
+        )
+        .annotate(
+            total=Sum("item_id_fk__price")
+        )
+        .order_by("-total")[:10]
+    )
+
+    item_spending_data = [
+        {
+            "name": row["item"],
+            "value": float(row["total"])
+        }
+        for row in item_spending
+    ]
+
+    return item_spending_data
 
 def receipts_page(request):
     return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})

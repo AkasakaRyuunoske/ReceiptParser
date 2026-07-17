@@ -11,6 +11,7 @@
 
     <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
     <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
+    <div id="itemSpendingChart" style="width:800px; height:500px;"></div>
 </main>
 
 <script>
@@ -60,6 +61,12 @@ create_spending_chart("storeSpendingChart", store_spending_chart_title, store_sp
 const category_spending_data = {{ pie_data|safe }}
 const category_spending_chart_title = 'Monthly Spending per Category'
 create_spending_chart("categorySpendingChart", category_spending_chart_title, category_spending_data, "pie")
+
+// Per Item Spending Chart
+const item_spending_data = {{ item_spending_data|safe }}
+const item_spending_chart_title = 'Monthly Spending per Item'
+create_spending_chart("itemSpendingChart", item_spending_chart_title, item_spending_data, "pie")
+
 
 </script>
 {% endblock %}

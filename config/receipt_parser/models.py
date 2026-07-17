@@ -39,7 +39,6 @@ class Items(models.Model):
         related_name="rel_items_category_id_fk",
     )
     item_name = models.CharField(max_length=100, unique=False, null=False)
-    price = models.FloatField(null=False)
     item_description = models.CharField(max_length=255, unique=False, null=True)
     item_insert_datetime = models.DateTimeField(auto_now_add=True)
 
@@ -145,6 +144,7 @@ class ReceiptItems(models.Model):
 
     quantity = models.PositiveIntegerField(default=1)
     insert_datetime = models.DateTimeField(auto_now_add=True)
+    price = models.FloatField(null=False)
 
     def __str__(self):
         fields = ", ".join(f"{f.name}={getattr(self, f.name)!r}" for f in self._meta.fields)

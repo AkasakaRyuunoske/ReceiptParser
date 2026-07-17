@@ -1,3 +1,8 @@
+***0.9.3***
+- Moved unit_price field from Items to ReceiptItems as price
+- Updated all logic according to this change
+- Fixed docker-compose not using .env credentials
+
 ***0.9.2***
 - Added Monthly spending chart
 - Changed display to a 2x2 grid

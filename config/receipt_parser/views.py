@@ -7,7 +7,7 @@ import re
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.db.models import Sum, F
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from django.db.models.functions import TruncMonth
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
@@ -69,7 +69,12 @@ def get_category_spending_pie_data():
             category=F("item_id_fk__category_id_fk__item_category_name")
         )
         .annotate(
-            total=Sum("item_id_fk__price")
+            total=Sum(
+                ExpressionWrapper(
+                    F("quantity") * F("price"),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )
         )
         .order_by("-total")
     )
@@ -93,7 +98,12 @@ def get_store_spending_pie_data():
             )
         )
         .annotate(
-            total=Sum("item_id_fk__price")
+            total=Sum(
+                ExpressionWrapper(
+                    F("quantity") * F("price"),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )
         )
         .order_by("-total")
     )
@@ -115,7 +125,12 @@ def get_item_spending_pie_chart():
             item=F("item_id_fk__item_name")
         )
         .annotate(
-            total=Sum("item_id_fk__price")
+            total=Sum(
+                ExpressionWrapper(
+                    F("quantity") * F("price"),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )
         )
         .order_by("-total")[:10]
     )
@@ -140,7 +155,12 @@ def get_per_month_spending_pie_chart():
         )
         .values("month")
         .annotate(
-            total=Sum("item_id_fk__price")
+            total=Sum(
+                ExpressionWrapper(
+                    F("quantity") * F("price"),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )
         )
         .order_by("month")
     )
@@ -282,8 +302,8 @@ def insert_inference_response(inference_json: str) -> None:
         receipt.save()
         receipt: Receipt = Receipt.objects.get(receipt_reference=transaction_info["document_number"])
 
-    for item in items:
-        receipt_item: ReceiptItems = ReceiptItems(item_id_fk=item, receipt_id_fk=receipt)
+    for i, item  in enumerate(items):
+        receipt_item: ReceiptItems = ReceiptItems(item_id_fk=item, receipt_id_fk=receipt, price=line_items[i]["unit_price"])
         receipt_item.save()
 
 
@@ -386,13 +406,13 @@ def create_receipt(request):
                 item_obj, _ = Items.objects.get_or_create(
                     item_name=item_name,
                     category_id_fk=category_obj,
-                    price=unit_price,
                 )
 
                 ReceiptItems.objects.create(
                     item_id_fk=item_obj,
                     receipt_id_fk=receipt,
                     quantity=qty,
+                    price=unit_price,
                 )
 
             return render(request, "add_receipt_page.html")

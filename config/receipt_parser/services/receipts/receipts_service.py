@@ -51,16 +51,13 @@ class ReceiptService(BaseModel):
         for line_item in line_items:
             try:
                 item: Items = Items.objects.get(category_id_fk=uncategorized,
-                                                item_name=line_item["description"],
-                                                price=line_item["unit_price"], )
+                                                item_name=line_item["description"],)
             except ObjectDoesNotExist:
                 item: Items = Items(category_id_fk=uncategorized,
-                                    item_name=line_item["description"],
-                                    price=line_item["unit_price"], )
+                                    item_name=line_item["description"],)
                 item.save()
                 item: Items = Items.objects.get(category_id_fk=uncategorized,
-                                                item_name=line_item["description"],
-                                                price=line_item["unit_price"], )
+                                                item_name=line_item["description"],)
 
             items.append(item)
 

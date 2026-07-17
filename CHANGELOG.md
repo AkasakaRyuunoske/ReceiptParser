@@ -1,3 +1,7 @@
+***0.8.8***
+- Fixed quantity being hardcoded "1" in the template
+- Changed total price to now be a dynamically calculated value following QTY * UP
+
 ***0.8.7***
 - Changed price related input fields to allow float numbers
 - Added missing migration

@@ -4,8 +4,11 @@ asgiref==3.11.1
 certifi==2026.2.25
 charset-normalizer==3.4.7
 Django==5.2.13
+django-extensions==4.1
 djangorestframework==3.17.1
+dotenv==0.9.9
 easyocr==1.7.2
+environ==1.0
 filelock==3.25.2
 fsspec==2026.3.0
 gunicorn==26.0.0
@@ -29,6 +32,7 @@ pyclipper==1.4.0
 pydantic==2.12.5
 pydantic_core==2.41.5
 python-bidi==0.6.7
+python-dotenv==1.2.2
 PyYAML==6.0.3
 requests==2.33.1
 scikit-image==0.26.0
@@ -42,4 +46,3 @@ typing_extensions==4.15.0
 tzdata==2026.1
 urllib3==2.6.3
 whitenoise==6.12.0
-psycopg2-binary==2.9.10

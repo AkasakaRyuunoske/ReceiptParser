@@ -4,7 +4,52 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.min.js"></script>
+
 <main>
     <h1>Dashboard</h1>
+
+    <div id="spendingChart" style="width:800px; height:500px;"></div>
 </main>
+
+<script>
+    const chart = echarts.init(document.getElementById("spendingChart"));
+
+    const option = {
+
+    title: {
+        text: 'Monthly Spending'
+    },
+
+    tooltip: {},
+
+    xAxis: {
+        type: 'category',
+        data: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May'
+        ]
+    },
+
+    yAxis: {
+        type: 'value'
+    },
+
+    series: [{
+        type: 'pie',
+        data: [
+            120,
+            200,
+            150,
+            80,
+            70
+        ]
+    }]
+};
+
+chart.setOption(option);
+</script>
 {% endblock %}

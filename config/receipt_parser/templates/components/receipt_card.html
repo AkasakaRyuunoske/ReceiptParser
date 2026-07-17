@@ -39,8 +39,8 @@
                         <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black" />
                         <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
                         <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="1" style="background-color:black" />
-                        <input type="number" id="item_unit_price_{{ rel.id }}" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-                        <input type="number" id="item_total_price_{{ rel.id }}" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                        <input type="number" id="item_unit_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                        <input type="number" id="item_total_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
                     </div>
                 {% empty %}
                     <div class="receipt-item-row item-row grid grid-cols-8">
@@ -48,8 +48,8 @@
                         <input type="text" class="col-span-2" id="item_category_name_new_1" name="item_category_name_new_1" value="0" style="background-color:black" />
                         <input type="text" id="item_category_description_new_1" name="item_category_description_new_1" value="-" style="background-color:black" />
                         <input type="number" id="item_qty_new_1" name="item_qty_new_1" value="1" style="background-color:black" />
-                        <input type="number" id="item_unit_price_new_1" name="item_unit_price_new_1" value="0" style="background-color:black" />
-                        <input type="number" id="item_total_price_new_1" name="item_total_price_new_1"
+                        <input type="number" id="item_unit_price_new_1" step="0.01" min="0" max="100000" name="item_unit_price_new_1" value="0" style="background-color:black" />
+                        <input type="number" id="item_total_price_new_1" step="0.01" min="0" max="100000" name="item_total_price_new_1"
                         value="0" style="background-color:black" />
                     </div>
             {% endfor %}
@@ -128,8 +128,8 @@
             '    <input type="text" class="col-span-2" id="item_category_name_new_' + newItemsAddedCounter + '" name="item_category_name_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
             '    <input type="text" id="item_category_description_new_' + newItemsAddedCounter + '" name="item_category_description_new_' + newItemsAddedCounter + '" value="-" style="background-color:black" />' +
             '    <input type="number" id="item_qty_new_' + newItemsAddedCounter + '" name="item_qty_new_' + newItemsAddedCounter + '" value="1" style="background-color:black" />' +
-            '    <input type="number" id="item_unit_price_new_' + newItemsAddedCounter + '" name="item_unit_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
-            '    <input type="number" id="item_total_price_new_' + newItemsAddedCounter + '" name="item_total_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
+            '    <input type="number" step="0.01" min="0" max="100000" id="item_unit_price_new_' + newItemsAddedCounter + '" name="item_unit_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
+            '    <input type="number" step="0.01" min="0" max="100000" id="item_total_price_new_' + newItemsAddedCounter + '" name="item_total_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
             '</div>';
 
         selectedRow.insertAdjacentHTML("afterend", newItem);

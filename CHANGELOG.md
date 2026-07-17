@@ -1,3 +1,9 @@
+***0.8.7***
+- Changed price related input fields to allow float numbers
+- Added missing migration
+- Added apache charts demo chart
+- Updated requirements.txt
+
 ***0.8.6***
 - Added .env support
 - Added model name to be configurable from .env

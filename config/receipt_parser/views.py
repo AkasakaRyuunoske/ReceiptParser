@@ -8,6 +8,7 @@ import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.db.models import Sum, F
+from django.db.models.functions import TruncMonth
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
@@ -54,10 +55,12 @@ def dashboard_page(request):
     store_spending_data = get_store_spending_pie_data()
     pie_data = get_category_spending_pie_data()
     item_spending_data = get_item_spending_pie_chart()
+    monthly_spending_data = get_per_month_spending_pie_chart()
 
     return render(request, 'dashboard.html', context={"pie_data": pie_data,
                                                       "store_spending_data": store_spending_data,
-                                                      "item_spending_data": item_spending_data})
+                                                      "item_spending_data": item_spending_data,
+                                                      "monthly_spending_data": monthly_spending_data})
 
 def get_category_spending_pie_data():
     category_spending = (
@@ -126,6 +129,31 @@ def get_item_spending_pie_chart():
     ]
 
     return item_spending_data
+
+def get_per_month_spending_pie_chart():
+    monthly_spending = (
+        ReceiptItems.objects
+        .annotate(
+            month=TruncMonth(
+                "receipt_id_fk__receipt_datetime"
+            )
+        )
+        .values("month")
+        .annotate(
+            total=Sum("item_id_fk__price")
+        )
+        .order_by("month")
+    )
+
+    monthly_spending_data = [
+        {
+            "name": row["month"].strftime('%Y-%m-%d'),
+            "value": float(row["total"])
+        }
+        for row in monthly_spending
+    ]
+
+    return monthly_spending_data
 
 def receipts_page(request):
     return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})

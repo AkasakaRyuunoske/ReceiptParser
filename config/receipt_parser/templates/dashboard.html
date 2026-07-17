@@ -9,9 +9,16 @@
 <main>
     <h1>Dashboard</h1>
 
-    <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
-    <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
-    <div id="itemSpendingChart" style="width:800px; height:500px;"></div>
+    <div class="grid grid-cols-2">
+            <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
+            <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
+    </div>
+
+    <div class="grid grid-cols-2">
+        <div id="itemSpendingChart" style="width:800px; height:500px;"></div>
+        <div id="monthlySpendingChart" style="width:800px; height:500px;"></div>
+    </div>
+
 </main>
 
 <script>
@@ -66,6 +73,11 @@ create_spending_chart("categorySpendingChart", category_spending_chart_title, ca
 const item_spending_data = {{ item_spending_data|safe }}
 const item_spending_chart_title = 'Monthly Spending per Item'
 create_spending_chart("itemSpendingChart", item_spending_chart_title, item_spending_data, "pie")
+
+// Per Month Spending Chart
+const monthly_spending_data = {{ monthly_spending_data|safe }}
+const monthly_spending_chart_title = 'Monthly Spending'
+create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "pie")
 
 
 </script>

@@ -1,3 +1,10 @@
+***0.9.2***
+- Added Monthly spending chart
+- Changed display to a 2x2 grid
+
+***0.9.1***
+- Added Per Item spending chart
+
 ***0.9.0***
 - Added two dynamic pie charts for spending per store and spending per category
 

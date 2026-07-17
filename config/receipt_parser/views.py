@@ -1,7 +1,7 @@
 import base64
 import datetime
 import json
-import logging
+import os
 import re
 
 import requests
@@ -15,7 +15,9 @@ from receipt_parser.models import ReceiptImageView, StoreNames, Stores, PaymentM
 
 from .forms import ReceiptForm
 from .services.receipts.receipts_service import ReceiptService
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def home(request):
     if request.method == 'POST':
@@ -84,7 +86,7 @@ def stream_inference(request):
         skip_inference: bool = True
 
         if not skip_inference:
-            url = "http://localhost:11434/api/generate"
+            url = os.getenv("MODEL_BACKEND_URL", "http://localhost:11434/api/generate")
             print(f"Stream was triggered....")
 
             # Loading last updated image
@@ -96,7 +98,7 @@ def stream_inference(request):
             response = requests.post(
                 url,
                 json={
-                    "model": "gemma4:e4b",
+                    "model": os.getenv("MODEL_NAME", "gemma4:e4b"),
                     "prompt": final_prompt,
                     "images": [image_base64],
                     "stream": True
@@ -125,7 +127,7 @@ def stream_inference(request):
 
 def inference_model():
     print(f"[{datetime.datetime.now()}] Starting querying model LLAVA")
-    url = "http://localhost:11434/api/generate"
+    url = os.getenv("MODEL_BACKEND_URL", "http://localhost:11434/api/generate")
 
     with open(f"../config/media/{ReceiptImageView.objects.last().image}", "rb") as f:
         image_base64 = base64.b64encode(f.read()).decode("utf-8")
@@ -133,7 +135,7 @@ def inference_model():
     final_prompt = prepare_promt()
 
     response = requests.post(url, json={
-        "model": "gemma4:e2b",
+        "model": os.getenv("MODEL_NAME", "gemma4:e4b"),
         "prompt": final_prompt,
         "images": [image_base64],
         "stream": False,

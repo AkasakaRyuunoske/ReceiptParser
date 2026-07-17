@@ -1,6 +1,12 @@
+***0.8.6***
+- Added .env support
+- Added model name to be configurable from .env
+- Added db credentials to be configurable from .env
+- Added .env to be used by docker-compose
+- Added .env to be used by django
+
 ***0.8.4***
 - Changed number of visible receipt items 4 -> 10
-- 
 
 ***0.8.3***
 - Fixed model's inference result saving

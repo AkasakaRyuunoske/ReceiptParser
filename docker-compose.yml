@@ -19,9 +19,9 @@ services:
   rp-postgres:
     image: postgres:15.2
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=rp_default
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=
     ports:
       - '5432:5432'
     expose:

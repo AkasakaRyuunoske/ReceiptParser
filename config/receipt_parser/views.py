@@ -7,17 +7,19 @@ import re
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from django.db.models import Sum, F
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
+from dotenv import load_dotenv
 from receipt_parser.forms import ReceiptImageForm
 from receipt_parser.models import ReceiptImageView, StoreNames, Stores, PaymentMethods, \
     ReceiptResources, Receipt, ReceiptItems, ItemCategories, Items
 
 from .forms import ReceiptForm
 from .services.receipts.receipts_service import ReceiptService
-from dotenv import load_dotenv
 
 load_dotenv()
+
 
 def home(request):
     if request.method == 'POST':
@@ -48,8 +50,58 @@ def add_receipt_page(request):
 
 
 def dashboard_page(request):
-    return render(request, 'dashboard.html', )
 
+    store_spending_data = get_store_spending_pie_data()
+    pie_data = get_category_spending_pie_data()
+
+    return render(request, 'dashboard.html', context={"pie_data": pie_data,
+                                                      "store_spending_data": store_spending_data})
+
+def get_category_spending_pie_data():
+    category_spending = (
+        ReceiptItems.objects
+        .values(
+            category=F("item_id_fk__category_id_fk__item_category_name")
+        )
+        .annotate(
+            total=Sum("item_id_fk__price")
+        )
+        .order_by("-total")
+    )
+
+    pie_data = [
+        {
+            "name": row["category"],
+            "value": float(row["total"])
+        }
+        for row in category_spending
+    ]
+
+    return pie_data
+
+def get_store_spending_pie_data():
+    store_spending = (
+        ReceiptItems.objects
+        .values(
+            store=F(
+                "receipt_id_fk__store_id_fk__store_name_id_fk__store_name"
+            )
+        )
+        .annotate(
+            total=Sum("item_id_fk__price")
+        )
+        .order_by("-total")
+    )
+
+    store_spending_data = [
+        {
+            "name": row["store"],
+            "value": float(row["total"])
+        }
+        for row in store_spending
+    ]
+
+    return store_spending_data
 
 def receipts_page(request):
     return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})

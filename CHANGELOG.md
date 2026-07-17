@@ -1,3 +1,6 @@
+***0.9.0***
+- Added two dynamic pie charts for spending per store and spending per category
+
 ***0.8.8***
 - Fixed quantity being hardcoded "1" in the template
 - Changed total price to now be a dynamically calculated value following QTY * UP

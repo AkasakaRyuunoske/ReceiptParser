@@ -9,47 +9,57 @@
 <main>
     <h1>Dashboard</h1>
 
-    <div id="spendingChart" style="width:800px; height:500px;"></div>
+    <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
+    <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
 </main>
 
 <script>
-    const chart = echarts.init(document.getElementById("spendingChart"));
 
-    const option = {
+function create_spending_chart(id, name, data, type){
+    const store_spending_chart = echarts.init(document.getElementById(id));
 
-    title: {
-        text: 'Monthly Spending'
-    },
+    let adapted_spending_data_values = [];
+    let adapted_spending_data_names = [];
 
-    tooltip: {},
+    for (let i = 0; i < data.length; i++) {
+        adapted_spending_data_values[i] = data[i].value;
+        adapted_spending_data_names[i] = data[i].name;
+    }
 
-    xAxis: {
-        type: 'category',
-        data: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May'
-        ]
-    },
+    const store_spending_chart_option = {
+        title: {
+            text: name
+        },
 
-    yAxis: {
-        type: 'value'
-    },
+        tooltip: {},
 
-    series: [{
-        type: 'pie',
-        data: [
-            120,
-            200,
-            150,
-            80,
-            70
-        ]
-    }]
-};
+        xAxis: {
+            type: 'category',
+            data: adapted_spending_data_names
+        },
 
-chart.setOption(option);
+        yAxis: {
+            type: 'value'
+        },
+
+        series: [{
+            type: type,
+            data: data
+        }]
+    }
+
+    store_spending_chart.setOption(store_spending_chart_option);
+}
+
+// Per Store Spending Chart
+const store_spending_data = {{ store_spending_data|safe }}
+const store_spending_chart_title = 'Monthly Spending per Store'
+create_spending_chart("storeSpendingChart", store_spending_chart_title, store_spending_data, "pie")
+
+// Per Category Spending Chart
+const category_spending_data = {{ pie_data|safe }}
+const category_spending_chart_title = 'Monthly Spending per Category'
+create_spending_chart("categorySpendingChart", category_spending_chart_title, category_spending_data, "pie")
+
 </script>
 {% endblock %}

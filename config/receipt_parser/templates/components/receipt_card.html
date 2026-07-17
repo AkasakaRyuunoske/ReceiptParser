@@ -40,7 +40,7 @@
                         <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
                         <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="{{ rel.quantity }}" style="background-color:black" />
                         <input type="number" id="item_unit_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
-                        <input type="number" id="item_total_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_total_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                        <input type="number" id="item_total_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_total_price_{{ rel.id }}" style="background-color:black" readonly />
                     </div>
                 {% empty %}
                     <div class="receipt-item-row item-row grid grid-cols-8">
@@ -134,7 +134,24 @@
 
         selectedRow.insertAdjacentHTML("afterend", newItem);
 
+        let prefix = "new_" + newItemsAddedCounter;
+
+        console.log(`item_qty_${prefix}`);
+
+        let qtyInput = document.getElementById(`item_qty_${prefix}`);
+
+        qtyInput.addEventListener("input", function () {
+            updateTotal(prefix);
+        });
+
+        document.getElementById(`item_unit_price_${prefix}`)
+            .addEventListener("input", function () {
+                updateTotal(prefix);
+            });
+        updateTotal(prefix);
+
         newItemsAddedCounter++;
+
     }
 
     const menu = document.getElementById("receiptContextMenu");
@@ -184,4 +201,34 @@
         menu.style.display = "none";
         addReceiptItem()
     });
+
+    function updateTotal(prefix) {
+
+    const qty = parseFloat(document.getElementById(`item_qty_${prefix}`).value) || 0;
+    const unitPrice = parseFloat(document.getElementById(`item_unit_price_${prefix}`).value) || 0;
+
+    document.getElementById(`item_total_price_${prefix}`).value =
+        (qty * unitPrice).toFixed(2);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll("input[id^='item_qty_']").forEach(function (qtyInput) {
+
+        const id = qtyInput.id.replace("item_qty_", "");
+
+        updateTotal(id);
+
+        qtyInput.addEventListener("input", function () {
+            updateTotal(id);
+        });
+
+        document.getElementById(`item_unit_price_${id}`)
+            .addEventListener("input", function () {
+                updateTotal(id);
+            });
+
+    });
+
+});
 </script>

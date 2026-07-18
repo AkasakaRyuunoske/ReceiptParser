@@ -169,6 +169,8 @@ const option = {
     },
 
     tooltip: {
+        backgroundColor: "#222",
+
         formatter: function(params) {
 
             const day = params.value[0];
@@ -179,8 +181,8 @@ const option = {
                 return day + "<br>No receipts";
 
             let html =
-                `<b>${day}</b><br>` +
-                `Total: €${info.total}`;
+                `<div style='background-color: #222; color: white'><b>${day}</b><br>` +
+                `Total: €${info.total}<div>`;
 
 
             // todo fix

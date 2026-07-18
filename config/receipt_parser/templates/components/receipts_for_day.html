@@ -1,0 +1,77 @@
+{% load math_filters %}
+<h2 class="text-2xl mb-4">
+    Receipts for {{ day }}
+</h2>
+
+{% for entry in receipt_data %}
+
+<div class="border border-zinc-700 rounded-lg p-4 mb-4 bg-zinc-800">
+
+    <div class="flex justify-between items-start">
+
+        <div>
+            <div class="text-xl font-bold">
+                {{ entry.receipt.store_id_fk.store_name_id_fk.store_name }}
+            </div>
+
+            <div class="text-zinc-400">
+                {{ entry.receipt.store_id_fk.address }}
+            </div>
+
+            <div class="text-zinc-400">
+                {{ entry.receipt.receipt_datetime|date:"H:i" }}
+            </div>
+        </div>
+
+        <div class="text-2xl text-green-400 font-bold">
+            €{{ entry.total|floatformat:2 }}
+        </div>
+    </div>
+
+    <hr class="my-3 border-zinc-700">
+
+    <div class="space-y-2">
+
+        <div class="items-header grid grid-cols-8">
+            <span>Item</span>
+            <span></span>
+            <span>Category</span>
+            <span></span>
+            <span>IVA</span>
+            <span>Qty</span>
+            <span>UP</span>
+            <span>Price</span>
+        </div>
+
+        {% for ri in entry.receipt.rel_receipt_id_fk.all %}
+
+        <div class="grid grid-cols-8">
+
+            <div class="col-span-2">{{ ri.item_id_fk.item_name }}</div>
+
+            <div class="col-span-2">{{ ri.item_id_fk.category_id_fk.item_category_name }}</div>
+
+
+            <div>
+                {{ ri.item_id_fk.category_id_fk.item_category_description }}
+            </div>
+
+            <div>{{ ri.quantity }}</div>
+
+            <div>{{ ri.price|floatformat:2 }}</div>
+
+            <div>€{{ ri.quantity|multiply:ri.price|floatformat:2 }}</div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+{% empty %}
+
+<div class="text-zinc-400">
+    No receipts found for this day.
+</div>
+
+{% endfor %}

@@ -1,3 +1,7 @@
+***0.9.7***
+- Added calendar chart showing total spending per day on hover
+- Added modal which shows details about specific day's spending when a day in calendar chart is clicked
+
 ***0.9.4***
 - Changed dashboard charts fonts to be more readable
 - Added custom tooltip

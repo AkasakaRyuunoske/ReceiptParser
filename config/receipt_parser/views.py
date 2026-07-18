@@ -3,12 +3,13 @@ import datetime
 import json
 import os
 import re
+from time import strptime
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncMonth, TruncDate
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
@@ -51,16 +52,94 @@ def add_receipt_page(request):
 
 
 def dashboard_page(request):
-
     store_spending_data = get_store_spending_pie_data()
     pie_data = get_category_spending_pie_data()
     item_spending_data = get_item_spending_pie_chart()
     monthly_spending_data = get_per_month_spending_pie_chart()
 
-    return render(request, 'dashboard.html', context={"pie_data": pie_data,
-                                                      "store_spending_data": store_spending_data,
-                                                      "item_spending_data": item_spending_data,
-                                                      "monthly_spending_data": monthly_spending_data})
+    calendar_spending_data, receipt_lookup = get_calendar_spending_data()
+
+    return render(request, 'dashboard.html',
+                  context={
+                      "pie_data": pie_data,
+                      "store_spending_data": store_spending_data,
+                      "item_spending_data": item_spending_data,
+                      "monthly_spending_data": monthly_spending_data,
+                      "calendar_spending_data": calendar_spending_data,
+                      "receipt_lookup": receipt_lookup,
+                  })
+
+def receipts_for_day(request, day):
+
+    receipts = (
+        Receipt.objects
+        .filter(receipt_datetime__date=day)
+        .select_related(
+            "store_id_fk__store_name_id_fk",
+            "payment_method_id_fk"
+        )
+        .prefetch_related("rel_receipt_id_fk__item_id_fk")
+        .order_by("-receipt_datetime")
+    )
+
+    receipt_data = []
+
+    for receipt in receipts:
+
+        total = sum(
+            ri.quantity * ri.price
+            for ri in receipt.rel_receipt_id_fk.all()
+        )
+
+        receipt_data.append({
+            "receipt": receipt,
+            "total": total,
+        })
+
+    return render(
+        request,
+        "components/receipts_for_day.html",
+        {
+            "day": day,
+            "receipt_data": receipt_data,
+        }
+    )
+
+def get_calendar_spending_data():
+    line_total = ExpressionWrapper(
+        F("quantity") * F("price"),
+        output_field=DecimalField(max_digits=12, decimal_places=2),
+    )
+
+    daily_data = (
+        ReceiptItems.objects
+        .annotate(
+            day=TruncDate("receipt_id_fk__receipt_datetime")
+        )
+        .values("day")
+        .annotate(
+            total=Sum(line_total)
+        )
+        .order_by("day")
+    )
+
+    receipt_lookup = {}
+
+    for row in daily_data:
+        receipt_lookup[row["day"].isoformat()] = {
+            "total": float(row["total"])
+        }
+
+    calendar_data = [
+        [
+            row["day"].isoformat(),
+            float(row["total"])
+        ]
+        for row in daily_data
+    ]
+
+    return calendar_data, receipt_lookup
+
 
 def get_category_spending_pie_data():
     category_spending = (
@@ -88,6 +167,7 @@ def get_category_spending_pie_data():
     ]
 
     return pie_data
+
 
 def get_store_spending_pie_data():
     store_spending = (
@@ -118,6 +198,7 @@ def get_store_spending_pie_data():
 
     return store_spending_data
 
+
 def get_item_spending_pie_chart():
     item_spending = (
         ReceiptItems.objects
@@ -144,6 +225,7 @@ def get_item_spending_pie_chart():
     ]
 
     return item_spending_data
+
 
 def get_per_month_spending_pie_chart():
     monthly_spending = (
@@ -174,6 +256,7 @@ def get_per_month_spending_pie_chart():
     ]
 
     return monthly_spending_data
+
 
 def receipts_page(request):
     return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})
@@ -302,8 +385,9 @@ def insert_inference_response(inference_json: str) -> None:
         receipt.save()
         receipt: Receipt = Receipt.objects.get(receipt_reference=transaction_info["document_number"])
 
-    for i, item  in enumerate(items):
-        receipt_item: ReceiptItems = ReceiptItems(item_id_fk=item, receipt_id_fk=receipt, price=line_items[i]["unit_price"])
+    for i, item in enumerate(items):
+        receipt_item: ReceiptItems = ReceiptItems(item_id_fk=item, receipt_id_fk=receipt,
+                                                  price=line_items[i]["unit_price"])
         receipt_item.save()
 
 

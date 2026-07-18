@@ -10,8 +10,8 @@
     <h1>Dashboard</h1>
 
     <div class="grid grid-cols-2">
-            <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
-            <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
+        <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
+        <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
     </div>
 
     <div class="grid grid-cols-2">
@@ -19,7 +19,27 @@
         <div id="monthlySpendingChart" style="width:800px; height:500px;"></div>
     </div>
 
+
+    <div id="calendarSpendingChart" style="width:100%; height:15rem;"></div>
+
+    <div id="receipt-modal"
+         class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+
+        <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative">
+
+            <button onclick="closeModal()"
+                    class="absolute top-3 right-3 text-white text-xl">
+                ✕
+            </button>
+
+            <div id="modal-content" class="text-white">
+                Loading...
+            </div>
+        </div>
+    </div>
 </main>
+
+{{ receipt_lookup|json_script:"receipt-data" }}
 
 <script>
 
@@ -124,6 +144,91 @@ const monthly_spending_data = {{ monthly_spending_data|safe }}
 const monthly_spending_chart_title = 'Monthly Spending'
 create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "bar")
 
+const calendar_spending_data = {{ calendar_spending_data|safe }}
+const calendar_spending_chart = echarts.init(document.getElementById("calendarSpendingChart"));
+
+
+const receiptLookup = JSON.parse(document.getElementById("receipt-data").textContent);
+
+const option = {
+
+    visualMap: {
+        min: 0,
+        max: 100,
+        orient: "horizontal",
+        left: "center",
+        bottom: 20
+    },
+
+    calendar: {
+        range: ["2026-01", "2026-12"],
+        cellSize: ["auto", 25],
+        yearLabel: { color: '#fff' },
+        monthLabel: { color: '#fff' },
+        dayLabel: { color: '#fff' }
+    },
+
+    tooltip: {
+        formatter: function(params) {
+
+            const day = params.value[0];
+
+            const info = receiptLookup[day];
+
+            if (!info)
+                return day + "<br>No receipts";
+
+            let html =
+                `<b>${day}</b><br>` +
+                `Total: €${info.total}`;
+
+
+            // todo fix
+            if(typeof(info.receipts) != "undefined"){
+                info.receipts.forEach(function(r) {
+                    html += `${r.store}: €${r.amount}<br>`;
+                });
+            }
+
+            return html;
+        }
+    },
+
+    series: [{
+        type: "heatmap",
+        coordinateSystem: "calendar",
+        data: calendar_spending_data
+    }]
+
+};
+
+calendar_spending_chart.setOption(option);
+
+calendar_spending_chart.on('click', function(params) {
+
+    const day = params.value[0];
+
+    document.getElementById('receipt-modal')
+        .classList.remove('hidden');
+
+    document.getElementById('receipt-modal')
+        .classList.add('flex');
+
+    htmx.ajax(
+        'GET',
+        `/receipts/day/${day}/`,
+        '#modal-content'
+    );
+});
+
+function closeModal() {
+
+    document.getElementById('receipt-modal')
+        .classList.add('hidden');
+
+    document.getElementById('receipt-modal')
+        .classList.remove('flex');
+}
 
 </script>
 {% endblock %}

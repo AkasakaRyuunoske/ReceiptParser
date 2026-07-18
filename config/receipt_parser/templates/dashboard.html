@@ -23,9 +23,12 @@
     <div id="calendarSpendingChart" style="width:100%; height:15rem;"></div>
 
     <div id="receipt-modal"
-         class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+         class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeModal()">
 
-        <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative">
+        <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
+             onclick="event.stopPropagation()"
+             style="overflow: auto; max-width: 50rem; max-height: 50rem;"
+        >
 
             <button onclick="closeModal()"
                     class="absolute top-3 right-3 text-white text-xl">
@@ -231,6 +234,12 @@ function closeModal() {
     document.getElementById('receipt-modal')
         .classList.remove('flex');
 }
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+        closeModal();
+    }
+});
 
 </script>
 {% endblock %}

@@ -36,18 +36,63 @@ function create_spending_chart(id, name, data, type){
 
     const store_spending_chart_option = {
         title: {
-            text: name
+            text: name,
+            textStyle: {
+                color: "white",
+                fontSize: 24,
+                fontFamily: "Consolas"
+            }
         },
 
-        tooltip: {},
+        tooltip: {
+            trigger: "item",
+            backgroundColor: "#222",
+            borderColor: "#777",
+            borderWidth: 2,
+            textStyle: {
+                color: "#fff"
+            },
+            formatter: function (params) {
+                return `
+                    <span style="
+                        display:inline-block;
+                        width:12px;
+                        height:12px;
+                        background:${params.color};
+                        border-radius:50%;
+                        margin-right:6px;
+                    "></span>
+                    <b>${params.name}</b><br>
+                    € ${params.value}
+                    (${params.percent}%)
+                `;
+            }
+        },
+
+        label: {
+            backgroundColor: "#222",
+            color: "white"
+        },
 
         xAxis: {
             type: 'category',
-            data: adapted_spending_data_names
+            data: adapted_spending_data_names,
+            axisLabel: {
+                color: "#ffffff",
+                fontSize: 14,
+                fontFamily: "Consolas",
+                fontWeight: "bold"
+            }
         },
 
         yAxis: {
-            type: 'value'
+            type: 'value',
+            axisLabel: {
+                color: "#ffffff",
+                fontSize: 14,
+                fontFamily: "Consolas",
+                fontWeight: "bold"
+            }
         },
 
         series: [{
@@ -77,7 +122,7 @@ create_spending_chart("itemSpendingChart", item_spending_chart_title, item_spend
 // Per Month Spending Chart
 const monthly_spending_data = {{ monthly_spending_data|safe }}
 const monthly_spending_chart_title = 'Monthly Spending'
-create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "pie")
+create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "bar")
 
 
 </script>

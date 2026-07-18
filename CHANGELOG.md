@@ -1,3 +1,7 @@
+***0.9.4***
+- Changed dashboard charts fonts to be more readable
+- Added custom tooltip
+
 ***0.9.3***
 - Moved unit_price field from Items to ReceiptItems as price
 - Updated all logic according to this change

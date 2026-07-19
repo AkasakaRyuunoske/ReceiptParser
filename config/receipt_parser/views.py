@@ -9,7 +9,7 @@ import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
-from django.db.models.functions import TruncMonth, TruncDate
+from django.db.models.functions import TruncMonth, TruncDate, ExtractYear
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
@@ -59,6 +59,8 @@ def dashboard_page(request):
 
     calendar_spending_data, receipt_lookup = get_calendar_spending_data()
 
+    date_ranges = get_date_ranges_for_calendar_chart()
+
     return render(request, 'dashboard.html',
                   context={
                       "pie_data": pie_data,
@@ -67,7 +69,31 @@ def dashboard_page(request):
                       "monthly_spending_data": monthly_spending_data,
                       "calendar_spending_data": calendar_spending_data,
                       "receipt_lookup": receipt_lookup,
+                      "date_ranges": date_ranges
                   })
+
+def get_date_ranges_for_calendar_chart() -> dict:
+    latest_date = Receipt.objects.order_by('-receipt_datetime').first().receipt_datetime
+    newest_date = Receipt.objects.order_by('-receipt_datetime').last().receipt_datetime
+
+    years = Receipt.objects.annotate(
+        year=ExtractYear('receipt_datetime')
+    ).values('year').distinct()
+
+    year_list = list(years.values_list('year', flat=True))
+    # adapted_year_list = list()
+    #
+    # for year in year_list:
+    #     adapted_year_list.append(f"{year}-01")
+    #     adapted_year_list.append(f"{year}-12")
+
+    date_ranges: dict = {
+        "latest_receipt": latest_date,
+        "newest_date": newest_date,
+        "years": year_list,
+    }
+
+    return date_ranges
 
 def receipts_for_day(request, day):
 

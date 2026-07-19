@@ -23,9 +23,19 @@
             </div>
         </div>
 
-        <div class="text-2xl text-green-400 font-bold">
-            €{{ entry.total|floatformat:2 }}
-        </div>
+        {% if entry.total <= 10 %}
+            <div class="text-2xl text-green-400 font-bold">
+                €{{ entry.total|floatformat:2 }}
+            </div>
+        {% elif entry.total > 10 and entry.total <= 15 %}
+            <div class="text-2xl text-yellow-400 font-bold">
+                €{{ entry.total|floatformat:2 }}
+            </div>
+        {% else %}
+            <div class="text-2xl text-red-400 font-bold" style="text-decoration: underline;">
+                €{{ entry.total|floatformat:2 }}
+            </div>
+        {% endif %}
     </div>
 
     <hr class="my-3 border-zinc-700">
@@ -47,9 +57,9 @@
 
         <div class="grid grid-cols-8">
 
-            <div class="col-span-2">{{ ri.item_id_fk.item_name }}</div>
+            <div class="col-span-2" style="font-family: Consolas;">{{ ri.item_id_fk.item_name }}</div>
 
-            <div class="col-span-2">{{ ri.item_id_fk.category_id_fk.item_category_name }}</div>
+            <div class="col-span-2" style="font-family: Consolas;">{{ ri.item_id_fk.category_id_fk.item_category_name }}</div>
 
 
             <div>

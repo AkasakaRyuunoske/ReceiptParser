@@ -1,3 +1,15 @@
+***0.9.11***
+- Added total spending thresholds:
+  - green: good
+  - yellow: acceptable
+  - red: too high
+- Improved readability of item names when inserting or viewing the modal
+- Changed calendar chart generation logic: Now generates dynamically a chart per year
+- Fixed UP not showing up
+- Added sidebar padding
+- Removed icon from sidebar
+- Added underline for selected page
+
 ***0.9.7***
 - Added calendar chart showing total spending per day on hover
 - Added modal which shows details about specific day's spending when a day in calendar chart is clicked

@@ -1,10 +1,10 @@
 {% load static %}
 <nav>
     <header class="sidebar_header header_layout">
-        <img src="{% static 'icons/main_icon.png' %}" style="width: 3rem;">
+<!--        <img src="{% static 'icons/main_icon.png' %}" style="width: 3rem;">-->
 
         <div class="hero-container">
-            <h1 class='hero glitch layers' data-text='Receipt Parser' onclick="window.location.href='/'">Receipt Parser</h1>
+            <h1 class='hero glitch layers' data-text='Receipt Parser' onclick="window.location.href='/dashboard'">Receipt Parser</h1>
         </div>
 <!--        <a href="/">Receipt Parser</a>-->
     </header>
@@ -14,13 +14,28 @@
     <br>
 
     <div class="sidebar_header">
-        <div><a href="/dashboard">Dashboard</a></div>
+        {% if page_name == "dashboard" %}
+            <div><a href="/dashboard" style="text-decoration:underline">Dashboard</a></div>
+        {% else %}
+            <div><a href="/dashboard">Dashboard</a></div>
+        {% endif%}
 
         <div>
             <a href="/receipts">Receipts</a>
             <div class="sidebar_subsection">
-                <div><a href="/receipts/add_receipt">Add Receipt</a></div>
-                <div><a href="/receipts/storage">Receipt Storage</a></div>
+                {% if page_name == "receipts.add_receipt" %}
+                    <div><a href="/receipts/add_receipt" style="text-decoration:underline">Add Receipt</a></div>
+                {% else %}
+                    <div><a href="/receipts/add_receipt">Add Receipt</a></div>
+                {% endif%}
+
+                {% if page_name == "receipts.storage" %}
+                    <div><a href="/receipts/storage" style="text-decoration:underline">Receipt Storage</a></div>
+                {% else %}
+                    <div><a href="/receipts/storage">Receipt Storage</a></div>
+                {% endif%}
+
+
             </div>
         </div>
 

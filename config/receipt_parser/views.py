@@ -48,7 +48,9 @@ def add_receipt_page(request):
 
     return render(request, 'add_receipt_page.html', context={"image_path": image_path,
                                                              "raw_text_json": raw_text_json,
-                                                             "receipt": Receipt.objects.last()})
+                                                             "receipt": Receipt.objects.last(),
+                                                             "page_name": "receipts.add_receipt",
+                                                             })
 
 
 def dashboard_page(request):
@@ -69,8 +71,10 @@ def dashboard_page(request):
                       "monthly_spending_data": monthly_spending_data,
                       "calendar_spending_data": calendar_spending_data,
                       "receipt_lookup": receipt_lookup,
-                      "date_ranges": date_ranges
+                      "date_ranges": date_ranges,
+                      "page_name": "dashboard"
                   })
+
 
 def get_date_ranges_for_calendar_chart() -> dict:
     latest_date = Receipt.objects.order_by('-receipt_datetime').first().receipt_datetime
@@ -95,8 +99,8 @@ def get_date_ranges_for_calendar_chart() -> dict:
 
     return date_ranges
 
-def receipts_for_day(request, day):
 
+def receipts_for_day(request, day):
     receipts = (
         Receipt.objects
         .filter(receipt_datetime__date=day)
@@ -111,7 +115,6 @@ def receipts_for_day(request, day):
     receipt_data = []
 
     for receipt in receipts:
-
         total = sum(
             ri.quantity * ri.price
             for ri in receipt.rel_receipt_id_fk.all()
@@ -130,6 +133,7 @@ def receipts_for_day(request, day):
             "receipt_data": receipt_data,
         }
     )
+
 
 def get_calendar_spending_data():
     line_total = ExpressionWrapper(
@@ -285,11 +289,19 @@ def get_per_month_spending_pie_chart():
 
 
 def receipts_page(request):
-    return render(request, 'receipts.html', context={"receipts": Receipt.objects.all()})
+    return render(request, 'receipts.html',
+                  context={
+                      "receipts": Receipt.objects.all(),
+                      "page_name": "receipts.storage",
+                  })
 
 
 def receipts_storage(request):
-    return render(request, 'receipts_storage.html', context={"receipts": Receipt.objects.all()})
+    return render(request, 'receipts_storage.html',
+                  context={
+                      "receipts": Receipt.objects.all(),
+                      "page_name": "receipts.storage",
+                  })
 
 
 def debugg(request):

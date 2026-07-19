@@ -39,7 +39,7 @@
                         <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black; font-family: Consolas;" />
                         <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
                         <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="{{ rel.quantity }}" style="background-color:black" />
-                        <input type="number" id="item_unit_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_unit_price_{{ rel.id }}" value="{{ rel.item_id_fk.price|floatformat:2 }}" style="background-color:black" />
+                        <input type="number" id="item_unit_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_unit_price_{{ rel.id }}" value="{{ rel.price|floatformat:2 }}" style="background-color:black" />
                         <input type="number" id="item_total_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_total_price_{{ rel.id }}" style="background-color:black" readonly />
                     </div>
                 {% empty %}

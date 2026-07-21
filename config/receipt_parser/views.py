@@ -3,7 +3,6 @@ import datetime
 import json
 import os
 import re
-from time import strptime
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
@@ -306,7 +305,22 @@ def receipts_storage(request):
 
 def debugg(request):
     inference_json = """
-                    ```json{ "merchant_info": { "name": "H&M Hennes & Mauritz S.R.L.", "address": "Via dei Grecì 5", "tax_id": "03269110965", "postal_city": "84135 Salerno" }, "transaction_meta": { "document_type": "DOCUMENTO COMMERCIALE", "document_number": "1199-0008", "date": "2026-04-18", "datetime": "2026-04-18T11:02:00", "terminal_id": "08", "item_count": 1 }, "line_items": [ { "description": "Other Sales", "quantity": 1, "unit_price": 8.19, "tax_percentage": 22, "total_price": 9.99 } ], "financial_summary": { "subtotal": 8.19, "discount_total": 0.0, "tax_details": { "vat_total": 1.80, "vat_breakdown": [ { "percentage": 22, "amount": 1.80 } ] }, "grand_total_tax_inclusive": 9.99, "payment_info": { "payment_method": "Contanti", "paid_amount": 10.00, "change_due": 0.1 } }}```
+                    ```json{ "merchant_info": 
+                    { "name": "H&M Hennes & Mauritz S.R.L.", "address": "Via dei Grecì 5",
+                     "tax_id": "03269110965", "postal_city": "84135 Salerno" }, 
+                     "transaction_meta": { "document_type": "DOCUMENTO COMMERCIALE", 
+                     "document_number": "1199-0008", "date": "2026-04-18", 
+                     "datetime": "2026-04-18T11:02:00", "terminal_id": "08", "item_count": 1 }, 
+                     "line_items": [ { "description": "Other Sales", "quantity": 1, 
+                     "unit_price": 8.19, "tax_percentage": 22, "total_price": 9.99 } ], 
+                     "financial_summary": { "subtotal": 8.19, "discount_total": 0.0, 
+                     "tax_details": { "vat_total": 1.80, "vat_breakdown": 
+                     [ { "percentage": 22, "amount": 1.80 } ] }, 
+                     "grand_total_tax_inclusive": 9.99, "payment_info": 
+                     { "payment_method": "Contanti", "paid_amount": 10.00, "change_due": 0.1 
+                     } 
+                     }}
+                     ```
                     
                     """
     # insert_inference_response(inference_json)

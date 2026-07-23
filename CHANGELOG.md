@@ -1,3 +1,7 @@
+***0.9.12***
+- Improved dashboard page title element
+- Added Yearly Spending section
+
 ***0.9.11***
 - Added total spending thresholds:
   - green: good

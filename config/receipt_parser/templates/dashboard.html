@@ -11,6 +11,22 @@
         <h1 class='hero glitch layers' data-text='Dashboard'>Dashboard</h1>
     </div>
 
+    <br>
+    <div style="text-align:center">
+        <h1 class='hero glitch layers' data-text='Weekly Spending'>Weekly Spending</h1>
+    </div>
+    <br>
+
+    <div class="grid grid-cols-2">
+        <div id="weeklySpendingChart" style="width:800px; height:500px;"></div>
+    </div>
+
+    <br>
+    <div style="text-align:center">
+        <h1 class='hero glitch layers' data-text='Monthly Spending'>Monthly Spending</h1>
+    </div>
+    <br>
+
     <div class="grid grid-cols-2">
         <div id="categorySpendingChart" style="width:800px; height:500px;"></div>
         <div id="storeSpendingChart" style="width:800px; height:500px;"></div>
@@ -153,6 +169,11 @@ create_spending_chart("itemSpendingChart", item_spending_chart_title, item_spend
 const monthly_spending_data = {{ monthly_spending_data|safe }}
 const monthly_spending_chart_title = 'Monthly Spending'
 create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "bar")
+
+// Current week's spending chart
+const weekly_spending_data = {{ monthly_spending_data|safe }}
+const weekly_spending_chart_title = 'Weekly Spending'
+create_spending_chart("weeklySpendingChart", weekly_spending_chart_title, weekly_spending_data, "bar")
 
 const calendar_spending_data = {{ calendar_spending_data|safe }}
 

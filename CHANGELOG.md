@@ -1,3 +1,7 @@
+***0.9.13***
+- Added Monthly and Weekly Spending sections in dashboard
+- Added current week spending data and chart generation
+
 ***0.9.12***
 - Improved dashboard page title element
 - Added Yearly Spending section

@@ -171,7 +171,7 @@ const monthly_spending_chart_title = 'Monthly Spending'
 create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "bar")
 
 // Current week's spending chart
-const weekly_spending_data = {{ monthly_spending_data|safe }}
+const weekly_spending_data = {{ this_week_spending_data|safe }}
 const weekly_spending_chart_title = 'Weekly Spending'
 create_spending_chart("weeklySpendingChart", weekly_spending_chart_title, weekly_spending_data, "bar")
 

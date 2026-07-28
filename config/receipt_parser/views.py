@@ -58,6 +58,8 @@ def dashboard_page(request):
     item_spending_data = get_item_spending_pie_chart()
     monthly_spending_data = get_per_month_spending_pie_chart()
 
+    this_week_spending_data = get_this_week_spending_bar_chart()
+
     calendar_spending_data, receipt_lookup = get_calendar_spending_data()
 
     date_ranges = get_date_ranges_for_calendar_chart()
@@ -68,6 +70,7 @@ def dashboard_page(request):
                       "store_spending_data": store_spending_data,
                       "item_spending_data": item_spending_data,
                       "monthly_spending_data": monthly_spending_data,
+                      "this_week_spending_data": this_week_spending_data,
                       "calendar_spending_data": calendar_spending_data,
                       "receipt_lookup": receipt_lookup,
                       "date_ranges": date_ranges,
@@ -254,6 +257,41 @@ def get_item_spending_pie_chart():
     ]
 
     return item_spending_data
+
+
+def get_this_week_spending_bar_chart():
+    start = datetime.datetime.now() - datetime.timedelta(days=6)
+    end = start + datetime.timedelta(days=7)
+
+    weekly_spending = (
+        ReceiptItems.objects
+        .filter(
+            receipt_id_fk__receipt_datetime__range=(start, end)
+        )
+        .annotate(
+            day=TruncDate("receipt_id_fk__receipt_datetime")
+        )
+        .values("day")
+        .annotate(
+            total=Sum(
+                ExpressionWrapper(
+                    F("quantity") * F("price"),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )
+        )
+        .order_by("day")
+    )
+
+    weekly_spending_data = [
+        {
+            "name": row["day"].strftime('%Y-%m-%d'),
+            "value": float(row["total"])
+        }
+        for row in weekly_spending
+    ]
+
+    return weekly_spending_data
 
 
 def get_per_month_spending_pie_chart():

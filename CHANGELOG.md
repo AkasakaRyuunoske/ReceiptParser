@@ -1,3 +1,6 @@
+***0.9.14***
+- Added dynamic grand total calculations
+
 ***0.9.13***
 - Added Monthly and Weekly Spending sections in dashboard
 - Added current week spending data and chart generation

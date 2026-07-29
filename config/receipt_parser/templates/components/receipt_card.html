@@ -67,7 +67,7 @@
         <div class="totals grid grid-cols-3">
             <div>
                 <strong>Grand Total</strong><br>
-                {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.grand_total_tax_inclusive|default:"-" }}
+                <span id="grandTotalWrapper">-</span>
             </div>
             <div>
                 <strong>Total IVA</strong><br>
@@ -136,19 +136,20 @@
 
         let prefix = "new_" + newItemsAddedCounter;
 
-        console.log(`item_qty_${prefix}`);
-
         let qtyInput = document.getElementById(`item_qty_${prefix}`);
 
         qtyInput.addEventListener("input", function () {
             updateTotal(prefix);
+            updateGrandTotal();
         });
 
         document.getElementById(`item_unit_price_${prefix}`)
             .addEventListener("input", function () {
                 updateTotal(prefix);
+                updateGrandTotal();
             });
         updateTotal(prefix);
+        updateGrandTotal();
 
         newItemsAddedCounter++;
 
@@ -160,7 +161,7 @@
     document.addEventListener("contextmenu", function (e) {
 
         if(selectedRow != null){
-            selectedRow.style = "none"
+            selectedRow.style = "none";
         }
 
         const row = e.target.closest(".receipt-item-row");
@@ -179,7 +180,7 @@
     });
 
     document.addEventListener("click", function () {
-        selectedRow.style = "none"
+        selectedRow.style = "none";
 
         menu.style.display = "none";
     });
@@ -204,12 +205,13 @@
 
     function updateTotal(prefix) {
 
-    const qty = parseFloat(document.getElementById(`item_qty_${prefix}`).value) || 0;
-    const unitPrice = parseFloat(document.getElementById(`item_unit_price_${prefix}`).value) || 0;
+        const qty = parseFloat(document.getElementById(`item_qty_${prefix}`).value) || 0;
+        const unitPrice = parseFloat(document.getElementById(`item_unit_price_${prefix}`).value) || 0;
 
-    document.getElementById(`item_total_price_${prefix}`).value =
-        (qty * unitPrice).toFixed(2);
-}
+        document.getElementById(`item_total_price_${prefix}`).value = (qty * unitPrice).toFixed(2);
+    }
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -218,17 +220,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const id = qtyInput.id.replace("item_qty_", "");
 
         updateTotal(id);
+        updateGrandTotal();
 
         qtyInput.addEventListener("input", function () {
             updateTotal(id);
+            updateGrandTotal();
         });
 
         document.getElementById(`item_unit_price_${id}`)
             .addEventListener("input", function () {
                 updateTotal(id);
+                updateGrandTotal();
             });
 
     });
+
+
+
+    function updateGrandTotal(){
+        const grand_total_wrapper = document.getElementById("grandTotalWrapper");
+        let grand_total_value = 0.0;
+
+        document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
+            grand_total_value +=  Number(totalItemPrice.value);
+            grand_total_wrapper.textContent = Number(grand_total_value);
+        });
+    }
 
 });
 </script>

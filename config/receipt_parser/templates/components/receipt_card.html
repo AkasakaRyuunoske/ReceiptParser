@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
             grand_total_value +=  Number(totalItemPrice.value);
-            grand_total_wrapper.textContent = Number(grand_total_value);
+            grand_total_wrapper.textContent = Number(grand_total_value).toFixed(2);
         });
     }
 

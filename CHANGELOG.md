@@ -1,5 +1,6 @@
 ***0.9.14***
 - Added dynamic grand total calculations
+- Fixed grand total float values display
 
 ***0.9.13***
 - Added Monthly and Weekly Spending sections in dashboard

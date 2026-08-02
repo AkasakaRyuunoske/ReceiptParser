@@ -87,11 +87,6 @@ def get_date_ranges_for_calendar_chart() -> dict:
     ).values('year').distinct()
 
     year_list = list(years.values_list('year', flat=True))
-    # adapted_year_list = list()
-    #
-    # for year in year_list:
-    #     adapted_year_list.append(f"{year}-01")
-    #     adapted_year_list.append(f"{year}-12")
 
     date_ranges: dict = {
         "latest_receipt": latest_date,

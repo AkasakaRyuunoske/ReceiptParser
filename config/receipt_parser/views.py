@@ -485,11 +485,17 @@ def upload_input_image(request):
     if form.is_valid():
         form.save()
 
-        inference_response = inference_model()
-        insert_inference_response(inference_response)
+        doInference: str = form.data.get("doInference", "off")
 
-        receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
-                                            raw_text_json=inference_response)
+        if doInference == "off":
+            inference_response = inference_model()
+            insert_inference_response(inference_response)
+
+            receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
+                                                raw_text_json=inference_response)
+        else:
+            receipt_resource = receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
+                                                raw_text_json={"Inference":"Skipped"})
 
         receipt_resource.save()
         return redirect("/receipts/add_receipt")

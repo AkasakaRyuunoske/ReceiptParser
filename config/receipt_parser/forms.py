@@ -5,6 +5,8 @@ from .models import ReceiptImageView, Receipt, ReceiptItems
 
 
 class ReceiptImageForm(forms.ModelForm):
+    doInference = forms.CharField(required=False)
+
     class Meta:
         model = ReceiptImageView
         fields = ['image']

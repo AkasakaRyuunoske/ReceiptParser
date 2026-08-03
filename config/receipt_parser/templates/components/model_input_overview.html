@@ -30,14 +30,20 @@
                 </button>
 
                 <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">Reinference</button>
+
                 <select class="border border-white text-white bg-black px-4 py-2 hover:bg-white hover:text-black transition">
                     <option>gemma4:e2b</option>
                     <option>gemma4:e4b</option>
                     <option>gemma4:e26b</option>
                     <option>gemma4:e31b</option>
                 </select>
+
+                <div>
+                    <label for="doInferenceMirror">Inference?</label>
+                    <input type="checkbox" name="doInferenceMirror" id="doInferenceMirror">
+                </div>
             </div>
-            </div>
+        </div>
 
 
     </div>
@@ -68,6 +74,13 @@ const uploadButton = document.getElementById("uploadButton");
 const fileName = document.getElementById("fileName");
 const loadImageForm = document.getElementById("loadImageForm");
 
+const doInferenceMirrorCheckbox = document.getElementById("doInferenceMirror");
+const doInferenceCheckbox = document.getElementById("doInference");
+
+doInferenceMirrorCheckbox.addEventListener("click", () => {
+    doInferenceCheckbox.checked = doInferenceMirrorCheckbox.checked;
+});
+
 uploadButton.addEventListener("click", () => {
     fileInput.click();
 });
@@ -75,6 +88,7 @@ uploadButton.addEventListener("click", () => {
 fileInput.addEventListener("change", () => {
     if (fileInput.files.length > 0) {
         fileName.textContent = "/media/receipt_parser/" + fileInput.files[0].name;
+        doInferenceCheckbox.click();
         loadImageForm.submit();
     } else {
         fileName.textContent = "{{ image_path.url }}";

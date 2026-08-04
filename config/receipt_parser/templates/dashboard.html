@@ -109,7 +109,7 @@ function create_spending_chart(id, name, data, type){
                         margin-right:6px;
                     "></span>
                     <b>${params.name}</b><br>
-                    € ${params.value}
+                    € ${Number(params.value).toFixed(2)}
                     (${params.percent}%)
                 `;
             }
@@ -222,13 +222,14 @@ function create_spending_calendar_chart(daterange){
 
                 let html =
                     `<div style='background-color: #222; color: white'><b>${day}</b><br>` +
-                    `Total: €${info.total}<div>`;
+                    `Total: €${Number(info.total).toFixed(2)}<div>`;
 
 
                 // todo fix
                 if(typeof(info.receipts) != "undefined"){
                     info.receipts.forEach(function(r) {
-                        html += `${r.store}: €${r.amount}<br>`;
+                        html += `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
+
                     });
                 }
                 return html;

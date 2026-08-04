@@ -109,6 +109,16 @@
 </div>
 
 <script>
+    function updateGrandTotal(){
+        const grand_total_wrapper = document.getElementById("grandTotalWrapper");
+        let grand_total_value = 0.0;
+
+        document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
+            grand_total_value +=  Number(totalItemPrice.value);
+            grand_total_wrapper.textContent = Number(grand_total_value).toFixed(2);
+        });
+    }
+
     var newItemsAddedCounter = 2;
 
     function addReceiptItem() {
@@ -225,18 +235,5 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
     });
-
-
-
-    function updateGrandTotal(){
-        const grand_total_wrapper = document.getElementById("grandTotalWrapper");
-        let grand_total_value = 0.0;
-
-        document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
-            grand_total_value +=  Number(totalItemPrice.value);
-            grand_total_wrapper.textContent = Number(grand_total_value).toFixed(2);
-        });
-    }
-
 });
 </script>

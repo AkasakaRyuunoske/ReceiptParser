@@ -494,13 +494,13 @@ def upload_input_image(request):
             receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
                                                 raw_text_json=inference_response)
         else:
-            receipt_resource = receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
-                                                raw_text_json={"Inference":"Skipped"})
+            receipt_resource = receipt_resource = ReceiptResources(
+                original_image_path=ReceiptImageView.objects.last().image.url,
+                raw_text_json={"Inference": "Skipped"})
 
         receipt_resource.save()
         return redirect("/receipts/add_receipt")
     else:
-        print(form.errors)
         return HttpResponse(form.errors)
 
 
@@ -510,7 +510,6 @@ def post_receipt(request):
         form.save()
         return redirect("/receipts/add_receipt")
     else:
-        print(form.errors)
         return HttpResponse(form.errors)
 
 

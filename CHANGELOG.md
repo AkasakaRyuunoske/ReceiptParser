@@ -1,3 +1,7 @@
+***0.9.16***
+- Expanded store box 180px -> 20rem
+- Added pylint 
+
 ***0.9.15***
 - Removed amount paid field
 - Added checkbox to turn on/off inference when loading the image

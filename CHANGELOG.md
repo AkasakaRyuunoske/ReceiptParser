@@ -8,7 +8,7 @@
 - Fixed update grand total not being invoked properly
 - Fixed floating point precision of graphs in dashboard page
 
-- ***0.9.14***
+***0.9.14***
 - Added dynamic grand total calculations
 - Fixed grand total float values display
 

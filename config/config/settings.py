@@ -146,15 +146,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    'formatters': {
-        'verbose': {
-            'format': '[{levelname} {asctime}] ({module}-{funcName}) -> {message}',
-            'style': '{',
+    "formatters": {
+        "verbose": {
+            "format": "[{levelname} {asctime}] ({module}-{funcName}) -> {message}",
+            "style": "{",
         },
     },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "logs.log",
             "formatter": "verbose",
         },
     },
@@ -169,8 +175,8 @@ LOGGING = {
             "propagate": False,
         },
         "receipt_parser": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+            "handlers": ["console", "file"],
+            "level": os.getenv("RECEIPT_PARSER_LOG_LEVEL", "DEBUG"),
             "propagate": False,
         },
     },

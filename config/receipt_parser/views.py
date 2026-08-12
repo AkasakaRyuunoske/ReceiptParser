@@ -1,6 +1,7 @@
 import base64
 import datetime
 import json
+import logging
 import os
 import re
 
@@ -20,7 +21,7 @@ from .forms import ReceiptForm
 from .services.receipts.receipts_service import ReceiptService
 
 load_dotenv()
-
+logger = logging.getLogger(__name__)
 
 def home(request):
     if request.method == 'POST':
@@ -443,6 +444,7 @@ def inference_model():
 
 
 def insert_inference_response(inference_json: str) -> None:
+    logger.info("inserting inference response...")
     receipt_service: ReceiptService = ReceiptService()
 
     inference_json_dict: dict = receipt_service.parse_inference_json(inference_json)
@@ -475,12 +477,15 @@ def insert_inference_response(inference_json: str) -> None:
                                                   price=line_items[i]["unit_price"])
         receipt_item.save()
 
+    logger.info("inserted inference response.")
+
 
 def settings_page(request):
     return render(request, 'settings.html', )
 
 
 def upload_input_image(request):
+    logger.info("uploading input image...")
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
@@ -499,15 +504,18 @@ def upload_input_image(request):
                 raw_text_json={"Inference": "Skipped"})
 
         receipt_resource.save()
+        logger.info("input image uploaded.")
         return redirect("/receipts/add_receipt")
     else:
         return HttpResponse(form.errors)
 
 
 def post_receipt(request):
+    logger.info("posting a receipt...")
     form = ReceiptImageForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
+        logger.info("posted a receipt.")
         return redirect("/receipts/add_receipt")
     else:
         return HttpResponse(form.errors)
@@ -515,6 +523,7 @@ def post_receipt(request):
 
 @transaction.atomic
 def create_receipt(request):
+    logger.info("creating a receipt...")
     if request.method == "POST":
         receipt_reference = request.POST.get("receipt_reference", "").strip()
 
@@ -593,5 +602,7 @@ def create_receipt(request):
 
     else:
         receipt_form = ReceiptForm()
+
+    logger.info("created the receipt.")
 
     return render(request, "add_receipt_page.html", {"receipt_form": receipt_form})

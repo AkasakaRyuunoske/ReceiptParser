@@ -1,3 +1,6 @@
+***0.9.17***
+- Added logging
+
 ***0.9.16***
 - Expanded store box 180px -> 20rem
 - Added pylint 

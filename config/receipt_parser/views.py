@@ -54,6 +54,7 @@ def add_receipt_page(request):
 
 
 def dashboard_page(request):
+    # Dashboard charts aggregation data
     store_spending_data = get_store_spending_pie_data()
     pie_data = get_category_spending_pie_data()
     item_spending_data = get_item_spending_pie_chart()
@@ -61,8 +62,8 @@ def dashboard_page(request):
 
     this_week_spending_data = get_this_week_spending_bar_chart()
 
+    # Calendar charts
     calendar_spending_data, receipt_lookup = get_calendar_spending_data()
-
     date_ranges = get_date_ranges_for_calendar_chart()
 
     return render(request, 'dashboard.html',

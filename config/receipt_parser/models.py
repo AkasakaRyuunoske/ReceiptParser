@@ -116,6 +116,14 @@ class Receipt(models.Model):
         related_name="rel_receipt_resources_id_fk",
     )
 
+    receipt_image_view_id_fk = models.ForeignKey(
+        ReceiptImageView,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        related_name="rel_receipt_image_view_id_fk",
+    )
+
     receipt_datetime = models.DateTimeField(auto_now_add=False, null=False)
     receipt_insert_datetime = models.DateTimeField(auto_now_add=True)
     receipt_reference = models.CharField(max_length=100, unique=True, null=False)

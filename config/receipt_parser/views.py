@@ -39,7 +39,15 @@ def home(request):
 
 
 def add_receipt_page(request):
-    image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
+    receipt_reference = request.POST.get("receipt_reference", "").strip()
+    logger.info(f"receipt_reference ==> {receipt_reference}")
+
+    if receipt_reference is not "":
+        receipt = Receipt.objects.get(receipt_reference=receipt_reference)
+        image_path = receipt.receipt_image_view_id_fk.image
+    else:
+        image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
+        receipt = Receipt.objects.last()
 
     try:
         raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
@@ -48,7 +56,7 @@ def add_receipt_page(request):
 
     return render(request, 'add_receipt_page.html', context={"image_path": image_path,
                                                              "raw_text_json": raw_text_json,
-                                                             "receipt": Receipt.objects.last(),
+                                                             "receipt": receipt,
                                                              "page_name": "receipts.add_receipt",
                                                              })
 
@@ -468,6 +476,7 @@ def insert_inference_response(inference_json: str) -> None:
         receipt = Receipt(store_id_fk=store,
                           payment_method_id_fk=payment_method,
                           receipt_resource_id_fk=receipt_resource,
+                          receipt_image_view_id_fk=ReceiptImageView.objects.last(),
                           receipt_datetime=receipt_datetime,
                           receipt_reference=transaction_info["document_number"])
         receipt.save()
@@ -543,6 +552,7 @@ def create_receipt(request):
             receipt = receipt_form.save(commit=False)
             receipt.receipt_resource_id_fk = receipt_resource
             receipt.store_id_fk = store_obj
+            receipt.receipt_image_view_id_fk = ReceiptImageView.objects.last()
             receipt.save()
 
             if existing_receipt:
@@ -599,11 +609,34 @@ def create_receipt(request):
                     price=unit_price,
                 )
 
-            return render(request, "add_receipt_page.html")
+            return add_receipt_page(request)
 
     else:
         receipt_form = ReceiptForm()
 
     logger.info("created the receipt.")
 
-    return render(request, "add_receipt_page.html", {"receipt_form": receipt_form})
+    return add_receipt_page(request)
+
+def load_receipt(request):
+    logger.info("loading a receipt...")
+    if request.method == "POST":
+        receipt_reference = request.POST.get("receipt_reference", "").strip()
+        receipt = Receipt.objects.get(receipt_reference=receipt_reference)
+
+        if receipt is None:
+            return add_receipt_page(request)
+
+        image_path = receipt.receipt_image_view_id_fk.image
+
+        try:
+            raw_text_json = receipt.receipt_resource_id_fk.raw_text_json
+        except AttributeError:
+            raw_text_json = "No json yet"
+
+        logger.info("receipt loaded.")
+        return render(request, 'add_receipt_page.html', context={"image_path": image_path,
+                                                                 "raw_text_json": raw_text_json,
+                                                                 "receipt": receipt,
+                                                                 "page_name": "receipts.add_receipt",
+                                                                 })

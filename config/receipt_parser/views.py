@@ -89,14 +89,23 @@ def dashboard_page(request):
 
 
 def get_date_ranges_for_calendar_chart() -> dict:
-    latest_date = Receipt.objects.order_by('-receipt_datetime').first().receipt_datetime
-    newest_date = Receipt.objects.order_by('-receipt_datetime').last().receipt_datetime
+    latest_receipt = Receipt.objects.order_by('-receipt_datetime').first()
+    newest_receipt = Receipt.objects.order_by('-receipt_datetime').last()
 
-    years = Receipt.objects.annotate(
-        year=ExtractYear('receipt_datetime')
-    ).values('year').distinct()
+    latest_date = None
+    newest_date = None
+    year_list = None
 
-    year_list = list(years.values_list('year', flat=True))
+    if latest_receipt is not None:
+
+        latest_date = latest_receipt.receipt_datetime
+        newest_date = newest_receipt.receipt_datetime
+
+        years = Receipt.objects.annotate(
+            year=ExtractYear('receipt_datetime')
+        ).values('year').distinct()
+
+        year_list = list(years.values_list('year', flat=True))
 
     date_ranges: dict = {
         "latest_receipt": latest_date,

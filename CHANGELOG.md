@@ -1,6 +1,8 @@
 ***0.9.18***
 - Fixed update receipt to not load add_receipt page properly
 - Added load receipt function
+- Fix dashboard failing with empty db
+- Added missing migration
 
 ***0.9.17***
 - Added logging

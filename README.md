@@ -19,7 +19,8 @@ Receipt Parser allows users to parse their receipt using **AI**
 
   1. Install and correctly set up python 3.11 and pip
   2. Install docker desktop
-  3. In project's root run:
+  3. Clone this repository
+  4. In project's root run:
      
      * `$ docker compose up`
      * `$ py manage.py migrate`
@@ -27,4 +28,8 @@ Receipt Parser allows users to parse their receipt using **AI**
 
 # Set up (Linux)
 <h3 id="set-up-linux">Set up (Linux):</h3>
-tbd
+
+1. Install and correctly set up docker following steps according to your linux distro
+2. Clone this repository
+3. Stop everything that is using port 80 (most probably it's apache2 which can be stopped with `$ systemctl stop apache2`)
+4. run `$ docker compose up`

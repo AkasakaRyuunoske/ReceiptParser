@@ -13,7 +13,9 @@ Receipt Parser allows users to parse their receipt using **AI**
 * Receipt upload
 * Receipt parsing using locally running agent (mostly used gemma4:e2b and gemma4:e4b)
 * Form allowing user to view and modify model's inference result
-
+* A calendar with a heat map showing in which days there are receipts, total spending that day and ability to click on a specific day to see all related receipts
+* Per week/month/year total spending chart, divided in categories
+  
 # Set up (Windows)
 <h3 id="set-up-windows">Set up on a windows machine consists of following steps:</h3>
 

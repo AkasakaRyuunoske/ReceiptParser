@@ -35,10 +35,19 @@
                     <div><a href="/receipts/storage">Receipt Storage</a></div>
                 {% endif%}
 
-
             </div>
         </div>
 
-        <div><a href="/settings">Settings</a></div>
+        {% if page_name == "products_catalog" %}
+            <div><a href="/products_catalog" style="text-decoration:underline">Products Catalog</a></div>
+        {% else %}
+            <div><a href="/products_catalog">Products Catalog</a></div>
+        {% endif%}
+
+        {% if page_name == "settings" %}
+            <div><a href="/settings" style="text-decoration:underline">Settings</a></div>
+        {% else %}
+            <div><a href="/settings">Settings</a></div>
+        {% endif%}
     </div>
 </nav>

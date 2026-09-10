@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home, stream_inference, debugg, add_receipt_page, receipts_page, receipts_storage, dashboard_page, \
-    settings_page, upload_input_image, create_receipt, receipts_for_day, load_receipt
+    settings_page, upload_input_image, create_receipt, receipts_for_day, load_receipt, products_catalog_page
 
 urlpatterns = [
     path("", home, name="home"),
@@ -12,6 +12,7 @@ urlpatterns = [
     path("receipts/add_receipt/upload_input_image", upload_input_image, name="upload_input_image"),
     path("receipts/add_full_receipt", create_receipt, name="create_receipt"),
     path("receipts/storage", receipts_storage, name="receipts_storage"),
+    path("products_catalog", products_catalog_page, name="products_catalog_page"),
     path("settings", settings_page, name="settings_page"),
     path("stream/", stream_inference, name="stream"),
     path("debugg/", debugg, name="debugg"),

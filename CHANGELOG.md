@@ -1,3 +1,11 @@
+**0.10.0**
+- Added updated design for "Add Receipt Page"
+- Added design for upcoming "Product Catalog" page 
+- Added design for upcoming "Product Catalog: Store" page 
+- Added design for upcoming "Product Catalog: Product Overview" page 
+- Added Product Catalog page
+- Changed color of dashboard sections wheat -> white
+
 ***0.9.18***
 - Fixed update receipt to not load add_receipt page properly
 - Added load receipt function

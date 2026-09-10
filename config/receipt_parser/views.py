@@ -498,9 +498,23 @@ def insert_inference_response(inference_json: str) -> None:
 
     logger.info("inserted inference response.")
 
+def products_catalog_page(request):
+    store_names_list: list[StoreNames]
+    stores_list: list[Stores]
+
+    store_names_list = StoreNames.objects.all()
+    stores_list = Stores.objects.all()
+
+    context: dict = {
+        "page_name": "products_catalog",
+        "store_names": store_names_list,
+        "stores_list": stores_list,
+    }
+
+    return render(request, 'products_catalog.html', context)
 
 def settings_page(request):
-    return render(request, 'settings.html', )
+    return render(request, 'settings.html', {"page_name": "settings"})
 
 
 def upload_input_image(request):

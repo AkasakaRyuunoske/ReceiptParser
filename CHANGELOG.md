@@ -1,3 +1,8 @@
+**0.10.1**
+- Added dashboard_service.py and moved all dashboard related service logic there
+- Added dashboard.py and moved all dashboard related view logic there
+- Removed WhiteNoise dependency (unused)
+
 **0.10.0**
 - Added updated design for "Add Receipt Page"
 - Added design for upcoming "Product Catalog" page 

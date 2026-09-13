@@ -8,20 +8,19 @@ import re
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.db.models import Sum, F, ExpressionWrapper, DecimalField
-from django.db.models.functions import TruncMonth, TruncDate, ExtractYear
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
+
 from receipt_parser.forms import ReceiptImageForm
 from receipt_parser.models import ReceiptImageView, StoreNames, Stores, PaymentMethods, \
     ReceiptResources, Receipt, ReceiptItems, ItemCategories, Items
-
 from .forms import ReceiptForm
 from .services.receipts.receipts_service import ReceiptService
 
 load_dotenv()
 logger = logging.getLogger(__name__)
+
 
 def home(request):
     if request.method == 'POST':
@@ -40,9 +39,8 @@ def home(request):
 
 def add_receipt_page(request):
     receipt_reference = request.POST.get("receipt_reference", "").strip()
-    logger.info(f"receipt_reference ==> {receipt_reference}")
 
-    if receipt_reference is not "":
+    if receipt_reference != "":
         receipt = Receipt.objects.get(receipt_reference=receipt_reference)
         image_path = receipt.receipt_image_view_id_fk.image
     else:
@@ -59,284 +57,6 @@ def add_receipt_page(request):
                                                              "receipt": receipt,
                                                              "page_name": "receipts.add_receipt",
                                                              })
-
-
-def dashboard_page(request):
-    # Dashboard charts aggregation data
-    store_spending_data = get_store_spending_pie_data()
-    pie_data = get_category_spending_pie_data()
-    item_spending_data = get_item_spending_pie_chart()
-    monthly_spending_data = get_per_month_spending_pie_chart()
-
-    this_week_spending_data = get_this_week_spending_bar_chart()
-
-    # Calendar charts
-    calendar_spending_data, receipt_lookup = get_calendar_spending_data()
-    date_ranges = get_date_ranges_for_calendar_chart()
-
-    return render(request, 'dashboard.html',
-                  context={
-                      "pie_data": pie_data,
-                      "store_spending_data": store_spending_data,
-                      "item_spending_data": item_spending_data,
-                      "monthly_spending_data": monthly_spending_data,
-                      "this_week_spending_data": this_week_spending_data,
-                      "calendar_spending_data": calendar_spending_data,
-                      "receipt_lookup": receipt_lookup,
-                      "date_ranges": date_ranges,
-                      "page_name": "dashboard"
-                  })
-
-
-def get_date_ranges_for_calendar_chart() -> dict:
-    latest_receipt = Receipt.objects.order_by('-receipt_datetime').first()
-    newest_receipt = Receipt.objects.order_by('-receipt_datetime').last()
-
-    latest_date = None
-    newest_date = None
-    year_list = None
-
-    if latest_receipt is not None:
-
-        latest_date = latest_receipt.receipt_datetime
-        newest_date = newest_receipt.receipt_datetime
-
-        years = Receipt.objects.annotate(
-            year=ExtractYear('receipt_datetime')
-        ).values('year').distinct()
-
-        year_list = list(years.values_list('year', flat=True))
-
-    date_ranges: dict = {
-        "latest_receipt": latest_date,
-        "newest_date": newest_date,
-        "years": year_list,
-    }
-
-    return date_ranges
-
-
-def receipts_for_day(request, day):
-    receipts = (
-        Receipt.objects
-        .filter(receipt_datetime__date=day)
-        .select_related(
-            "store_id_fk__store_name_id_fk",
-            "payment_method_id_fk"
-        )
-        .prefetch_related("rel_receipt_id_fk__item_id_fk")
-        .order_by("-receipt_datetime")
-    )
-
-    receipt_data = []
-
-    for receipt in receipts:
-        total = sum(
-            ri.quantity * ri.price
-            for ri in receipt.rel_receipt_id_fk.all()
-        )
-
-        receipt_data.append({
-            "receipt": receipt,
-            "total": total,
-        })
-
-    return render(
-        request,
-        "components/receipts_for_day.html",
-        {
-            "day": day,
-            "receipt_data": receipt_data,
-        }
-    )
-
-
-def get_calendar_spending_data():
-    line_total = ExpressionWrapper(
-        F("quantity") * F("price"),
-        output_field=DecimalField(max_digits=12, decimal_places=2),
-    )
-
-    daily_data = (
-        ReceiptItems.objects
-        .annotate(
-            day=TruncDate("receipt_id_fk__receipt_datetime")
-        )
-        .values("day")
-        .annotate(
-            total=Sum(line_total)
-        )
-        .order_by("day")
-    )
-
-    receipt_lookup = {}
-
-    for row in daily_data:
-        receipt_lookup[row["day"].isoformat()] = {
-            "total": float(row["total"])
-        }
-
-    calendar_data = [
-        [
-            row["day"].isoformat(),
-            float(row["total"])
-        ]
-        for row in daily_data
-    ]
-
-    return calendar_data, receipt_lookup
-
-
-def get_category_spending_pie_data():
-    category_spending = (
-        ReceiptItems.objects
-        .values(
-            category=F("item_id_fk__category_id_fk__item_category_name")
-        )
-        .annotate(
-            total=Sum(
-                ExpressionWrapper(
-                    F("quantity") * F("price"),
-                    output_field=DecimalField(max_digits=12, decimal_places=2),
-                )
-            )
-        )
-        .order_by("-total")
-    )
-
-    pie_data = [
-        {
-            "name": row["category"],
-            "value": float(row["total"])
-        }
-        for row in category_spending
-    ]
-
-    return pie_data
-
-
-def get_store_spending_pie_data():
-    store_spending = (
-        ReceiptItems.objects
-        .values(
-            store=F(
-                "receipt_id_fk__store_id_fk__store_name_id_fk__store_name"
-            )
-        )
-        .annotate(
-            total=Sum(
-                ExpressionWrapper(
-                    F("quantity") * F("price"),
-                    output_field=DecimalField(max_digits=12, decimal_places=2),
-                )
-            )
-        )
-        .order_by("-total")
-    )
-
-    store_spending_data = [
-        {
-            "name": row["store"],
-            "value": float(row["total"])
-        }
-        for row in store_spending
-    ]
-
-    return store_spending_data
-
-
-def get_item_spending_pie_chart():
-    item_spending = (
-        ReceiptItems.objects
-        .values(
-            item=F("item_id_fk__item_name")
-        )
-        .annotate(
-            total=Sum(
-                ExpressionWrapper(
-                    F("quantity") * F("price"),
-                    output_field=DecimalField(max_digits=12, decimal_places=2),
-                )
-            )
-        )
-        .order_by("-total")[:10]
-    )
-
-    item_spending_data = [
-        {
-            "name": row["item"],
-            "value": float(row["total"])
-        }
-        for row in item_spending
-    ]
-
-    return item_spending_data
-
-
-def get_this_week_spending_bar_chart():
-    start = datetime.datetime.now() - datetime.timedelta(days=6)
-    end = start + datetime.timedelta(days=7)
-
-    weekly_spending = (
-        ReceiptItems.objects
-        .filter(
-            receipt_id_fk__receipt_datetime__range=(start, end)
-        )
-        .annotate(
-            day=TruncDate("receipt_id_fk__receipt_datetime")
-        )
-        .values("day")
-        .annotate(
-            total=Sum(
-                ExpressionWrapper(
-                    F("quantity") * F("price"),
-                    output_field=DecimalField(max_digits=12, decimal_places=2),
-                )
-            )
-        )
-        .order_by("day")
-    )
-
-    weekly_spending_data = [
-        {
-            "name": row["day"].strftime('%Y-%m-%d'),
-            "value": float(row["total"])
-        }
-        for row in weekly_spending
-    ]
-
-    return weekly_spending_data
-
-
-def get_per_month_spending_pie_chart():
-    monthly_spending = (
-        ReceiptItems.objects
-        .annotate(
-            month=TruncMonth(
-                "receipt_id_fk__receipt_datetime"
-            )
-        )
-        .values("month")
-        .annotate(
-            total=Sum(
-                ExpressionWrapper(
-                    F("quantity") * F("price"),
-                    output_field=DecimalField(max_digits=12, decimal_places=2),
-                )
-            )
-        )
-        .order_by("month")
-    )
-
-    monthly_spending_data = [
-        {
-            "name": row["month"].strftime('%Y-%m-%d'),
-            "value": float(row["total"])
-        }
-        for row in monthly_spending
-    ]
-
-    return monthly_spending_data
 
 
 def receipts_page(request):
@@ -498,6 +218,7 @@ def insert_inference_response(inference_json: str) -> None:
 
     logger.info("inserted inference response.")
 
+
 def products_catalog_page(request):
     store_names_list: list[StoreNames]
     stores_list: list[Stores]
@@ -512,6 +233,7 @@ def products_catalog_page(request):
     }
 
     return render(request, 'products_catalog.html', context)
+
 
 def settings_page(request):
     return render(request, 'settings.html', {"page_name": "settings"})
@@ -640,6 +362,7 @@ def create_receipt(request):
     logger.info("created the receipt.")
 
     return add_receipt_page(request)
+
 
 def load_receipt(request):
     logger.info("loading a receipt...")

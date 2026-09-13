@@ -8,13 +8,42 @@
         <h1 class='hero glitch layers' data-text='Products Catalog'>Products Catalog</h1>
     </div>
 
-    <main>
-        {% for store_name in store_names %}
-            <div>
-                <span>{{ store_name.store_name }}</span>
-            </div>
-            {% empty %}
-            <div><h2>There are no stores registered in the system yet....</h2></div>
-        {% endfor %}
+    <br>
+    <br>
+
+    <main style="font-family: 'JetBrains Mono Variable', monospace;">
+        <div class="grid grid-cols-3">
+            {% for store in stores_list %}
+                <div style="text-align: center">
+                    <span>{{ store.store_name_id_fk.store_name }}</span>
+                    <p>
+                        {% if store.address == "" %}
+                            <span style="color: red">Not Available</span>
+                        {% else %}
+                            <span>{{ store.address }}</span>
+                        {% endif %}
+
+                        -
+
+                        {% if store.city == "" %}
+                            <span style="color: red">Not Available</span>
+                        {% else %}
+                            <span>{{ store.city }}</span>
+                        {% endif %}
+
+                    </p>
+                    <p> {{  store.product_count }} Associated Products</p>
+                    <p> {{  store.receipt_count }}  Associated Receipts</p>
+                </div>
+
+                <br>
+                {% empty %}
+                <div>
+                    <h2>There are no stores registered in the system yet....</h2>
+                </div>
+            {% endfor %}
+        </div>
     </main>
+
+
 {% endblock %}

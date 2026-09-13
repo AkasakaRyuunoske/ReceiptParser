@@ -8,6 +8,7 @@ import re
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from django.db.models import Count
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
@@ -223,12 +224,19 @@ def products_catalog_page(request):
     store_names_list: list[StoreNames]
     stores_list: list[Stores]
 
-    store_names_list = StoreNames.objects.all()
-    stores_list = Stores.objects.all()
+    stores_list = Stores.objects.annotate(
+        receipt_count=Count(
+            "rel_stores_id_fk",
+            distinct=True,
+        ),
+        product_count=Count(
+            "rel_stores_id_fk__rel_receipt_id_fk",
+            distinct=True,
+        ),
+    )
 
     context: dict = {
         "page_name": "products_catalog",
-        "store_names": store_names_list,
         "stores_list": stores_list,
     }
 

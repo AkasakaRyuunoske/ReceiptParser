@@ -1,3 +1,8 @@
+**0.10.2**
+- Added products catalog
+- Added store cards with generic related data
+- Changed which view handles "/" mapping from home -> dashboard
+
 **0.10.1**
 - Added dashboard_service.py and moved all dashboard related service logic there
 - Added dashboard.py and moved all dashboard related view logic there

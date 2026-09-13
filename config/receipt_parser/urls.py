@@ -5,7 +5,7 @@ from .views import home, stream_inference, debugg, add_receipt_page, receipts_pa
     settings_page, upload_input_image, create_receipt, load_receipt, products_catalog_page
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", dashboard_page, name="home"),
     path("receipts", receipts_page, name="receipts_page"),
     path("dashboard", dashboard_page, name="dashboard_page"),
     path("receipts/day/<str:day>/", receipts_for_day, name="receipts_for_day"),

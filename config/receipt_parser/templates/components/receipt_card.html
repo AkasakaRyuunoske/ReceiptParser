@@ -10,7 +10,7 @@
             <div>{{ receipt.store_id_fk.address }}</div>
             <div>{{ receipt.store_id_fk.city }}</div>
             <div>Receipt Date:
-                <input style="background-color:black" type="text" value="{{ receipt.receipt_datetime|date:'Y-m-d\\TH:i' }}" name="receipt_datetime"/>
+                <input style="background-color:black" type="datetime" value="{{ receipt.receipt_datetime|date:'Y-m-d\TH:i' }}" name="receipt_datetime"/>
             </div>
             <div>Reference:
                 <input style="background-color:black" type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>

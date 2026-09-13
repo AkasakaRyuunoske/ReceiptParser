@@ -1,7 +1,10 @@
 **0.10.2**
 - Added products catalog
 - Added store cards with generic related data
+- Added current version display to navbar
+- Added context processor to automatically read latest version
 - Changed which view handles "/" mapping from home -> dashboard
+- Changed Receipt Date input type from "text" -> "datetime"
 
 **0.10.1**
 - Added dashboard_service.py and moved all dashboard related service logic there

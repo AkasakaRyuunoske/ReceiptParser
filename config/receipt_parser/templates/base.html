@@ -29,16 +29,17 @@
 </head>
 <body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite">
 
-<main class="layout">
-    <div class="sidebar" style="padding-left: 0.5rem">
-        {% include "components/navbar.html" %}
-    </div>
+    <main class="layout">
+        <div class="sidebar" style="padding-left: 0.5rem">
+            {% include "components/navbar.html" %}
+        </div>
 
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-</main>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
 
+
+    </main>
 </body>
 </html>

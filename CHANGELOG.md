@@ -1,3 +1,6 @@
+**0.10.5**
+- Added more missing details to products catalog page according to design
+
 **0.10.4**
 - Added moodal according to "Product Catalog_ Store opened.pdf" design
 

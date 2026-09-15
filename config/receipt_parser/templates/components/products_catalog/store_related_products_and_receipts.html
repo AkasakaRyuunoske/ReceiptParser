@@ -1,0 +1,37 @@
+{% load math_filters %}
+
+<div class="grid grid-cols-4">
+    <h2>{{ store.store_name_id_fk.store_name }}</h2>
+
+    {% if store.address == "" %}
+        <h6 style="color: red">Not Available</h6>
+    {% else %}
+        <h6>{{ store.address }}</h6>
+    {% endif %}
+
+    <h6> {{  store.product_count }} Associated Products</h6>
+    <h6> {{  store.receipt_count }}  Associated Receipts</h6>
+</div>
+
+<br>
+<br>
+
+<!--<div class="gird grid-cols-6">-->
+<!--    {% for receipt in related_receipts %}-->
+
+<!--    {% empty %}-->
+<!--        <h1>This store doesn't currently have any associated receipts or items.</h1>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+<div class="grid grid-cols-6 gap-4" style="text-align:center">
+    {% for receipt_item in related_receipt_items %}
+        <div class="grid grid-rows-3">
+            <h1> {{ receipt_item.item_id_fk.item_name }} </h1>
+            <h1> €{{ receipt_item.price }} </h1>
+            <h1> {{ receipt_item.total_quantity }} </h1>
+        </div>
+    {% empty %}
+        <h1>This store doesn't currently have any associated receipts or items.</h1>
+    {% endfor %}
+</div>

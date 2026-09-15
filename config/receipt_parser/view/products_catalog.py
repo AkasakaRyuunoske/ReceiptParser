@@ -1,7 +1,7 @@
-from django.db.models import Count
+from django.db.models import Count, QuerySet, Sum, Window
 from django.shortcuts import render
 
-from receipt_parser.models import StoreNames, Stores
+from receipt_parser.models import StoreNames, Stores, Receipt, ReceiptItems, Items
 
 
 def products_catalog_page(request):
@@ -26,10 +26,43 @@ def products_catalog_page(request):
 
     return render(request, 'products_catalog.html', context)
 
-def get_store_data_and_associated_products(request):
 
+def get_store_data_and_associated_products(request, store_id):
+    store: Stores = Stores.objects.annotate(
+        receipt_count=Count(
+            "rel_stores_id_fk",
+            distinct=True,
+        ),
+        product_count=Count(
+            "rel_stores_id_fk__rel_receipt_id_fk",
+            distinct=True,
+        ),
+    ).get(store_id=store_id)
+
+    related_receipts: QuerySet[Receipt] = Receipt.objects.filter(store_id_fk_id=store_id)
+
+    related_receipt_items: QuerySet[ReceiptItems] = (
+        ReceiptItems.objects
+        .filter(
+            receipt_id_fk__store_id_fk_id=store_id
+        )
+        .select_related(
+            "receipt_id_fk",
+            "item_id_fk",
+        )
+        .annotate(
+            total_quantity=Window(
+                expression=Sum("quantity"),
+                partition_by="item_id_fk",
+            )
+        )
+    )
     context: dict = {
-
+        "store": store,
+        "related_receipts": related_receipts,
+        "related_receipt_items": related_receipt_items,
     }
 
-    return render(request, 'products_catalog.html', context)
+    return render(request,
+                  'components/products_catalog/store_related_products_and_receipts.html',
+                  context)

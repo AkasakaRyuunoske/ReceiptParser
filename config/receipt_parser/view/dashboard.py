@@ -66,7 +66,7 @@ def receipts_for_day(request, day):
 
     return render(
         request,
-        "components/receipts_for_day.html",
+        "components/dashboard/receipts_for_day.html",
         {
             "day": day,
             "receipt_data": receipt_data,

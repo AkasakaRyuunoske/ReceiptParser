@@ -14,7 +14,7 @@
     <main style="font-family: 'JetBrains Mono Variable', monospace;">
         <div class="grid grid-cols-3">
             {% for store in stores_list %}
-                <div style="text-align: center">
+                <div style="text-align: center" onclick="openStoresModal({{ store.store_id }})" >
                     <span>{{ store.store_name_id_fk.store_name }}</span>
                     <p>
                         {% if store.address == "" %}
@@ -43,7 +43,43 @@
                 </div>
             {% endfor %}
         </div>
+
+        <div id="store-modal"
+             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeModal()">
+
+            <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
+                 onclick="event.stopPropagation()"
+                 style="overflow: auto; max-width: 50rem; max-height: 50rem;">
+
+                <button onclick="closeModal()"
+                        class="absolute top-3 right-3 text-white text-xl">
+                    ✕
+                </button>
+
+                <div id="modal-content" class="text-white">
+                    Loading...
+                </div>
+            </div>
+        </div>
     </main>
 
+<script>
+    const modal_name = 'store-modal'
 
+    function openStoresModal(storeId) {
+        document.getElementById(modal_name).classList.remove('hidden');
+        document.getElementById(modal_name).classList.add('flex');
+    }
+
+    function closeModal() {
+        document.getElementById(modal_name).classList.add('hidden');
+        document.getElementById(modal_name).classList.remove('flex');
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    });
+</script>
 {% endblock %}

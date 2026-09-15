@@ -30,10 +30,10 @@
         {% csrf_token %}
         {{ form.as_p }}
 
-        {% include "components/model_input_overview.html" %}
+        {% include "components/add_receipt/model_input_overview.html" %}
 
         <div class="col-span-2">
-                {% include "components/receipt_card.html" with receipt=receipt %}
+                {% include "components/add_receipt/receipt_card.html" with receipt=receipt %}
         </div>
     </form>
 </main>

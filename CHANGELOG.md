@@ -1,3 +1,9 @@
+**0.10.3**
+- Added components/add_receipt to store all add_receipt related html components
+- Added components/dashboard to store all dashboard related html components
+- Added components/products_catalog to store all products_catalog related html components
+- Added moodal according to "Product Catalog_ Store opened.pdf" design
+
 **0.10.2**
 - Added products catalog
 - Added store cards with generic related data

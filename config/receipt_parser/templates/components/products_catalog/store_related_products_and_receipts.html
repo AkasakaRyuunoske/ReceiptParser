@@ -24,13 +24,13 @@
 <!--    {% endfor %}-->
 <!--</div>-->
 
-{% if related_receipt_items %}
-    <div class="grid grid-cols-6 gap-6" style="text-align:center">
-        {% for receipt_item in related_receipt_items %}
-            <div class="grid grid-rows-3">
-                <h1> {{ receipt_item.item_id_fk.item_name }} </h1>
-                <h1> €{{ receipt_item.price }} </h1>
-                <h1>  {{ receipt_item.total_quantity }} </h1>
+{% if related_items %}
+    <div class="grid grid-cols-5 gap-6" style="text-align:center">
+        {% for related_item in related_items %}
+            <div class="grid grid-rows-3 gap-1">
+                <h1> {{ related_item.item_name }} </h1>
+                <h1> €{{ related_item.item_price }} </h1>
+                <h1>  {{ related_item.total_quantity }} </h1>
             </div>
         {% empty %}
             <h1>This store doesn't currently have any associated receipts or items.</h1>

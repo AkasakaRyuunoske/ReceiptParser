@@ -4,7 +4,7 @@ from django.shortcuts import render
 from dotenv import load_dotenv
 
 from receipt_parser.models import Receipt
-from services.receipts.dashboard_services import get_store_spending_pie_data, get_category_spending_pie_data, \
+from receipt_parser.services.receipts.dashboard_services import get_store_spending_pie_data, get_category_spending_pie_data, \
     get_item_spending_pie_chart, get_per_month_spending_pie_chart, get_this_week_spending_bar_chart, \
     get_calendar_spending_data, get_date_ranges_for_calendar_chart
 

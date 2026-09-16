@@ -41,6 +41,7 @@ class Items(models.Model):
     item_name = models.CharField(max_length=100, unique=False, null=False)
     item_description = models.CharField(max_length=255, unique=False, null=True)
     item_insert_datetime = models.DateTimeField(auto_now_add=True)
+    item_price = models.FloatField(null=False)
 
     def __str__(self):
         fields = ", ".join(f"{f.name}={getattr(self, f.name)!r}" for f in self._meta.fields)

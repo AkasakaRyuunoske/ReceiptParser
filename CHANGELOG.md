@@ -1,3 +1,9 @@
+**0.10.6**
+- Added item_price to Items to keep track of price changes for items of same category and name
+- Added correct associated Products/Receipts counts to Products Catalog page
+- Added handling of items with same name and category to show different prices in the product catalog
+- Added correct association counts in the store modal
+
 **0.10.5**
 - Added more missing details to products catalog page according to design
 

@@ -330,6 +330,7 @@ def create_receipt(request):
                 item_obj, _ = Items.objects.get_or_create(
                     item_name=item_name,
                     category_id_fk=category_obj,
+                    item_price=unit_price,
                 )
 
                 ReceiptItems.objects.create(

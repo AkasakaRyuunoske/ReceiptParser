@@ -1,3 +1,7 @@
+**0.10.7**
+- Added app screenshots
+- Fixed dashboard's graph being too big and showing h-scroll
+
 **0.10.6**
 - Added item_price to Items to keep track of price changes for items of same category and name
 - Added correct associated Products/Receipts counts to Products Catalog page

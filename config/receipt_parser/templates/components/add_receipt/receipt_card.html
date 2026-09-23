@@ -78,7 +78,17 @@
 
         <label for="payment_method_id_fk">Payment Method:</label>
         <br>
-        <input type="text" value="1" name="payment_method_id_fk" id="payment_method_id_fk" style="background-color:black">
+        <select name="payment_method_id_fk" id="payment_method_id_fk" style="background-color:black">
+            {% for payment_method in payment_methods %}
+                {% if receipt.payment_method_id_fk == payment_method %}
+                    <option value="{{ payment_method.payment_method_id }}" selected>{{ payment_method.payment_method_name }}</option>
+                {% else %}
+                    <option value="{{ payment_method.payment_method_id }}">{{ payment_method.payment_method_name }}</option>
+                {% endif %}
+            {% empty %}
+                <option value="-1">N/A</option>
+            {% endfor %}
+        </select>
     </div>
 
     <br>

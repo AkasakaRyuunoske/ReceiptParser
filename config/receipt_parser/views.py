@@ -8,7 +8,7 @@ import re
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import QuerySet
 from django.http import StreamingHttpResponse, HttpResponse
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
@@ -48,6 +48,8 @@ def add_receipt_page(request):
         image_path = ReceiptImageView.objects.last().image if not ReceiptImageView.objects.last() is None else "image_path_not_found"
         receipt = Receipt.objects.last()
 
+    payment_methods: QuerySet[PaymentMethods] = PaymentMethods.objects.all()
+
     try:
         raw_text_json = Receipt.objects.last().receipt_resource_id_fk.raw_text_json
     except AttributeError:
@@ -57,6 +59,7 @@ def add_receipt_page(request):
                                                              "raw_text_json": raw_text_json,
                                                              "receipt": receipt,
                                                              "page_name": "receipts.add_receipt",
+                                                             "payment_methods": payment_methods,
                                                              })
 
 
@@ -279,10 +282,13 @@ def create_receipt(request):
             store_obj, _ = Stores.objects.get_or_create(store_name_id_fk=store_name_obj)
             receipt_resource = ReceiptResources.objects.last()
 
+            payment_method: PaymentMethods = receipt_form.cleaned_data["payment_method_id_fk"]
+
             receipt = receipt_form.save(commit=False)
             receipt.receipt_resource_id_fk = receipt_resource
             receipt.store_id_fk = store_obj
             receipt.receipt_image_view_id_fk = ReceiptImageView.objects.last()
+            receipt.payment_method_id_fk = payment_method
             receipt.save()
 
             if existing_receipt:
@@ -340,6 +346,7 @@ def create_receipt(request):
                     price=unit_price,
                 )
 
+            logger.info("created the receipt with VALID form.")
             return add_receipt_page(request)
 
     else:

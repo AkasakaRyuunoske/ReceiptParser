@@ -1,3 +1,7 @@
+**0.10.8**
+- Added saving of selected payment method (from hardcoded)
+- Added select component to input payment method
+
 **0.10.7**
 - Added app screenshots
 - Fixed dashboard's graph being too big and showing h-scroll

@@ -4,8 +4,16 @@ Receipt Parser allows users to parse their receipt using **AI**
 
 # Navigation
 1. <a href="#current-features">Current Features </a>
-2. <a href="#set-up-windows">Set up (Windows) </a>
-3. <a href="#set-up-linux">Set up (Linux) </a>
+2. <a href="#how-it-looks">How it looks? </a>
+3. <a href="#set-up-windows">Set up (Windows) </a>
+4. <a href="#set-up-linux">Set up (Linux) </a>
+
+# How it looks?
+<h3>Add Receipt Page:</h3>
+<img src="readme_resources/receipt_parser_add_receipt_ver_0.10.7.png" height="250rem"/>
+
+<h3>Dashboard Page:</h3>
+<img src="readme_resources/receipt_parser_dashboard_ver_0.10.7.png" height="300rem"/>
 
 # Current Features
 <h3 id="current-features">Currently implemented features are:</h3>

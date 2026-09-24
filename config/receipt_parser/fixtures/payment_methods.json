@@ -1,0 +1,38 @@
+[
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 1,
+    "fields": {
+      "payment_method_name": "Cash",
+      "payment_method_description": "It's when you use physical real world money to pay for stuff",
+      "payment_method_insert_datetime": "2026-09-24T17:43:49.830Z"
+    }
+  },
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 2,
+    "fields": {
+      "payment_method_name": "Card",
+      "payment_method_description": "When a credit card is used to pay",
+      "payment_method_insert_datetime": "2026-09-24T17:44:26.124Z"
+    }
+  },
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 3,
+    "fields": {
+      "payment_method_name": "Tickets/Cash",
+      "payment_method_description": "When a receipt is payed in part by tickets and the remained is payed in cash",
+      "payment_method_insert_datetime": "2026-09-24T17:45:13.080Z"
+    }
+  },
+  {
+    "model": "receipt_parser.paymentmethods",
+    "pk": 4,
+    "fields": {
+      "payment_method_name": "Tickets/Card",
+      "payment_method_description": "When a receipt is payed in part by tickets and the remained is payed with credit card",
+      "payment_method_insert_datetime": "2026-09-24T17:45:34.845Z"
+    }
+  }
+]

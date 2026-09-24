@@ -1,3 +1,8 @@
+**0.10.9**
+- Fixed bug when payment methods wouldn't load when receipt was loaded
+- Added payment methods fixture for generic payment methods
+- Added fixture to entrypoint deploy script
+
 **0.10.8**
 - Added saving of selected payment method (from hardcoded)
 - Added select component to input payment method

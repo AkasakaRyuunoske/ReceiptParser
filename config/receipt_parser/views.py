@@ -367,6 +367,7 @@ def load_receipt(request):
             return add_receipt_page(request)
 
         image_path = receipt.receipt_image_view_id_fk.image
+        payment_methods: QuerySet[PaymentMethods] = PaymentMethods.objects.all()
 
         try:
             raw_text_json = receipt.receipt_resource_id_fk.raw_text_json
@@ -378,4 +379,5 @@ def load_receipt(request):
                                                                  "raw_text_json": raw_text_json,
                                                                  "receipt": receipt,
                                                                  "page_name": "receipts.add_receipt",
+                                                                 "payment_methods": payment_methods,
                                                                  })

@@ -68,3 +68,26 @@ def get_store_data_and_associated_products(request, store_id):
     return render(request,
                   'components/products_catalog/store_related_products_and_receipts.html',
                   context)
+
+def get_product_overview(request, product_id):
+    related_item = (
+        Items.objects
+        .annotate(
+            total_quantity=Sum("rel_items_id_fk__quantity"),
+            total_spent=Sum(
+                F("rel_items_id_fk__quantity") * F("item_price"),
+                output_field=FloatField(),
+            ),
+        )
+        .get(item_id=product_id)
+    )
+
+    context: dict = {
+        # "store": store,
+        # "related_receipts": related_receipts,
+        "related_item": related_item,
+    }
+
+    return render(request,
+                  'components/products_catalog/product_overview_page.html',
+                  context)

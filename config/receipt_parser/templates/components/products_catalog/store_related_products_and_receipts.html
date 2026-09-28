@@ -16,21 +16,14 @@
 <br>
 <br>
 
-<!--<div class="gird grid-cols-6">-->
-<!--    {% for receipt in related_receipts %}-->
-
-<!--    {% empty %}-->
-<!--        <h1>This store doesn't currently have any associated receipts or items.</h1>-->
-<!--    {% endfor %}-->
-<!--</div>-->
-
 {% if related_items %}
     <div class="grid grid-cols-5 gap-6" style="text-align:center">
         {% for related_item in related_items %}
-            <div class="grid grid-rows-3 gap-1">
+            <div class="grid grid-rows-3 gap-1" onclick="openProductOverviewModal({{ related_item.item_id }})">
                 <h1> {{ related_item.item_name }} </h1>
                 <h1> €{{ related_item.item_price }} </h1>
                 <h1>  {{ related_item.total_quantity }} </h1>
+                <h1>  {{ related_item.item_id }} </h1>
             </div>
         {% empty %}
             <h1>This store doesn't currently have any associated receipts or items.</h1>

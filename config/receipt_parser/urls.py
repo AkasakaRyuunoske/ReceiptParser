@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .view.dashboard import dashboard_page, receipts_for_day
-from .view.products_catalog import products_catalog_page, get_store_data_and_associated_products
+from .view.products_catalog import products_catalog_page, get_store_data_and_associated_products, get_product_overview
 from .views import home, stream_inference, debugg, add_receipt_page, receipts_page, receipts_storage, \
     settings_page, upload_input_image, create_receipt, load_receipt
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path("receipts/storage", receipts_storage, name="receipts_storage"),
     path("products_catalog", products_catalog_page, name="products_catalog_page"),
     path("products_catalog/stores/<str:store_id>/", get_store_data_and_associated_products, name="get_store_data_and_associated_products"),
+    path("products_catalog/products/<str:product_id>/", get_product_overview, name="get_product_overview"),
     path("settings", settings_page, name="settings_page"),
     path("stream/", stream_inference, name="stream"),
     path("debugg/", debugg, name="debugg"),

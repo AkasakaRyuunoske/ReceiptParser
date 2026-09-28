@@ -45,13 +45,13 @@
         </div>
 
         <div id="store-modal"
-             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeModal()">
+             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeStoreModal()">
 
             <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
                  onclick="event.stopPropagation()"
                  style="overflow: auto; max-width: 70rem; max-height: 45rem;">
 
-                <button onclick="closeModal()"
+                <button onclick="closeStoreModal()"
                         class="absolute top-3 right-3 text-white text-xl">
                     ✕
                 </button>
@@ -63,12 +63,29 @@
         </div>
     </main>
 
+        <div id="product-overview-modal"
+             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeStoreModal()">
+
+            <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
+                 onclick="event.stopPropagation()"
+                 style="overflow: auto; max-width: 50rem; max-height: 45rem;">
+
+                <button onclick="closeProductOverviewModal()"
+                        class="absolute top-3 right-3 text-white text-xl">
+                    ✕
+                </button>
+
+                <div id="modal-product-overview-content" class="text-white">
+                    Loading...
+                </div>
+            </div>
+        </div>
 <script>
-    const modal_name = 'store-modal'
+    const store_modal_name = 'store-modal'
 
     function openStoresModal(storeId) {
-        document.getElementById(modal_name).classList.remove('hidden');
-        document.getElementById(modal_name).classList.add('flex');
+        document.getElementById(store_modal_name).classList.remove('hidden');
+        document.getElementById(store_modal_name).classList.add('flex');
 
         htmx.ajax(
             'GET',
@@ -77,15 +94,35 @@
         );
     }
 
-    function closeModal() {
-        document.getElementById(modal_name).classList.add('hidden');
-        document.getElementById(modal_name).classList.remove('flex');
+    function closeStoreModal() {
+        document.getElementById(store_modal_name).classList.add('hidden');
+        document.getElementById(store_modal_name).classList.remove('flex');
     }
 
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
-            closeModal();
+            closeStoreModal();
+            closeProductOverviewModal();
         }
     });
+
+    const product_overview_modal_name = 'product-overview-modal'
+
+    function openProductOverviewModal(productId) {
+        document.getElementById(product_overview_modal_name).classList.remove('hidden');
+        document.getElementById(product_overview_modal_name).classList.add('flex');
+
+        htmx.ajax(
+            'GET',
+            `products_catalog/products/${productId}/`,
+            '#modal-product-overview-content'
+        );
+    }
+
+    function closeProductOverviewModal() {
+        document.getElementById(product_overview_modal_name).classList.add('hidden');
+        document.getElementById(product_overview_modal_name).classList.remove('flex');
+    }
+
 </script>
 {% endblock %}

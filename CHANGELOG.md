@@ -1,3 +1,6 @@
+**0.10.10**
+- Added product overview page
+
 **0.10.9**
 - Fixed bug when payment methods wouldn't load when receipt was loaded
 - Added payment methods fixture for generic payment methods

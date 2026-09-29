@@ -29,17 +29,15 @@
 </head>
 <body style="font-family:'OldEnglishTextMT'; background-color:black; color:navajowhite">
 
-    <main class="layout">
-        <div class="sidebar" style="padding-left: 0.5rem">
-            {% include "components/navbar.html" %}
-        </div>
+<div class="min-h-screen flex flex-col lg:flex-row">
 
-        <div class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+    {% include "components/navbar.html" %}
 
-
+    <main class="lg:ml-64">
+        {% block content %}
+        {% endblock %}
     </main>
+
+</div>
 </body>
 </html>

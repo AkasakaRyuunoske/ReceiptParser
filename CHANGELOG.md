@@ -1,3 +1,7 @@
+**0.11.0**
+- Various changes to navbar to make it responsive
+- Added Fixed position to navbar
+
 **0.10.10**
 - Added product overview page
 

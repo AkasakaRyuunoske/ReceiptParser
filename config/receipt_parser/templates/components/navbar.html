@@ -1,61 +1,113 @@
-{% load static %}
-<nav>
-    <header class="sidebar_header header_layout">
-<!--        <img src="{% static 'icons/main_icon.png' %}" style="width: 3rem;">-->
+<nav class="bg-zinc-950 border-b border-zinc-800">
 
-        <div class="hero-container">
-            <h1 class='hero glitch layers' data-text='Receipt Parser' onclick="window.location.href='/dashboard'">Receipt Parser</h1>
-        </div>
-<!--        <a href="/">Receipt Parser</a>-->
-    </header>
+    <!-- Mobile header -->
+    <div class="flex items-center justify-between p-4 lg:hidden">
 
-    <br>
-    <br>
-    <br>
+        <h1
+            class="hero glitch layers cursor-pointer"
+            data-text="Receipt Parser"
+            onclick="window.location.href='/dashboard'"
+        >
+            Receipt Parser
+        </h1>
 
-    <div class="sidebar_header">
-        {% if page_name == "dashboard" %}
-            <div><a href="/dashboard" style="text-decoration:underline">Dashboard</a></div>
-        {% else %}
-            <div><a href="/dashboard">Dashboard</a></div>
-        {% endif%}
+        <button
+            type="button"
+            onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+            class="text-2xl px-3 py-2"
+        >
+            ☰
+        </button>
 
-        <div>
+    </div>
+
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden lg:hidden px-4 pb-4">
+
+        <div class="flex flex-col gap-3">
+
+            <a href="/dashboard">Dashboard</a>
+
             <a href="/receipts">Receipts</a>
-            <div class="sidebar_subsection">
-                {% if page_name == "receipts.add_receipt" %}
-                    <div><a href="/receipts/add_receipt" style="text-decoration:underline">Add Receipt</a></div>
-                {% else %}
-                    <div><a href="/receipts/add_receipt">Add Receipt</a></div>
-                {% endif%}
 
-                {% if page_name == "receipts.storage" %}
-                    <div><a href="/receipts/storage" style="text-decoration:underline">Receipt Storage</a></div>
-                {% else %}
-                    <div><a href="/receipts/storage">Receipt Storage</a></div>
-                {% endif%}
+            <a href="/receipts/add_receipt" class="ml-4">
+                Add Receipt
+            </a>
 
-            </div>
+            <a href="/receipts/storage" class="ml-4">
+                Receipt Storage
+            </a>
+
+            <a href="/products_catalog">
+                Products Catalog
+            </a>
+
+            <a href="/settings">
+                Settings
+            </a>
+
         </div>
 
-        {% if page_name == "products_catalog" %}
-            <div><a href="/products_catalog" style="text-decoration:underline">Products Catalog</a></div>
-        {% else %}
-            <div><a href="/products_catalog">Products Catalog</a></div>
-        {% endif%}
+    </div>
 
-        {% if page_name == "settings" %}
-            <div><a href="/settings" style="text-decoration:underline">Settings</a></div>
-        {% else %}
-            <div><a href="/settings">Settings</a></div>
-        {% endif%}
 
-        <br>
-        <br>
-        <br>
+    <!-- Desktop sidebar -->
+    <div class="hidden lg:flex lg:flex-col lg:fixed lg:left-0 lg:top-0 lg:w-64 lg:h-screen
+                bg-zinc-950 border-r border-zinc-800 p-6 sidebar_header">
 
-        <footer style="margin-top: auto;">
+        <h1
+            class="hero glitch layers cursor-pointer"
+            data-text="Receipt Parser"
+            onclick="window.location.href='/dashboard'"
+        >
+            Receipt Parser
+        </h1>
+
+        <div class="flex flex-col gap-3 mt-16">
+
+            {% if page_name == "dashboard" %}
+                <div><a href="/dashboard" style="text-decoration:underline">Dashboard</a></div>
+            {% else %}
+                <div><a href="/dashboard">Dashboard</a></div>
+            {% endif%}
+
+            <div>
+                <a href="/receipts">Receipts</a>
+                <div class="sidebar_subsection">
+                    {% if page_name == "receipts.add_receipt" %}
+                        <div><a href="/receipts/add_receipt" style="text-decoration:underline">Add Receipt</a></div>
+                    {% else %}
+                        <div><a href="/receipts/add_receipt">Add Receipt</a></div>
+                    {% endif%}
+
+                    {% if page_name == "receipts.storage" %}
+                        <div><a href="/receipts/storage" style="text-decoration:underline">Receipt Storage</a></div>
+                    {% else %}
+                        <div><a href="/receipts/storage">Receipt Storage</a></div>
+                    {% endif%}
+
+                </div>
+            </div>
+
+            {% if page_name == "products_catalog" %}
+                <div><a href="/products_catalog" style="text-decoration:underline">Products Catalog</a></div>
+            {% else %}
+                <div><a href="/products_catalog">Products Catalog</a></div>
+            {% endif%}
+
+            {% if page_name == "settings" %}
+                <div><a href="/settings" style="text-decoration:underline">Settings</a></div>
+            {% else %}
+                <div><a href="/settings">Settings</a></div>
+            {% endif%}
+
+        </div>
+
+        <footer class="mt-auto">
             <p>Ver {{ app_version }}</p>
         </footer>
+
     </div>
+
 </nav>

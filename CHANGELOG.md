@@ -1,3 +1,8 @@
+**0.11.1**
+- Various changes to Add Receipt page to make it responsive
+- Many Various changes to Receipt Card to make it responsive
+- Various changes to Model Input Overview component to make it responsive
+
 **0.11.0**
 - Various changes to navbar to make it responsive
 - Added Fixed position to navbar

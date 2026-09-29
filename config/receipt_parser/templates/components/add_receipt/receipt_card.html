@@ -1,253 +1,924 @@
 {% load static %}
 
-<div class="receipt-card">
-      <div class="receipt-header">
-        <div class="store-box">
-            <input type="text" value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}" name="store_id_fk" style="background-color:black; max-width: 100%;"/>
+<div class="receipt-card w-full min-w-0 overflow-hidden">
+
+    <div
+            class="
+            receipt-header
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            gap-4
+        "
+    >
+
+        <div class="store-box min-w-0">
+
+            <input
+                    type="text"
+                    value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}"
+                    name="store_id_fk"
+                    class="
+                    bg-black
+                    w-full
+                    max-w-full
+                    min-w-0
+                "
+            >
+
         </div>
 
-        <div class="receipt-meta">
-            <div>{{ receipt.store_id_fk.address }}</div>
-            <div>{{ receipt.store_id_fk.city }}</div>
-            <div>Receipt Date:
-                <input style="background-color:black" type="datetime" value="{{ receipt.receipt_datetime|date:'Y-m-d\TH:i' }}" name="receipt_datetime"/>
+
+        <div class="receipt-meta min-w-0 space-y-2">
+
+            <div class="break-words">
+                {{ receipt.store_id_fk.address }}
             </div>
-            <div>Reference:
-                <input style="background-color:black" type="text" value="{{ receipt.receipt_reference }}" name="receipt_reference"/>
+
+            <div class="break-words">
+                {{ receipt.store_id_fk.city }}
             </div>
+
+
+            <div class="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    sm:items-center
+                    gap-1
+                    sm:gap-2">
+
+                <span class="whitespace-nowrap">
+                    Receipt Date:
+                </span>
+
+                <input class="
+                        bg-black
+                        w-full
+                        sm:w-auto
+                        min-w-0"
+                        type="datetime-local"
+                        value="{{ receipt.receipt_datetime|date:'Y-m-d\TH:i' }}"
+                        name="receipt_datetime">
+
+            </div>
+
+
+            <div
+                    class="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    sm:items-center
+                    gap-1
+                    sm:gap-2
+                "
+            >
+
+                <span class="whitespace-nowrap">
+                    Reference:
+                </span>
+
+                <input
+                        class="
+                        bg-black
+                        w-full
+                        min-w-0
+                    "
+                        type="text"
+                        value="{{ receipt.receipt_reference }}"
+                        name="receipt_reference"
+                >
+
+            </div>
+
         </div>
+
     </div>
 
-    <hr class="divider">
 
-    <div class="items-section">
-        <div class="items-header grid grid-cols-8">
-            <span>Item</span>
-            <span></span>
-            <span>Category</span>
-            <span></span>
-            <span>IVA</span>
-            <span>Qty</span>
-            <span>UP</span>
-            <span>Price</span>
+    <hr class="divider my-4">
+
+
+    <!-- ========================================================= -->
+    <!-- ITEMS -->
+    <!-- ========================================================= -->
+
+    <div class="items-section min-w-0">
+
+        <!-- Desktop header -->
+        <div class="
+                hidden
+                lg:grid
+                grid-cols-8
+                gap-2
+                items-center
+                text-sm
+                font-bold
+                mb-2">
+
+            <span class="col-span-2">
+                Item
+            </span>
+
+            <span class="col-span-2">
+                Category
+            </span>
+
+            <span>
+                Description
+            </span>
+
+            <span>
+                Qty
+            </span>
+
+            <span>
+                UP
+            </span>
+
+            <span>
+                Price
+            </span>
+
         </div>
 
-        <div class="items-body" id="receipt_items">
+
+        <!-- Item rows -->
+        <div class="items-body min-w-0" id="receipt_items">
+
             {% for rel in receipt.rel_receipt_id_fk.all %}
-                    <div class="receipt-item-row item-row grid grid-cols-8">
-                        <input type="text" class="col-span-2" id="item_name_{{ rel.id }}" name="item_name_{{ rel.id }}" value="{{ rel.item_id_fk.item_name }}" style="background-color:black; font-family: Consolas;" />
-                        <input type="text" class="col-span-2" id="item_category_name_{{ rel.id }}" name="item_category_name_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_name }}" style="background-color:black; font-family: Consolas;" />
-                        <input type="text" id="item_category_description_{{ rel.id }}" name="item_category_description_{{ rel.id }}" value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}" style="background-color:black" />
-                        <input type="number" id="item_qty_{{ rel.id }}" name="item_qty_{{ rel.id }}" value="{{ rel.quantity }}" style="background-color:black" />
-                        <input type="number" id="item_unit_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_unit_price_{{ rel.id }}" value="{{ rel.price|floatformat:2 }}" style="background-color:black" />
-                        <input type="number" id="item_total_price_{{ rel.id }}" step="0.01" min="0" max="100000" name="item_total_price_{{ rel.id }}" style="background-color:black" readonly />
-                    </div>
-                {% empty %}
-                    <div class="receipt-item-row item-row grid grid-cols-8">
-                        <input type="text" class="col-span-2" id="item_name_new_1" name="item_name_new_1" value="New Item" style="background-color:black" />
-                        <input type="text" class="col-span-2" id="item_category_name_new_1" name="item_category_name_new_1" value="0" style="background-color:black" />
-                        <input type="text" id="item_category_description_new_1" name="item_category_description_new_1" value="-" style="background-color:black" />
-                        <input type="number" id="item_qty_new_1" name="item_qty_new_1" value="1" style="background-color:black" />
-                        <input type="number" id="item_unit_price_new_1" step="0.01" min="0" max="100000" name="item_unit_price_new_1" value="0" style="background-color:black" />
-                        <input type="number" id="item_total_price_new_1" step="0.01" min="0" max="100000" name="item_total_price_new_1"
-                        value="0" style="background-color:black" />
-                    </div>
-            {% endfor %}
-        </div>
-    </div>
 
-    <hr class="divider">
+            <div class="
+                        receipt-item-row
+                        item-row
+                        grid
+                        grid-cols-2
+                        lg:grid-cols-8
+                        gap-3
+                        p-3
+                        lg:p-0
+                        border
+                        lg:border-0
+                        border-zinc-700
+                        rounded
+                        mb-3
+                        min-w-0">
 
-    <div class="receipt-footer grid grid-cols-2">
-        <div class="totals grid grid-cols-3">
-            <div>
-                <strong>Grand Total</strong><br>
-                <span id="grandTotalWrapper">-</span>
+                <!-- Item name -->
+                <div class="col-span-2 lg:col-span-2 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Item
+                    </label>
+
+                    <input type="text"
+                            class="w-full
+                                min-w-0
+                                bg-black
+                                font-mono"
+                            id="item_name_{{ rel.id }}"
+                            name="item_name_{{ rel.id }}"
+                            value="{{ rel.item_id_fk.item_name }}">
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="col-span-2 lg:col-span-2 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Category
+                    </label>
+
+                    <input type="text"
+                            class="
+                                w-full
+                                min-w-0
+                                bg-black
+                                font-mono"
+                            id="item_category_name_{{ rel.id }}"
+                            name="item_category_name_{{ rel.id }}"
+                            value="{{ rel.item_id_fk.category_id_fk.item_category_name }}">
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="col-span-2 lg:col-span-1 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Description
+                    </label>
+
+                    <input type="text"
+                            class="
+                                w-full
+                                min-w-0
+                                bg-black"
+                            id="item_category_description_{{ rel.id }}"
+                            name="item_category_description_{{ rel.id }}"
+                            value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}">
+                </div>
+
+
+                <!-- Quantity -->
+                <div class="min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Qty
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_qty_{{ rel.id }}"
+                            name="item_qty_{{ rel.id }}"
+                            value="{{ rel.quantity }}">
+                </div>
+
+
+                <!-- Unit price -->
+                <div class="min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        UP
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_unit_price_{{ rel.id }}"
+                            step="0.01"
+                            min="0"
+                            max="100000"
+                            name="item_unit_price_{{ rel.id }}"
+                            value="{{ rel.price|floatformat:2 }}">
+                </div>
+
+
+                <!-- Total -->
+                <div class="col-span-2 lg:col-span-1 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Price
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_total_price_{{ rel.id }}"
+                            step="0.01"
+                            min="0"
+                            max="100000"
+                            name="item_total_price_{{ rel.id }}"
+                            readonly>
+
+                </div>
+
             </div>
-            <div>
-                <strong>Total IVA</strong><br>
-                {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.tax_details.vat_total|default:"-" }}
-            </div>
-        </div>
 
-        <div class="notes">
-            <textarea name="receipt_description" style="background-color:black;">
-                {{ receipt.receipt_description|default:'No notes' }}
-            </textarea>
-        </div>
 
-        <label for="payment_method_id_fk">Payment Method:</label>
-        <br>
-        <select name="payment_method_id_fk" id="payment_method_id_fk" style="background-color:black">
-            {% for payment_method in payment_methods %}
-                {% if receipt.payment_method_id_fk == payment_method %}
-                    <option value="{{ payment_method.payment_method_id }}" selected>{{ payment_method.payment_method_name }}</option>
-                {% else %}
-                    <option value="{{ payment_method.payment_method_id }}">{{ payment_method.payment_method_name }}</option>
-                {% endif %}
             {% empty %}
-                <option value="-1">N/A</option>
+
+
+            <!-- New item -->
+            <div class="receipt-item-row
+                        item-row
+                        grid
+                        grid-cols-2
+                        lg:grid-cols-8
+                        gap-3
+                        p-3
+                        border
+                        lg:border-0
+                        border-zinc-700
+                        rounded
+                        mb-3
+                        min-w-0">
+
+                <!-- Item -->
+                <div class="col-span-2 lg:col-span-2 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Item
+                    </label>
+
+                    <input type="text"
+                            class="w-full min-w-0 bg-black"
+                            id="item_name_new_1"
+                            name="item_name_new_1"
+                            value="New Item">
+                </div>
+
+
+                <!-- Category -->
+                <div class="col-span-2 lg:col-span-2 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Category
+                    </label>
+
+                    <input type="text"
+                            class="w-full min-w-0 bg-black"
+                            id="item_category_name_new_1"
+                            name="item_category_name_new_1"
+                            value="0">
+                </div>
+
+
+                <!-- Description -->
+                <div class="col-span-2 lg:col-span-1 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Description
+                    </label>
+
+                    <input type="text"
+                            class="w-full min-w-0 bg-black"
+                            id="item_category_description_new_1"
+                            name="item_category_description_new_1"
+                            value="-">
+                </div>
+
+
+                <!-- Quantity -->
+                <div class="min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Qty
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_qty_new_1"
+                            name="item_qty_new_1"
+                            value="1">
+                </div>
+
+
+                <!-- Unit price -->
+                <div class="min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        UP
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_unit_price_new_1"
+                            step="0.01"
+                            min="0"
+                            max="100000"
+                            name="item_unit_price_new_1"
+                            value="0">
+
+                </div>
+
+
+                <!-- Total -->
+                <div class="col-span-2 lg:col-span-1 min-w-0">
+
+                    <label class="block lg:hidden text-xs mb-1">
+                        Price
+                    </label>
+
+                    <input type="number"
+                            class="w-full min-w-0 bg-black"
+                            id="item_total_price_new_1"
+                            name="item_total_price_new_1"
+                            value="0"
+                            readonly>
+
+                </div>
+
+            </div>
+
             {% endfor %}
-        </select>
+
+        </div>
+
     </div>
 
-    <br>
 
-    <div style="font-family: OldEnglishTextMT">
-        <button type="submit" formaction="/receipts/add_full_receipt" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">
+    <hr class="divider my-4">
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+
+    <div class="receipt-footer
+            grid
+            grid-cols-1
+            lg:grid-cols-2
+            gap-6">
+
+        <!-- Totals -->
+        <div class="
+                totals
+                grid
+                grid-cols-2
+                sm:grid-cols-3
+                gap-4">
+
+            <div>
+                <strong>
+                    Grand Total
+                </strong>
+
+                <div id="grandTotalWrapper">
+                    -
+                </div>
+            </div>
+
+
+            <div>
+                <strong>
+                    Total IVA
+                </strong>
+
+                <div>
+                    {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.tax_details.vat_total|default:"-" }}
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Notes -->
+        <div class="notes min-w-0">
+
+            <label class="block mb-1">
+                Notes
+            </label>
+
+            <textarea name="receipt_description"
+                    class="
+                    bg-black
+                    w-full
+                    min-h-32
+                    resize-y
+                    min-w-0">{{ receipt.receipt_description|default:'No notes' }}</textarea>
+
+        </div>
+
+
+        <!-- Payment method -->
+        <div class="flex
+                flex-col
+                sm:flex-row
+                sm:items-center
+                gap-2">
+
+            <label for="payment_method_id_fk">
+                Payment Method:
+            </label>
+
+            <select name="payment_method_id_fk"
+                    id="payment_method_id_fk"
+                    class="
+                    bg-black
+                    w-full
+                    sm:w-auto">
+
+                {% for payment_method in payment_methods %}
+
+                {% if receipt.payment_method_id_fk == payment_method %}
+
+                    <option value="{{ payment_method.payment_method_id }}" selected>
+                        {{ payment_method.payment_method_name }}
+                    </option>
+
+                {% else %}
+
+                    <option value="{{ payment_method.payment_method_id }}">
+                        {{ payment_method.payment_method_name }}
+                    </option>
+
+                {% endif %}
+
+                {% empty %}
+
+                <option value="-1">
+                    N/A
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- ACTION BUTTONS -->
+    <!-- ========================================================= -->
+
+    <div class="flex
+            flex-col
+            sm:flex-row
+            gap-3
+            mt-6"
+            style="font-family: OldEnglishTextMT">
+
+        <button type="submit"
+                formaction="/receipts/add_full_receipt"
+                class="
+                border
+                border-white
+                text-white
+                px-4
+                py-2
+                hover:bg-white
+                hover:text-black
+                transition
+                w-full
+                sm:w-auto">
             Update Receipt
         </button>
 
-        <button type="submit" formaction="/receipts/load_receipt" class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">
+
+        <button type="submit"
+                formaction="/receipts/load_receipt"
+                class="
+                border
+                border-white
+                text-white
+                px-4
+                py-2
+                hover:bg-white
+                hover:text-black
+                transition
+                w-full
+                sm:w-auto">
             Load Receipt
         </button>
+
     </div>
 
 </div>
 
-<div id="receiptContextMenu" style="
-        display:none;
-        position:absolute;
-        background:#222;
-        border:1px solid white;
-        color:white;
-        padding:4px;
-        cursor:pointer;
-        z-index:1000;">
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuAdd">Add</div>
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuDuplicate">Duplicate</div>
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuMoveUp">Move Up</div>
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuMoveDown">Move Down</div>
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuAskIfSoslo">Soslo?</div>
-    <div class="menu-item transition-opacity duration-150 hover:opacity-20" id="menuDelete">Delete</div>
+
+<!-- ============================================================= -->
+<!-- CONTEXT MENU -->
+<!-- ============================================================= -->
+
+<div id="receiptContextMenu"
+        class="hidden fixed
+        bg-zinc-900
+        border
+        border-white
+        text-white
+        p-1
+        z-[1000]">
+    <div class="menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuAdd">
+        Add
+    </div>
+
+    <div class="menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuDuplicate">
+        Duplicate
+    </div>
+
+    <div class="
+            menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuMoveUp">
+        Move Up
+    </div>
+
+    <div class="menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuMoveDown">
+        Move Down
+    </div>
+
+    <div class="
+            menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuAskIfSoslo">
+        Soslo?
+    </div>
+
+    <div class="menu-item
+            transition-opacity
+            duration-150
+            hover:opacity-20
+            px-2
+            py-1"
+            id="menuDelete">
+        Delete
+    </div>
+
 </div>
 
+
 <script>
-    function updateGrandTotal(){
-        const grand_total_wrapper = document.getElementById("grandTotalWrapper");
-        let grand_total_value = 0.0;
+function updateGrandTotal() {
 
-        document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
-            grand_total_value +=  Number(totalItemPrice.value);
-            grand_total_wrapper.textContent = Number(grand_total_value).toFixed(2);
+    const grandTotalWrapper =
+        document.getElementById("grandTotalWrapper");
+
+    let grandTotalValue = 0.0;
+
+    document
+        .querySelectorAll("input[id^='item_total_price_']")
+        .forEach(function (totalItemPrice) {
+
+            grandTotalValue +=
+                Number(totalItemPrice.value);
+
         });
-    }
 
-    var newItemsAddedCounter = 2;
+    grandTotalWrapper.textContent =
+        grandTotalValue.toFixed(2);
+}
 
-    function addReceiptItem() {
 
-        const newItem =
-            '<div class="receipt-item-row item-row grid grid-cols-8">' +
-            '    <input type="text" class="col-span-2" id="item_name_new_' + newItemsAddedCounter + '" name="item_name_new_' + newItemsAddedCounter + '" value="New Item" style="background-color:black" />' +
-            '    <input type="text" class="col-span-2" id="item_category_name_new_' + newItemsAddedCounter + '" name="item_category_name_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
-            '    <input type="text" id="item_category_description_new_' + newItemsAddedCounter + '" name="item_category_description_new_' + newItemsAddedCounter + '" value="-" style="background-color:black" />' +
-            '    <input type="number" id="item_qty_new_' + newItemsAddedCounter + '" name="item_qty_new_' + newItemsAddedCounter + '" value="1" style="background-color:black" />' +
-            '    <input type="number" step="0.01" min="0" max="100000" id="item_unit_price_new_' + newItemsAddedCounter + '" name="item_unit_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
-            '    <input type="number" step="0.01" min="0" max="100000" id="item_total_price_new_' + newItemsAddedCounter + '" name="item_total_price_new_' + newItemsAddedCounter + '" value="0" style="background-color:black" />' +
-            '</div>';
+var newItemsAddedCounter = 2;
 
-        selectedRow.insertAdjacentHTML("afterend", newItem);
 
-        let prefix = "new_" + newItemsAddedCounter;
+function addReceiptItem() {
 
-        let qtyInput = document.getElementById(`item_qty_${prefix}`);
+    const newItem =
 
-        qtyInput.addEventListener("input", function () {
+        '<div class="receipt-item-row item-row grid grid-cols-2 lg:grid-cols-8 gap-3 p-3 lg:p-0 border lg:border-0 border-zinc-700 rounded mb-3 min-w-0">' +
+
+        '    <div class="col-span-2 lg:col-span-2 min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">Item</label>' +
+        '        <input type="text" class="w-full min-w-0 bg-black" id="item_name_new_' +
+        newItemsAddedCounter +
+        '" name="item_name_new_' +
+        newItemsAddedCounter +
+        '" value="New Item" />' +
+        '    </div>' +
+
+        '    <div class="col-span-2 lg:col-span-2 min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">Category</label>' +
+        '        <input type="text" class="w-full min-w-0 bg-black" id="item_category_name_new_' +
+        newItemsAddedCounter +
+        '" name="item_category_name_new_' +
+        newItemsAddedCounter +
+        '" value="0" />' +
+        '    </div>' +
+
+        '    <div class="col-span-2 lg:col-span-1 min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">Description</label>' +
+        '        <input type="text" class="w-full min-w-0 bg-black" id="item_category_description_new_' +
+        newItemsAddedCounter +
+        '" name="item_category_description_new_' +
+        newItemsAddedCounter +
+        '" value="-" />' +
+        '    </div>' +
+
+        '    <div class="min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">Qty</label>' +
+        '        <input type="number" class="w-full min-w-0 bg-black" id="item_qty_new_' +
+        newItemsAddedCounter +
+        '" name="item_qty_new_' +
+        newItemsAddedCounter +
+        '" value="1" />' +
+        '    </div>' +
+
+        '    <div class="min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">UP</label>' +
+        '        <input type="number" step="0.01" min="0" max="100000" class="w-full min-w-0 bg-black" id="item_unit_price_new_' +
+        newItemsAddedCounter +
+        '" name="item_unit_price_new_' +
+        newItemsAddedCounter +
+        '" value="0" />' +
+        '    </div>' +
+
+        '    <div class="col-span-2 lg:col-span-1 min-w-0">' +
+        '        <label class="block lg:hidden text-xs mb-1">Price</label>' +
+        '        <input type="number" step="0.01" min="0" max="100000" class="w-full min-w-0 bg-black" id="item_total_price_new_' +
+        newItemsAddedCounter +
+        '" name="item_total_price_new_' +
+        newItemsAddedCounter +
+        '" value="0" readonly />' +
+        '    </div>' +
+
+        '</div>';
+
+
+    selectedRow.insertAdjacentHTML(
+        "afterend",
+        newItem
+    );
+
+
+    let prefix =
+        "new_" + newItemsAddedCounter;
+
+
+    let qtyInput =
+        document.getElementById(
+            `item_qty_${prefix}`
+        );
+
+
+    qtyInput.addEventListener(
+        "input",
+        function () {
+
             updateTotal(prefix);
             updateGrandTotal();
-        });
 
-        document.getElementById(`item_unit_price_${prefix}`)
-            .addEventListener("input", function () {
+        }
+    );
+
+
+    document
+        .getElementById(`item_unit_price_${prefix}`)
+        .addEventListener(
+            "input",
+            function () {
+
                 updateTotal(prefix);
                 updateGrandTotal();
-            });
-        updateTotal(prefix);
-        updateGrandTotal();
 
-        newItemsAddedCounter++;
+            }
+        );
 
-    }
 
-    const menu = document.getElementById("receiptContextMenu");
+    updateTotal(prefix);
+    updateGrandTotal();
 
-    let selectedRow = null;
-    document.addEventListener("contextmenu", function (e) {
+    newItemsAddedCounter++;
 
-        if(selectedRow != null){
-            selectedRow.style = "none";
+}
+
+
+const menu =
+    document.getElementById("receiptContextMenu");
+
+
+let selectedRow = null;
+
+
+document.addEventListener(
+    "contextmenu",
+    function (e) {
+
+        const row =
+            e.target.closest(".receipt-item-row");
+
+        if (!row) {
+            return;
         }
 
-        const row = e.target.closest(".receipt-item-row");
-
-        if (!row)
-            return;
-
         e.preventDefault();
+
+        if (selectedRow) {
+            selectedRow.style.border = "";
+        }
+
         selectedRow = row;
 
-        selectedRow.style = "border-style: dotted; border-width: 3px; border-color: red;"
+        selectedRow.style.border =
+            "3px dotted red";
 
-        menu.style.left = e.pageX + "px";
-        menu.style.top = e.pageY + "px";
-        menu.style.display = "block";
-    });
 
-    document.addEventListener("click", function () {
-        selectedRow.style = "none";
+        menu.style.left =
+            e.pageX + "px";
 
-        menu.style.display = "none";
-    });
+        menu.style.top =
+            e.pageY + "px";
 
-    document.getElementById("menuDelete").addEventListener("click", function () {
+        menu.classList.remove("hidden");
 
-        if (selectedRow)
-            selectedRow.remove();
-
-        menu.style.display = "none";
-    });
-
-    document.getElementById("menuAskIfSoslo").addEventListener("click", function () {
-        confirm("https://youtu.be/o5TrzdJ9Xss?si=0iZxyyRTM5rYPjfc");
-        menu.style.display = "none";
-    });
-
-    document.getElementById("menuAdd").addEventListener("click", function () {
-        menu.style.display = "none";
-        addReceiptItem()
-    });
-
-    function updateTotal(prefix) {
-
-        const qty = parseFloat(document.getElementById(`item_qty_${prefix}`).value) || 0;
-        const unitPrice = parseFloat(document.getElementById(`item_unit_price_${prefix}`).value) || 0;
-
-        document.getElementById(`item_total_price_${prefix}`).value = (qty * unitPrice).toFixed(2);
     }
+);
 
 
+document.addEventListener(
+    "click",
+    function (e) {
 
-document.addEventListener("DOMContentLoaded", function () {
+        if (!e.target.closest("#receiptContextMenu")) {
 
-    document.querySelectorAll("input[id^='item_qty_']").forEach(function (qtyInput) {
+            if (selectedRow) {
+                selectedRow.style.border = "";
+            }
 
-        const id = qtyInput.id.replace("item_qty_", "");
+            menu.classList.add("hidden");
 
-        updateTotal(id);
-        updateGrandTotal();
+        }
 
-        qtyInput.addEventListener("input", function () {
-            updateTotal(id);
+    }
+);
+
+
+document
+    .getElementById("menuDelete")
+    .addEventListener(
+        "click",
+        function () {
+
+            if (selectedRow) {
+                selectedRow.remove();
+                selectedRow = null;
+            }
+
+            menu.classList.add("hidden");
+
             updateGrandTotal();
+
+        }
+    );
+
+
+document
+    .getElementById("menuAskIfSoslo")
+    .addEventListener(
+        "click",
+        function () {
+            confirm("https://youtu.be/o5TrzdJ9Xss?si=0iZxyyRTM5rYPjfc");
+
+            menu.classList.add("hidden");
+
+        }
+    );
+
+
+document
+    .getElementById("menuAdd")
+    .addEventListener("click",
+        function () {
+
+            menu.classList.add("hidden");
+
+            if (selectedRow) {
+                addReceiptItem();
+            }
+
         });
 
-        document.getElementById(`item_unit_price_${id}`)
-            .addEventListener("input", function () {
-                updateTotal(id);
-                updateGrandTotal();
-            });
 
-    });
-});
+function updateTotal(prefix) {
+
+    const qty = parseFloat(document.getElementById(`item_qty_${prefix}`).value) || 0;
+    const unitPrice = parseFloat(document.getElementById(`item_unit_price_${prefix}`).value) || 0;
+    const totalInput = document.getElementById(`item_total_price_${prefix}`);
+
+    totalInput.value =
+        (qty * unitPrice).toFixed(2);
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        document.querySelectorAll("input[id^='item_qty_']").forEach(function (qtyInput) {
+
+            const id = qtyInput.id.replace("item_qty_", "");
+
+            updateTotal(id);
+            updateGrandTotal();
+
+            qtyInput.addEventListener(
+                "input",
+                function () {
+
+                    updateTotal(id);
+                    updateGrandTotal();
+
+                }
+            );
+
+            document.getElementById(`item_unit_price_${id}`)
+                .addEventListener("input", function () {
+                        updateTotal(id);
+                        updateGrandTotal();
+                    });
+        });
+
+    }
+);
+
 </script>

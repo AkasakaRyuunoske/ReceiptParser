@@ -4,63 +4,76 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+
 <div id="stream-container"></div>
 
-<main>
+<main class="w-full min-w-0 px-3 py-4 sm:px-5 lg:px-8">
 
-    <form class="item-row grid grid-cols-3"
-                id="loadImageForm" method="POST"
-                enctype="multipart/form-data" action="add_receipt/upload_input_image">
-                {% csrf_token %}
-                {{ form.as_p }}
-
-                        <input
-                    type="file"
-                    id="fileInput"
-                    class="hidden"
-                    name="image"
-                    accept="image/*"/>
-
-                <input type="checkbox" name="doInference" id="doInference" class="hidden">
-
-    </form>
-    <form  class="item-row grid grid-cols-3"
-                id="addReceiptForm" method="POST"
-                enctype="multipart/form-data" action="add_receipt/upload_input_image">
+    <!-- Hidden upload form -->
+    <form
+        class="w-full"
+        id="loadImageForm"
+        method="POST"
+        enctype="multipart/form-data"
+        action="add_receipt/upload_input_image"
+    >
         {% csrf_token %}
+
         {{ form.as_p }}
 
-        {% include "components/add_receipt/model_input_overview.html" %}
+        <input
+            type="file"
+            id="fileInput"
+            class="hidden"
+            name="image"
+            accept="image/*"
+        >
 
-        <div class="col-span-2">
-                {% include "components/add_receipt/receipt_card.html" with receipt=receipt %}
-        </div>
+        <input
+            type="checkbox"
+            name="doInference"
+            id="doInference"
+            class="hidden"
+        >
     </form>
+
+
+    <!-- Main receipt form -->
+    <form
+        class="w-full"
+        id="addReceiptForm"
+        method="POST"
+        enctype="multipart/form-data"
+        action="add_receipt/upload_input_image"
+    >
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <!--
+            Mobile:
+                one column
+
+            Large screens:
+                model overview | receipt
+        -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- Model / image / JSON editor -->
+            <section class="min-w-0">
+                {% include "components/add_receipt/model_input_overview.html" %}
+            </section>
+
+
+            <!-- Receipt -->
+            <section class="min-w-0">
+                {% include "components/add_receipt/receipt_card.html" with receipt=receipt %}
+            </section>
+
+        </div>
+
+    </form>
+
 </main>
 
-<script>
-function startStream() {
-    const evtSource = new EventSource("/stream/");
-    console.log("Starting Stream")
-
-    let output = "";
-
-    evtSource.onmessage = function(event) {
-        console.log(event.data)
-        output += event.data;
-
-        document.getElementById("stream-container").innerText = output;
-        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
-
-    };
-
-    evtSource.onerror = function() {
-        document.getElementById("LoadingIndicator").innerText = "";
-        console.log("Error streaming")
-        evtSource.close();
-    };
-}
-
-startStream()
-</script>
 {% endblock %}

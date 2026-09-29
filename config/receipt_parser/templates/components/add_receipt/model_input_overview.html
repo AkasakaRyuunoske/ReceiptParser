@@ -1,53 +1,170 @@
 {% load static %}
+
 <link rel="stylesheet" href="{% static 'custom_jsoneditor.css' %}">
 
-<main>
-    <div class="img grid grid-cold-2">
-        <img src="{{ image_path.url }}" style="width: 50%;"/>
+<div class="w-full min-w-0">
 
-        <h2 id="LoadingIndicator">Model Currently Afk<span>...</span></h2>
-        <div id="stream-container"></div>
-    </div>
+    <!-- Image + loading information -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
-    <div class="json">
-        <pre id="jsoneditor" class="jsoneditor"></pre>
-    </div>
+        <!-- Receipt image -->
+        <div class="min-w-0 flex justify-center items-start">
 
-    <div class="controls">
-        <div>
-            <span> Image path: </span>
-            <span id="fileName"> {{ image_path.url }}</span>
+            <img
+                src="{{ image_path.url }}"
+                class="w-full max-w-md h-auto object-contain"
+                alt="Receipt image"
+            >
+
         </div>
 
-        <div>
-            <div class="flex items-center gap-4">
 
-                <button
+        <!-- Model status -->
+        <div class="min-w-0 flex flex-col justify-center">
+
+<!--            <h2-->
+<!--                id="LoadingIndicator"-->
+<!--                class="text-lg sm:text-xl break-words"-->
+<!--            >-->
+<!--                Model Currently Afk<span>...</span>-->
+<!--            </h2>-->
+
+            <div
+                id="stream-container"
+                class="mt-2 max-h-48 overflow-auto break-words text-sm"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JSON editor -->
+    <div class="w-full min-w-0 overflow-hidden mb-6">
+
+        <pre
+            id="jsoneditor"
+            class="jsoneditor w-full"
+        ></pre>
+
+    </div>
+
+
+    <!-- Controls -->
+    <div class="w-full space-y-4">
+
+        <!-- Image path -->
+        <div class="min-w-0">
+
+            <span>
+                Image path:
+            </span>
+
+            <span
+                id="fileName"
+                class="block sm:inline-block break-all"
+            >
+                {{ image_path.url }}
+            </span>
+
+        </div>
+
+
+        <!-- Buttons and controls -->
+        <div
+            class="
+                flex
+                flex-col
+                sm:flex-row
+                sm:flex-wrap
+                items-stretch
+                sm:items-center
+                gap-3
+            "
+        >
+
+            <!-- Load image -->
+            <button
                 id="uploadButton"
-                class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition"
-                type="button">
-                    Load Image
-                </button>
+                class="
+                    border
+                    border-white
+                    text-white
+                    px-4
+                    py-2
+                    hover:bg-white
+                    hover:text-black
+                    transition
+                    w-full
+                    sm:w-auto
+                "
+                type="button"
+            >
+                Load Image
+            </button>
 
-                <button class="border border-white text-white px-4 py-2 hover:bg-white hover:text-black transition">Reinference</button>
 
-                <select class="border border-white text-white bg-black px-4 py-2 hover:bg-white hover:text-black transition">
-                    <option>gemma4:e2b</option>
-                    <option>gemma4:e4b</option>
-                    <option>gemma4:e26b</option>
-                    <option>gemma4:e31b</option>
-                </select>
+            <!-- Reinference -->
+            <button
+                type="button"
+                class="
+                    border
+                    border-white
+                    text-white
+                    px-4
+                    py-2
+                    hover:bg-white
+                    hover:text-black
+                    transition
+                    w-full
+                    sm:w-auto
+                "
+            >
+                Reinference
+            </button>
 
-                <div>
-                    <label for="doInferenceMirror">Inference?</label>
-                    <input type="checkbox" name="doInferenceMirror" id="doInferenceMirror">
-                </div>
+
+            <!-- Model -->
+            <select
+                class="
+                    border
+                    border-white
+                    text-white
+                    bg-black
+                    px-4
+                    py-2
+                    w-full
+                    sm:w-auto
+                "
+            >
+                <option>gemma4:e2b</option>
+                <option>gemma4:e4b</option>
+                <option>gemma4:e26b</option>
+                <option>gemma4:e31b</option>
+            </select>
+
+
+            <!-- Inference checkbox -->
+            <div class="flex items-center gap-2">
+
+                <label for="doInferenceMirror">
+                    Inference?
+                </label>
+
+                <input
+                    type="checkbox"
+                    name="doInferenceMirror"
+                    id="doInferenceMirror"
+                >
+
             </div>
+
         </div>
 
-
     </div>
-</main>
+
+</div>
+
 
 <script>
 const container = document.getElementById("jsoneditor");
@@ -68,80 +185,137 @@ const data = {{ receipt.receipt_resource_id_fk.raw_text_json|safe }};
 editor.set(data);
 </script>
 
+
 <script>
 const fileInput = document.getElementById("fileInput");
 const uploadButton = document.getElementById("uploadButton");
 const fileName = document.getElementById("fileName");
 const loadImageForm = document.getElementById("loadImageForm");
 
-const doInferenceMirrorCheckbox = document.getElementById("doInferenceMirror");
-const doInferenceCheckbox = document.getElementById("doInference");
+const doInferenceMirrorCheckbox =
+    document.getElementById("doInferenceMirror");
+
+const doInferenceCheckbox =
+    document.getElementById("doInference");
+
 
 doInferenceMirrorCheckbox.addEventListener("click", () => {
-    doInferenceCheckbox.checked = doInferenceMirrorCheckbox.checked;
+
+    doInferenceCheckbox.checked =
+        doInferenceMirrorCheckbox.checked;
+
 });
+
 
 uploadButton.addEventListener("click", () => {
+
     fileInput.click();
+
 });
 
+
 fileInput.addEventListener("change", () => {
+
     if (fileInput.files.length > 0) {
-        fileName.textContent = "/media/receipt_parser/" + fileInput.files[0].name;
+
+        fileName.textContent =
+            "/media/receipt_parser/" +
+            fileInput.files[0].name;
+
         doInferenceCheckbox.click();
+
         loadImageForm.submit();
+
     } else {
-        fileName.textContent = "{{ image_path.url }}";
+
+        fileName.textContent =
+            "{{ image_path.url }}";
+
     }
+
 });
 </script>
 
+
 <script>
 function getRandomVisibleColor() {
-    // Generate random RGB values
+
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
 
-    // Calculate luminance (perceived brightness)
-    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    const luminance =
+        0.2126 * r +
+        0.7152 * g +
+        0.0722 * b;
 
-    // Minimum luminance for good contrast (4.5:1 WCAG ratio)
     const minLuminance = 44.625;
 
-    // If luminance is too low, try again
     if (luminance < minLuminance) {
         return getRandomVisibleColor();
     }
 
-    // Convert RGB to hex
     const toHex = (c) => {
+
         let hex = c.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
+
+        return hex.length === 1
+            ? "0" + hex
+            : hex;
+
     };
 
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
+
 function startStream() {
-    const evtSource = new EventSource("/stream/");
-    console.log("Starting Stream")
+
+    const evtSource =
+        new EventSource("/stream/");
+
+    console.log("Starting Stream");
 
     let output = "";
 
     evtSource.onmessage = function(event) {
-        console.log(event.data)
+
+        console.log(event.data);
+
         output += event.data;
 
-        document.getElementById("stream-container").innerText = output;
-        document.getElementById("LoadingIndicator").style.color = getRandomVisibleColor();
+        const streamContainer =
+            document.getElementById("stream-container");
+
+        const loadingIndicator =
+            document.getElementById("LoadingIndicator");
+
+        if (streamContainer) {
+            streamContainer.innerText = output;
+        }
+
+        if (loadingIndicator) {
+            loadingIndicator.style.color =
+                getRandomVisibleColor();
+        }
 
     };
+
 
     evtSource.onerror = function() {
-        document.getElementById("LoadingIndicator").innerText = "";
-        console.log("Error streaming")
+
+        const loadingIndicator =
+            document.getElementById("LoadingIndicator");
+
+        if (loadingIndicator) {
+            loadingIndicator.innerText = "";
+        }
+
+        console.log("Error streaming");
+
         evtSource.close();
+
     };
+
 }
 </script>

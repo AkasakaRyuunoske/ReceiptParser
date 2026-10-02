@@ -45,11 +45,11 @@
                   </ul>
 
                   <details>
-                      <summary>Raw Inference Data</summary>
+                      <summary>Raw Inference Data:</summary>
                       <pre style="white-space: pre-wrap;">
                           {{ receipt.receipt_resource_id_fk.raw_text_json }}
                       </pre>
-                      <summary>Raw Inference Data</summary>
+                      <summary>Inference Image:</summary>
                       <pre style="white-space: pre-wrap;">
                           {{ receipt.receipt_resource_id_fk.original_image_path }}
                           <img src="{{ receipt.receipt_resource_id_fk.original_image_path }}" style="width: 20rem;"/>

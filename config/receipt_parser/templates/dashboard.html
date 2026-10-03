@@ -4,85 +4,241 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+
 <script src="https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.min.js"></script>
 
+<style>
+    /*
+     * Desktop
+     */
+    .dashboard-chart {
+        width: 700px;
+        height: 500px;
+    }
+
+    .dashboard-chart-container {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .weekly-chart-container {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-chart,
+    .calendar-chart {
+        max-width: 100%;
+    }
+
+    /*
+     * Mobile
+     */
+    @media (max-width: 768px) {
+
+        .dashboard-chart-container,
+        .weekly-chart-container {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-chart {
+            width: 100% !important;
+            height: 400px !important;
+        }
+
+        .dashboard-chart-container,
+        .weekly-chart-container {
+            width: 100%;
+            padding: 0 0.5rem;
+            box-sizing: border-box;
+        }
+
+        main .hero {
+            font-size: 2rem;
+        }
+
+        #calendarContainer {
+            width: 100%;
+            height: auto !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .calendar-chart {
+            width: 100% !important;
+            height: 13rem !important;
+        }
+
+        #receipt-modal > div {
+            width: calc(100% - 1rem) !important;
+            max-width: none !important;
+            max-height: calc(100vh - 1rem) !important;
+            margin: 0.5rem;
+            padding: 1rem !important;
+            box-sizing: border-box;
+        }
+
+        #modal-content {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        main .hero {
+            font-size: 1.6rem;
+        }
+
+        .dashboard-chart {
+            height: 350px !important;
+        }
+
+        .calendar-chart {
+            height: 11rem !important;
+        }
+    }
+</style>
+
 <main>
+
     <div style="text-align:center">
         <h1 class='hero glitch layers' data-text='Dashboard'>Dashboard</h1>
     </div>
 
     <br>
+
     <div style="text-align:center">
-        <h1 class='hero glitch layers' data-text='Weekly Spending' style="color:white">Weekly Spending</h1>
+        <h1 class='hero glitch layers'
+            data-text='Weekly Spending'
+            style="color:white">
+            Weekly Spending
+        </h1>
     </div>
+
     <br>
 
-    <div class="grid grid-cols-2">
-        <div id="weeklySpendingChart" style="width:700px; height:500px;"></div>
+    <div class="weekly-chart-container">
+        <div id="weeklySpendingChart"
+             class="dashboard-chart"></div>
     </div>
 
     <br>
+
     <div style="text-align:center">
-        <h1 class='hero glitch layers' data-text='Monthly Spending' style="color:white">Monthly Spending</h1>
-    </div>
-    <br>
-
-    <div class="grid grid-cols-2">
-        <div id="categorySpendingChart" style="width:700px; height:500px;"></div>
-        <div id="storeSpendingChart" style="width:700px; height:500px;"></div>
-    </div>
-
-    <div class="grid grid-cols-2">
-        <div id="itemSpendingChart" style="width:700px; height:500px;"></div>
-        <div id="monthlySpendingChart" style="width:700px; height:500px;"></div>
+        <h1 class='hero glitch layers'
+            data-text='Monthly Spending'
+            style="color:white">
+            Monthly Spending
+        </h1>
     </div>
 
     <br>
+
+    <div class="dashboard-chart-container">
+
+        <div id="categorySpendingChart"
+             class="dashboard-chart"></div>
+
+        <div id="storeSpendingChart"
+             class="dashboard-chart"></div>
+
+    </div>
+
+    <div class="dashboard-chart-container">
+
+        <div id="itemSpendingChart"
+             class="dashboard-chart"></div>
+
+        <div id="monthlySpendingChart"
+             class="dashboard-chart"></div>
+
+    </div>
+
+    <br>
+
     <div style="text-align:center">
-        <h1 class='hero glitch layers' data-text='Yearly Spending' style="color:white">Yearly Spending</h1>
+        <h1 class='hero glitch layers'
+            data-text='Yearly Spending'
+            style="color:white">
+            Yearly Spending
+        </h1>
     </div>
+
     <br>
 
-    <div id="calendarContainer" style="width:100%; height:15rem;"> </div>
+    <div id="calendarContainer"
+         style="width:100%; height:15rem;">
+    </div>
+
+    <!-- Receipt modal -->
 
     <div id="receipt-modal"
-         class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeModal()">
+         class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50"
+         onclick="closeModal()">
 
         <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
              onclick="event.stopPropagation()"
-             style="overflow: auto; max-width: 50rem; max-height: 50rem;"
-        >
+             style="
+                 overflow: auto;
+                 max-width: 50rem;
+                 max-height: 50rem;
+             ">
 
             <button onclick="closeModal()"
                     class="absolute top-3 right-3 text-white text-xl">
                 ✕
             </button>
 
-            <div id="modal-content" class="text-white">
+            <div id="modal-content"
+                 class="text-white">
                 Loading...
             </div>
+
         </div>
     </div>
+
 </main>
 
 {{ receipt_lookup|json_script:"receipt-data" }}
 
 <script>
 
-function create_spending_chart(id, name, data, type){
-    const store_spending_chart = echarts.init(document.getElementById(id));
+/*
+ * Keep track of all ECharts instances.
+ *
+ * This allows us to resize every chart when the
+ * browser viewport changes.
+ */
+const dashboardCharts = [];
+
+
+function create_spending_chart(id, name, data, type) {
+
+    const element = document.getElementById(id);
+
+    const chart = echarts.init(element);
+
+    /*
+     * Store the chart so it can later be resized.
+     */
+    dashboardCharts.push(chart);
 
     let adapted_spending_data_values = [];
     let adapted_spending_data_names = [];
 
     for (let i = 0; i < data.length; i++) {
+
         adapted_spending_data_values[i] = data[i].value;
         adapted_spending_data_names[i] = data[i].name;
     }
 
-    const store_spending_chart_option = {
+    const chart_option = {
+
         title: {
             text: name,
+
             textStyle: {
                 color: "white",
                 fontSize: 24,
@@ -92,13 +248,17 @@ function create_spending_chart(id, name, data, type){
 
         tooltip: {
             trigger: "item",
+
             backgroundColor: "#222",
             borderColor: "#777",
             borderWidth: 2,
+
             textStyle: {
                 color: "#fff"
             },
+
             formatter: function (params) {
+
                 return `
                     <span style="
                         display:inline-block;
@@ -108,7 +268,9 @@ function create_spending_chart(id, name, data, type){
                         border-radius:50%;
                         margin-right:6px;
                     "></span>
+
                     <b>${params.name}</b><br>
+
                     € ${Number(params.value).toFixed(2)}
                     (${params.percent}%)
                 `;
@@ -122,7 +284,9 @@ function create_spending_chart(id, name, data, type){
 
         xAxis: {
             type: 'category',
+
             data: adapted_spending_data_names,
+
             axisLabel: {
                 color: "#ffffff",
                 fontSize: 14,
@@ -133,6 +297,7 @@ function create_spending_chart(id, name, data, type){
 
         yAxis: {
             type: 'value',
+
             axisLabel: {
                 color: "#ffffff",
                 fontSize: 14,
@@ -145,127 +310,316 @@ function create_spending_chart(id, name, data, type){
             type: type,
             data: data
         }]
-    }
+    };
 
-    store_spending_chart.setOption(store_spending_chart_option);
+    chart.setOption(chart_option);
 }
 
-// Per Store Spending Chart
-const store_spending_data = {{ store_spending_data|safe }}
-const store_spending_chart_title = 'Monthly Spending per Store'
-create_spending_chart("storeSpendingChart", store_spending_chart_title, store_spending_data, "pie")
 
-// Per Category Spending Chart
-const category_spending_data = {{ pie_data|safe }}
-const category_spending_chart_title = 'Monthly Spending per Category'
-create_spending_chart("categorySpendingChart", category_spending_chart_title, category_spending_data, "pie")
+/*
+ * Per Store Spending Chart
+ */
+const store_spending_data = {{ store_spending_data|safe }};
 
-// Per Item Spending Chart
-const item_spending_data = {{ item_spending_data|safe }}
-const item_spending_chart_title = 'Monthly Spending per Item'
-create_spending_chart("itemSpendingChart", item_spending_chart_title, item_spending_data, "pie")
+const store_spending_chart_title =
+    'Monthly Spending per Store';
 
-// Per Month Spending Chart
-const monthly_spending_data = {{ monthly_spending_data|safe }}
-const monthly_spending_chart_title = 'Monthly Spending'
-create_spending_chart("monthlySpendingChart", monthly_spending_chart_title, monthly_spending_data, "bar")
+create_spending_chart(
+    "storeSpendingChart",
+    store_spending_chart_title,
+    store_spending_data,
+    "pie"
+);
 
-// Current week's spending chart
-const weekly_spending_data = {{ this_week_spending_data|safe }}
-const weekly_spending_chart_title = 'Weekly Spending'
-create_spending_chart("weeklySpendingChart", weekly_spending_chart_title, weekly_spending_data, "bar")
 
-const calendar_spending_data = {{ calendar_spending_data|safe }}
+/*
+ * Per Category Spending Chart
+ */
+const category_spending_data = {{ pie_data|safe }};
 
-const receiptLookup = JSON.parse(document.getElementById("receipt-data").textContent);
+const category_spending_chart_title =
+    'Monthly Spending per Category';
+
+create_spending_chart(
+    "categorySpendingChart",
+    category_spending_chart_title,
+    category_spending_data,
+    "pie"
+);
+
+
+/*
+ * Per Item Spending Chart
+ */
+const item_spending_data = {{ item_spending_data|safe }};
+
+const item_spending_chart_title =
+    'Monthly Spending per Item';
+
+create_spending_chart(
+    "itemSpendingChart",
+    item_spending_chart_title,
+    item_spending_data,
+    "pie"
+);
+
+
+/*
+ * Per Month Spending Chart
+ */
+const monthly_spending_data = {{ monthly_spending_data|safe }};
+
+const monthly_spending_chart_title =
+    'Monthly Spending';
+
+create_spending_chart(
+    "monthlySpendingChart",
+    monthly_spending_chart_title,
+    monthly_spending_data,
+    "bar"
+);
+
+
+/*
+ * Current week's spending chart
+ */
+const weekly_spending_data = {{ this_week_spending_data|safe }};
+
+const weekly_spending_chart_title =
+    'Weekly Spending';
+
+create_spending_chart(
+    "weeklySpendingChart",
+    weekly_spending_chart_title,
+    weekly_spending_data,
+    "bar"
+);
+
+
+/*
+ * Calendar data
+ */
+const calendar_spending_data =
+    {{ calendar_spending_data|safe }};
+
+const receiptLookup =
+    JSON.parse(
+        document.getElementById("receipt-data").textContent
+    );
+
 
 let created_calendars_counter = 0;
 
-function create_spending_calendar_chart(daterange){
+
+/*
+ * Create yearly spending calendar.
+ */
+function create_spending_calendar_chart(daterange) {
+
     created_calendars_counter++;
 
-    const calendar_container = document.getElementById("calendarContainer");
-    let new_chart_id = `spending_calendar_chart_${created_calendars_counter}`
+    const calendar_container =
+        document.getElementById("calendarContainer");
 
-    const new_calendar = `<div style="width:100%; height:15rem;"` +
-                            `id=${new_chart_id}>` +
-                        `</div>`;
+    let new_chart_id =
+        `spending_calendar_chart_${created_calendars_counter}`;
 
-    calendar_container.insertAdjacentHTML("beforeend", new_calendar);
 
-    const calendar_spending_chart = echarts.init(document.getElementById(new_chart_id));
+    /*
+     * Give the calendar its own responsive class.
+     */
+    const new_calendar = `
+        <div
+            class="calendar-chart"
+            id="${new_chart_id}"
+            style="width:100%; height:15rem;">
+        </div>
+    `;
+
+    calendar_container.insertAdjacentHTML(
+        "beforeend",
+        new_calendar
+    );
+
+
+    const calendar_spending_chart =
+        echarts.init(
+            document.getElementById(new_chart_id)
+        );
+
+
+    /*
+     * Store calendar chart too.
+     */
+    dashboardCharts.push(calendar_spending_chart);
+
 
     const option = {
+
         visualMap: {
+
             min: 0,
             max: 100,
+
             orient: "horizontal",
+
             left: "center",
             bottom: 20
         },
+
+
         calendar: {
+
             range: daterange,
+
             cellSize: ["auto", 25],
-            yearLabel: { color: '#fff' },
-            monthLabel: { color: '#fff' },
-            dayLabel: { color: '#fff' }
+
+            yearLabel: {
+                color: '#fff'
+            },
+
+            monthLabel: {
+                color: '#fff'
+            },
+
+            dayLabel: {
+                color: '#fff'
+            }
         },
+
+
         tooltip: {
+
             backgroundColor: "#222",
+
             formatter: function(params) {
 
                 const day = params.value[0];
-                const info = receiptLookup[day];
 
-                if (!info)
+                const info =
+                    receiptLookup[day];
+
+
+                if (!info) {
                     return day + "<br>No receipts";
+                }
+
 
                 let html =
-                    `<div style='background-color: #222; color: white'><b>${day}</b><br>` +
-                    `Total: €${Number(info.total).toFixed(2)}<div>`;
+                    `<div style='background-color: #222; color: white'>
+                        <b>${day}</b><br>
+                        Total: €${Number(info.total).toFixed(2)}
+                    <div>`;
 
 
-                // todo fix
-                if(typeof(info.receipts) != "undefined"){
+                if (typeof(info.receipts) != "undefined") {
+
                     info.receipts.forEach(function(r) {
-                        html += `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
+
+                        html +=
+                            `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
 
                     });
                 }
+
+
                 return html;
             }
         },
 
+
         series: [{
+
             type: "heatmap",
+
             coordinateSystem: "calendar",
+
             data: calendar_spending_data
         }]
-
     };
+
 
     calendar_spending_chart.setOption(option);
 
-    calendar_spending_chart.on('click', function(params) {
 
-        const day = params.value[0];
-        document.getElementById('receipt-modal')
-            .classList.remove('hidden');
+    /*
+     * Clicking a day opens the receipt modal.
+     */
+    calendar_spending_chart.on(
+        'click',
+        function(params) {
 
-        document.getElementById('receipt-modal')
-            .classList.add('flex');
+            const day = params.value[0];
 
-        htmx.ajax(
-            'GET',
-            `/receipts/day/${day}/`,
-            '#modal-content'
-        );
-    });
+
+            document.getElementById('receipt-modal')
+                .classList.remove('hidden');
+
+
+            document.getElementById('receipt-modal')
+                .classList.add('flex');
+
+
+            htmx.ajax(
+                'GET',
+                `/receipts/day/${day}/`,
+                '#modal-content'
+            );
+        }
+    );
 }
 
+
+/*
+ * Create one calendar for every year.
+ */
 {% for year in date_ranges.years %}
-    create_spending_calendar_chart(["{{ year }}-01","{{ year }}-12"])
+
+    create_spending_calendar_chart(
+        ["{{ year }}-01", "{{ year }}-12"]
+    );
+
 {% endfor %}
+
+
+/*
+ * Resize every ECharts instance whenever
+ * the browser viewport changes.
+ *
+ * This is particularly important when switching
+ * between portrait and landscape on a phone.
+ */
+let resize_timeout;
+
+window.addEventListener("resize", function() {
+
+    clearTimeout(resize_timeout);
+
+    resize_timeout = setTimeout(function() {
+
+        dashboardCharts.forEach(function(chart) {
+
+            chart.resize();
+
+        });
+
+    }, 100);
+});
+
+
+/*
+ * Also perform one resize after everything has loaded.
+ */
+window.addEventListener("load", function() {
+
+    dashboardCharts.forEach(function(chart) {
+
+        chart.resize();
+
+    });
+
+});
+
 
 function closeModal() {
 
@@ -276,11 +630,22 @@ function closeModal() {
         .classList.remove('flex');
 }
 
-document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-        closeModal();
+
+/*
+ * Escape closes modal.
+ */
+document.addEventListener(
+    "keydown",
+    function (e) {
+
+        if (e.key === "Escape") {
+
+            closeModal();
+
+        }
     }
-});
+);
 
 </script>
+
 {% endblock %}

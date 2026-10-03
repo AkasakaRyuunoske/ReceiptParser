@@ -1,48 +1,218 @@
 {% load math_filters %}
+
+<style>
+
+    /*
+     * Desktop
+     */
+    .receipt-items-header {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .receipt-item-row {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+
+    /*
+     * Mobile
+     */
+    @media (max-width: 768px) {
+
+        /*
+         * Header becomes unnecessary on mobile.
+         * Each item displays its own labels instead.
+         */
+        .receipt-items-header {
+            display: none;
+        }
+
+
+        .receipt-item-row {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+
+            gap: 0.5rem 1rem;
+
+            padding: 0.75rem 0;
+
+            border-bottom:
+                1px solid rgb(63 63 70);
+        }
+
+
+        .receipt-item-name {
+            grid-column: 1 / -1;
+
+            font-size: 1rem;
+            font-weight: bold;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+
+        .receipt-item-category {
+            grid-column: 1 / -1;
+
+            color: rgb(161 161 170);
+
+            font-family: Consolas, monospace;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+
+        .receipt-item-field {
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .receipt-item-label {
+            color: rgb(161 161 170);
+
+            font-size: 0.75rem;
+
+            text-transform: uppercase;
+
+            margin-bottom: 0.15rem;
+        }
+
+
+        .receipt-item-value {
+            font-family: Consolas, monospace;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+
+        .receipt-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+
+        .receipt-total {
+            align-self: flex-start;
+        }
+
+
+        /*
+         * Prevent very long store names/addresses
+         * from creating horizontal scrolling.
+         */
+        .receipt-store-info {
+            min-width: 0;
+        }
+
+
+        .receipt-store-name,
+        .receipt-store-address {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+    }
+
+
+    @media (max-width: 480px) {
+
+        .receipt-card {
+            padding: 0.75rem !important;
+        }
+
+        .receipt-total {
+            font-size: 1.5rem;
+        }
+    }
+
+</style>
+
+
 <h2 class="text-2xl mb-4">
     Receipts for {{ day }}
 </h2>
 
+
 {% for entry in receipt_data %}
 
-<div class="border border-zinc-700 rounded-lg p-4 mb-4 bg-zinc-800">
+<div class="receipt-card border border-zinc-700 rounded-lg p-4 mb-4 bg-zinc-800">
 
-    <div class="flex justify-between items-start">
 
-        <div>
-            <div class="text-xl font-bold">
+    <!-- Receipt header -->
+
+    <div class="receipt-header flex justify-between items-start">
+
+        <div class="receipt-store-info">
+
+            <div class="receipt-store-name text-xl font-bold">
                 {{ entry.receipt.store_id_fk.store_name_id_fk.store_name }}
+
             </div>
 
-            <div class="text-zinc-400">
+
+            <div class="receipt-store-address text-zinc-400">
                 {{ entry.receipt.store_id_fk.address }}
+
             </div>
 
+
             <div class="text-zinc-400">
+
                 {{ entry.receipt.receipt_datetime|date:"H:i" }}
+
             </div>
+
         </div>
 
+
         {% if entry.total <= 10 %}
-            <div class="text-2xl text-green-400 font-bold">
+
+            <div class="receipt-total text-2xl text-green-400 font-bold">
+
                 €{{ entry.total|floatformat:2 }}
+
             </div>
+
         {% elif entry.total > 10 and entry.total <= 15 %}
-            <div class="text-2xl text-yellow-400 font-bold">
+
+            <div class="receipt-total text-2xl text-yellow-400 font-bold">
+
                 €{{ entry.total|floatformat:2 }}
+
             </div>
+
         {% else %}
-            <div class="text-2xl text-red-400 font-bold" style="text-decoration: underline;">
+
+            <div class="receipt-total text-2xl text-red-400 font-bold"
+                 style="text-decoration: underline;">
                 €{{ entry.total|floatformat:2 }}
             </div>
+
         {% endif %}
+
     </div>
+
 
     <hr class="my-3 border-zinc-700">
 
+
     <div class="space-y-2">
 
-        <div class="items-header grid grid-cols-8">
+
+        <!-- Desktop header -->
+
+        <div class="receipt-items-header items-header">
             <span>Item</span>
             <span></span>
             <span>Category</span>
@@ -53,35 +223,106 @@
             <span>Price</span>
         </div>
 
-        {% for ri in entry.receipt.rel_receipt_id_fk.all %}
 
-        <div class="grid grid-cols-8">
-
-            <div class="col-span-2" style="font-family: Consolas;">{{ ri.item_id_fk.item_name }}</div>
-
-            <div class="col-span-2" style="font-family: Consolas;">{{ ri.item_id_fk.category_id_fk.item_category_name }}</div>
+        {% for receipt in entry.receipt.rel_receipt_id_fk.all %}
 
 
-            <div>
-                {{ ri.item_id_fk.category_id_fk.item_category_description }}
+        <!-- Receipt item -->
+
+        <div class="receipt-item-row">
+
+
+            <!-- Item -->
+
+            <div class="receipt-item-name col-span-2"
+                 style="font-family: Consolas;">
+
+                <span class="receipt-item-value">
+                    {{ receipt.item_id_fk.item_name }}
+                </span>
+
             </div>
 
-            <div>{{ ri.quantity }}</div>
 
-            <div>{{ ri.price|floatformat:2 }}</div>
+            <!-- Category -->
 
-            <div>€{{ ri.quantity|multiply:ri.price|floatformat:2 }}</div>
+            <div class="receipt-item-category col-span-2"
+                 style="font-family: Consolas;">
+
+                <span class="receipt-item-value">
+
+                    {{ receipt.item_id_fk.category_id_fk.item_category_name }}
+
+                </span>
+
+            </div>
+
+
+            <!-- Category description -->
+
+            <div class="receipt-item-field">
+
+                <span class="receipt-item-value">
+
+                    {{ receipt.item_id_fk.category_id_fk.item_category_description }}
+
+                </span>
+
+            </div>
+
+
+            <!-- Quantity -->
+
+            <div class="receipt-item-field">
+
+                <span class="receipt-item-value">
+
+                    {{ receipt.quantity }}
+
+                </span>
+
+            </div>
+
+
+            <!-- Unit price -->
+
+            <div class="receipt-item-field">
+
+                <span class="receipt-item-value">
+                    €{{ receipt.price|floatformat:2 }}
+                </span>
+
+            </div>
+
+
+            <!-- Total price -->
+
+            <div class="receipt-item-field">
+
+                <span class="receipt-item-value">
+
+                    €{{ receipt.quantity|multiply:receipt.price|floatformat:2 }}
+
+                </span>
+
+            </div>
 
         </div>
 
+
         {% endfor %}
+
     </div>
+
 </div>
+
 
 {% empty %}
 
 <div class="text-zinc-400">
+
     No receipts found for this day.
+
 </div>
 
 {% endfor %}

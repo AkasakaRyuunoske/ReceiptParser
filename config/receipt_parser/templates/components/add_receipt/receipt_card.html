@@ -2,29 +2,22 @@
 
 <div class="receipt-card w-full min-w-0 overflow-hidden">
 
-    <div
-            class="
-            receipt-header
+    <div class="receipt-header
             grid
             grid-cols-1
             sm:grid-cols-2
-            gap-4
-        "
-    >
+            gap-4">
 
         <div class="store-box min-w-0">
 
-            <input
-                    type="text"
+            <input type="text"
                     value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}"
                     name="store_id_fk"
                     class="
                     bg-black
                     w-full
                     max-w-full
-                    min-w-0
-                "
-            >
+                    min-w-0">
 
         </div>
 
@@ -40,8 +33,7 @@
             </div>
 
 
-            <div class="
-                    flex
+            <div class="flex
                     flex-col
                     sm:flex-row
                     sm:items-center
@@ -52,11 +44,7 @@
                     Receipt Date:
                 </span>
 
-                <input class="
-                        bg-black
-                        w-full
-                        sm:w-auto
-                        min-w-0"
+                <input class="bg-black w-full sm:w-auto min-w-0"
                         type="datetime-local"
                         value="{{ receipt.receipt_datetime|date:'Y-m-d\TH:i' }}"
                         name="receipt_datetime">
@@ -64,31 +52,21 @@
             </div>
 
 
-            <div
-                    class="
-                    flex
+            <div class="flex
                     flex-col
                     sm:flex-row
                     sm:items-center
                     gap-1
-                    sm:gap-2
-                "
-            >
+                    sm:gap-2">
 
                 <span class="whitespace-nowrap">
                     Reference:
                 </span>
 
-                <input
-                        class="
-                        bg-black
-                        w-full
-                        min-w-0
-                    "
+                <input class="bg-black w-full min-w-0"
                         type="text"
                         value="{{ receipt.receipt_reference }}"
-                        name="receipt_reference"
-                >
+                        name="receipt_reference">
 
             </div>
 
@@ -107,8 +85,7 @@
     <div class="items-section min-w-0">
 
         <!-- Desktop header -->
-        <div class="
-                hidden
+        <div class="hidden
                 lg:grid
                 grid-cols-8
                 gap-2
@@ -117,29 +94,12 @@
                 font-bold
                 mb-2">
 
-            <span class="col-span-2">
-                Item
-            </span>
-
-            <span class="col-span-2">
-                Category
-            </span>
-
-            <span>
-                Description
-            </span>
-
-            <span>
-                Qty
-            </span>
-
-            <span>
-                UP
-            </span>
-
-            <span>
-                Price
-            </span>
+            <span class="col-span-2">Item</span>
+            <span class="col-span-2">Category</span>
+            <span>Description</span>
+            <span>Qty</span>
+            <span>UP</span>
+            <span>Price</span>
 
         </div>
 
@@ -149,8 +109,7 @@
 
             {% for rel in receipt.rel_receipt_id_fk.all %}
 
-            <div class="
-                        receipt-item-row
+            <div class="receipt-item-row
                         item-row
                         grid
                         grid-cols-2

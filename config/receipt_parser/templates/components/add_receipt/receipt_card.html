@@ -2,76 +2,43 @@
 
 <div class="receipt-card w-full min-w-0 overflow-hidden">
 
-    <div class="receipt-header
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            gap-4">
-
-        <div class="store-box min-w-0">
-
-            <input type="text"
-                    value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}"
-                    name="store_id_fk"
-                    class="
-                    bg-black
-                    w-full
-                    max-w-full
-                    min-w-0">
-
+    <div class="receipt-header grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-full min-w-0 overflow-hidden">
+        <!-- Store -->
+        <div class="store-box w-full max-w-full min-w-0 overflow-hidden"><input type="text"
+                                                                                value="{{ receipt.store_id_fk.store_name_id_fk.store_name }}"
+                                                                                name="store_id_fk"
+                                                                                class=" bg-black w-full max-w-full min-w-0 box-border block ">
         </div>
 
-
-        <div class="receipt-meta min-w-0 space-y-2">
-
-            <div class="break-words">
-                {{ receipt.store_id_fk.address }}
+        <div class="receipt-meta w-full max-w-full min-w-0 space-y-3 overflow-hidden">
+            <div class="w-full max-w-full min-w-0 break-words overflow-wrap-anywhere">
+                {{ receipt.store_id_fk.address}}
             </div>
 
-            <div class="break-words">
+            <div class="w-full max-w-full min-w-0 break-words overflow-wrap-anywhere">
                 {{ receipt.store_id_fk.city }}
             </div>
 
-
-            <div class="flex
-                    flex-col
-                    sm:flex-row
-                    sm:items-center
-                    gap-1
-                    sm:gap-2">
-
-                <span class="whitespace-nowrap">
+            <div class=" w-full max-w-full min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                <span class=" shrink-0 whitespace-nowrap">
                     Receipt Date:
                 </span>
 
-                <input class="bg-black w-full sm:w-auto min-w-0"
+                <input class=" bg-black block w-full max-w-full min-w-0 box-border"
                         type="datetime-local"
                         value="{{ receipt.receipt_datetime|date:'Y-m-d\TH:i' }}"
                         name="receipt_datetime">
-
             </div>
 
 
-            <div class="flex
-                    flex-col
-                    sm:flex-row
-                    sm:items-center
-                    gap-1
-                    sm:gap-2">
-
-                <span class="whitespace-nowrap">
-                    Reference:
-                </span>
-
-                <input class="bg-black w-full min-w-0"
+            <div class=" w-full max-w-full min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                <span class="shrink-0 whitespace-nowrap">Reference:</span>
+                <input class=" bg-black block w-full max-w-full min-w-0 box-border"
                         type="text"
                         value="{{ receipt.receipt_reference }}"
                         name="receipt_reference">
-
             </div>
-
         </div>
-
     </div>
 
 
@@ -132,13 +99,13 @@
                     </label>
 
                     <input type="text"
-                            class="w-full
+                           class="w-full
                                 min-w-0
                                 bg-black
                                 font-mono"
-                            id="item_name_{{ rel.id }}"
-                            name="item_name_{{ rel.id }}"
-                            value="{{ rel.item_id_fk.item_name }}">
+                           id="item_name_{{ rel.id }}"
+                           name="item_name_{{ rel.id }}"
+                           value="{{ rel.item_id_fk.item_name }}">
 
                 </div>
 
@@ -151,14 +118,14 @@
                     </label>
 
                     <input type="text"
-                            class="
+                           class="
                                 w-full
                                 min-w-0
                                 bg-black
                                 font-mono"
-                            id="item_category_name_{{ rel.id }}"
-                            name="item_category_name_{{ rel.id }}"
-                            value="{{ rel.item_id_fk.category_id_fk.item_category_name }}">
+                           id="item_category_name_{{ rel.id }}"
+                           name="item_category_name_{{ rel.id }}"
+                           value="{{ rel.item_id_fk.category_id_fk.item_category_name }}">
 
                 </div>
 
@@ -171,13 +138,13 @@
                     </label>
 
                     <input type="text"
-                            class="
+                           class="
                                 w-full
                                 min-w-0
                                 bg-black"
-                            id="item_category_description_{{ rel.id }}"
-                            name="item_category_description_{{ rel.id }}"
-                            value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}">
+                           id="item_category_description_{{ rel.id }}"
+                           name="item_category_description_{{ rel.id }}"
+                           value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}">
                 </div>
 
 
@@ -189,10 +156,10 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_qty_{{ rel.id }}"
-                            name="item_qty_{{ rel.id }}"
-                            value="{{ rel.quantity }}">
+                           class="w-full min-w-0 bg-black"
+                           id="item_qty_{{ rel.id }}"
+                           name="item_qty_{{ rel.id }}"
+                           value="{{ rel.quantity }}">
                 </div>
 
 
@@ -204,13 +171,13 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_unit_price_{{ rel.id }}"
-                            step="0.01"
-                            min="0"
-                            max="100000"
-                            name="item_unit_price_{{ rel.id }}"
-                            value="{{ rel.price|floatformat:2 }}">
+                           class="w-full min-w-0 bg-black"
+                           id="item_unit_price_{{ rel.id }}"
+                           step="0.01"
+                           min="0"
+                           max="100000"
+                           name="item_unit_price_{{ rel.id }}"
+                           value="{{ rel.price|floatformat:2 }}">
                 </div>
 
 
@@ -222,13 +189,13 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_total_price_{{ rel.id }}"
-                            step="0.01"
-                            min="0"
-                            max="100000"
-                            name="item_total_price_{{ rel.id }}"
-                            readonly>
+                           class="w-full min-w-0 bg-black"
+                           id="item_total_price_{{ rel.id }}"
+                           step="0.01"
+                           min="0"
+                           max="100000"
+                           name="item_total_price_{{ rel.id }}"
+                           readonly>
 
                 </div>
 
@@ -261,10 +228,10 @@
                     </label>
 
                     <input type="text"
-                            class="w-full min-w-0 bg-black"
-                            id="item_name_new_1"
-                            name="item_name_new_1"
-                            value="New Item">
+                           class="w-full min-w-0 bg-black"
+                           id="item_name_new_1"
+                           name="item_name_new_1"
+                           value="New Item">
                 </div>
 
 
@@ -276,10 +243,10 @@
                     </label>
 
                     <input type="text"
-                            class="w-full min-w-0 bg-black"
-                            id="item_category_name_new_1"
-                            name="item_category_name_new_1"
-                            value="0">
+                           class="w-full min-w-0 bg-black"
+                           id="item_category_name_new_1"
+                           name="item_category_name_new_1"
+                           value="0">
                 </div>
 
 
@@ -291,10 +258,10 @@
                     </label>
 
                     <input type="text"
-                            class="w-full min-w-0 bg-black"
-                            id="item_category_description_new_1"
-                            name="item_category_description_new_1"
-                            value="-">
+                           class="w-full min-w-0 bg-black"
+                           id="item_category_description_new_1"
+                           name="item_category_description_new_1"
+                           value="-">
                 </div>
 
 
@@ -306,10 +273,10 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_qty_new_1"
-                            name="item_qty_new_1"
-                            value="1">
+                           class="w-full min-w-0 bg-black"
+                           id="item_qty_new_1"
+                           name="item_qty_new_1"
+                           value="1">
                 </div>
 
 
@@ -321,13 +288,13 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_unit_price_new_1"
-                            step="0.01"
-                            min="0"
-                            max="100000"
-                            name="item_unit_price_new_1"
-                            value="0">
+                           class="w-full min-w-0 bg-black"
+                           id="item_unit_price_new_1"
+                           step="0.01"
+                           min="0"
+                           max="100000"
+                           name="item_unit_price_new_1"
+                           value="0">
 
                 </div>
 
@@ -340,11 +307,11 @@
                     </label>
 
                     <input type="number"
-                            class="w-full min-w-0 bg-black"
-                            id="item_total_price_new_1"
-                            name="item_total_price_new_1"
-                            value="0"
-                            readonly>
+                           class="w-full min-w-0 bg-black"
+                           id="item_total_price_new_1"
+                           name="item_total_price_new_1"
+                           value="0"
+                           readonly>
 
                 </div>
 
@@ -410,7 +377,7 @@
             </label>
 
             <textarea name="receipt_description"
-                    class="
+                      class="
                     bg-black
                     w-full
                     min-h-32
@@ -442,15 +409,15 @@
 
                 {% if receipt.payment_method_id_fk == payment_method %}
 
-                    <option value="{{ payment_method.payment_method_id }}" selected>
-                        {{ payment_method.payment_method_name }}
-                    </option>
+                <option value="{{ payment_method.payment_method_id }}" selected>
+                    {{ payment_method.payment_method_name }}
+                </option>
 
                 {% else %}
 
-                    <option value="{{ payment_method.payment_method_id }}">
-                        {{ payment_method.payment_method_name }}
-                    </option>
+                <option value="{{ payment_method.payment_method_id }}">
+                    {{ payment_method.payment_method_name }}
+                </option>
 
                 {% endif %}
 
@@ -478,7 +445,7 @@
             sm:flex-row
             gap-3
             mt-6"
-            style="font-family: OldEnglishTextMT">
+         style="font-family: OldEnglishTextMT">
 
         <button type="submit"
                 formaction="/receipts/add_full_receipt"
@@ -523,7 +490,7 @@
 <!-- ============================================================= -->
 
 <div id="receiptContextMenu"
-        class="hidden fixed
+     class="hidden fixed
         bg-zinc-900
         border
         border-white
@@ -536,7 +503,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuAdd">
+         id="menuAdd">
         Add
     </div>
 
@@ -546,7 +513,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuDuplicate">
+         id="menuDuplicate">
         Duplicate
     </div>
 
@@ -557,7 +524,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuMoveUp">
+         id="menuMoveUp">
         Move Up
     </div>
 
@@ -567,7 +534,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuMoveDown">
+         id="menuMoveDown">
         Move Down
     </div>
 
@@ -578,7 +545,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuAskIfSoslo">
+         id="menuAskIfSoslo">
         Soslo?
     </div>
 
@@ -588,7 +555,7 @@
             hover:opacity-20
             px-2
             py-1"
-            id="menuDelete">
+         id="menuDelete">
         Delete
     </div>
 
@@ -879,5 +846,6 @@ document.addEventListener(
 
     }
 );
+
 
 </script>

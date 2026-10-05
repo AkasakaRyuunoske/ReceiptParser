@@ -1,3 +1,6 @@
+**0.11.3**
+- Fixed Receipt Date/Reference fields overflowing incorrectly on certain screen resolutions
+
 **0.11.2**
 - Changed Dashboard page to make it responsive
 - Changed Receipts for calendar day modal to make it more responsive 

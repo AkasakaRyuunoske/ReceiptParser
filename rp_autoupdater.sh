@@ -4,9 +4,9 @@ set -e
 
 PROJECT_DIR="/srv/rp/ReceiptParser"
 
-echo "====================================="
+echo "+===================================+"
 echo "|         Starting deployment       |"
-echo "====================================="
+echo "+===================================+"
 
 cd "$PROJECT_DIR"
 
@@ -22,6 +22,6 @@ docker compose build
 echo "Starting up Receipt Parser..."
 docker compose up -d
 
-echo "====================================="
+echo "+===================================+"
 echo "| Deployment completed successfully |"
-echo "====================================="
+echo "+===================================+"

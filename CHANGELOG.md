@@ -1,3 +1,8 @@
+**0.11.4**
+- Updated docker entrypoint script
+- Changed entrypoint script: apache2 is no longer stopped from entrypoint script: now user is required to disable apache2 (or anything else using port 80) by hand
+- Added autoupdater shell script
+
 **0.11.3**
 - Fixed Receipt Date/Reference fields overflowing incorrectly on certain screen resolutions
 

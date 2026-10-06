@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Stopping apache2... (never works tho)"
-systemctl stop apache2
+exec systemctl stop apache2
 
 echo "Django models migration..."
 python manage.py migrate --noinput

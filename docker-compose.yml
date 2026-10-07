@@ -27,6 +27,26 @@ services:
     volumes:
       - rp-volume:/var/lib/postgresql/data
 
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    command: mini -dir=/data
+    environment:
+      AWS_ACCESS_KEY_ID: admin
+      AWS_SECRET_ACCESS_KEY: secret
+      S3_BUCKET: rp-bucket
+    ports: # Temporary exposing all ports for testing purposes
+      - "9333:9333"
+      - "9340:9340"
+      - "8888:8888"
+      - "7333:7333"
+      - "8333:8333"
+      - "8181:8181"
+      - "9101:9101"
+      - "23646:23646"
+    volumes:
+      - seaweedfs_volume:/data
+
 volumes:
   static_volume:
   rp-volume:
+  seaweedfs_volume:

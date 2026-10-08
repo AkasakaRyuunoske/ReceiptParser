@@ -1,4 +1,7 @@
-<!-- <img src="config/receipt_parser/static/icons/main_icon.png" style="width: 10%"/> -->
+<h1>Receipt Parser</h1>
+<img src="config/receipt_parser/static/icons/main_icon.png" style="width: 10%;"/>
+
+
 # Navigation
 1. <a href="#current-features">Current Features </a>
 2. <a href="#how-it-looks">How it looks? </a>

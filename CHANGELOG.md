@@ -1,3 +1,9 @@
+**0.11.5**
+- Added seaweedfs to manage receipt images
+- Added a test for seaweedfs s3 bucket
+- Removed version from docker compose as it is ignored (produces a warning)
+- Fixed date ranges not including december 
+
 **0.11.4**
 - Updated docker entrypoint script
 - Changed entrypoint script: apache2 is no longer stopped from entrypoint script: now user is required to disable apache2 (or anything else using port 80) by hand

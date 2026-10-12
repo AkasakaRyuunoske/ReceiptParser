@@ -20,8 +20,12 @@ echo "Building Docker images..."
 docker compose build
 
 echo "Starting up Receipt Parser..."
-docker compose up -d
+if [ -n "$1" ]; then
+    docker compose up
+else
+    docker compose up -d
 
-echo "+===================================+"
-echo "| Deployment completed successfully |"
-echo "+===================================+"
+    echo "+===================================+"
+    echo "| Deployment completed successfully |"
+    echo "+===================================+"
+fi

@@ -5,6 +5,7 @@ import logging
 import os
 import re
 
+import boto3
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
@@ -22,6 +23,13 @@ from .services.receipts.receipts_service import ReceiptService
 load_dotenv()
 logger = logging.getLogger(__name__)
 
+s3 = boto3.client(
+    "s3",
+    endpoint_url="http://seaweedfs:8333",
+    aws_access_key_id="admin",
+    aws_secret_access_key="secret",
+    region_name="us-east-1",
+)
 
 def home(request):
     if request.method == 'POST':
@@ -233,18 +241,27 @@ def upload_input_image(request):
     if form.is_valid():
         form.save()
 
-        doInference: str = form.data.get("doInference", "off")
+        # Don't ask, just trust this works
+        do_inference: str = form.data.get("doInference", "off")
 
-        if doInference == "off":
+        input_image_file_name = ReceiptImageView.objects.last().image.url
+
+        if do_inference == "off":
             inference_response = inference_model()
             insert_inference_response(inference_response)
 
-            receipt_resource = ReceiptResources(original_image_path=ReceiptImageView.objects.last().image.url,
+            receipt_resource = ReceiptResources(original_image_path=input_image_file_name,
                                                 raw_text_json=inference_response)
         else:
             receipt_resource = receipt_resource = ReceiptResources(
-                original_image_path=ReceiptImageView.objects.last().image.url,
+                original_image_path=input_image_file_name,
                 raw_text_json={"Inference": "Skipped"})
+
+        s3.upload_fileobj(
+            ReceiptImageView.objects.last().image,
+            "rp-bucket",
+            input_image_file_name,
+        )
 
         receipt_resource.save()
         logger.info("input image uploaded.")

@@ -1,3 +1,7 @@
+**0.11.6**
+- Changed no receipts message
+- Added load of input image to s3 (seaweedfs)
+
 **0.11.5**
 - Added seaweedfs to manage receipt images
 - Added a test for seaweedfs s3 bucket

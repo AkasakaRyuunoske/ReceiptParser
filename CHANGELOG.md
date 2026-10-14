@@ -1,3 +1,6 @@
+**0.11.7**
+- Added a padding-top to all pages headers
+
 **0.11.6**
 - Changed no receipts message
 - Added load of input image to s3 (seaweedfs)

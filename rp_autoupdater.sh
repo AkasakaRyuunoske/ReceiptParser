@@ -20,6 +20,7 @@ echo "Building Docker images..."
 docker compose build
 
 echo "Starting up Receipt Parser..."
+
 if [ -n "$1" ]; then
     docker compose up
 else

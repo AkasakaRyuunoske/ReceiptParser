@@ -15,8 +15,7 @@
 <h3>Dashboard Page:</h3>
 <img src="readme_resources/receipt_parser_dashboard_ver_0.10.7.png" height="300rem"/>
 
-## Current Features
-<h3 id="current-features">Currently implemented features are:</h3>
+<h2 id="current-features">Current Features </h2>
 
 * Receipt upload
 * Receipt parsing using locally running agent (mostly used gemma4:e2b and gemma4:e4b)
@@ -24,8 +23,7 @@
 * A calendar with a heat map showing in which days there are receipts, total spending that day and ability to click on a specific day to see all related receipts
 * Per week/month/year total spending chart, divided in categories
   
-## Set up (Windows)
-<h3 id="set-up-windows">Set up on a windows machine consists of following steps:</h3>
+<h2 id="set-up-windows">Set up (Windows)</h2>
 
   1. Install and correctly set up python 3.11 and pip
   2. Install docker desktop
@@ -36,8 +34,7 @@
      * `$ py manage.py migrate`
      * `$ py manage.py runserver`
 
-## Set up (Linux)
-<h3 id="set-up-linux">Set up (Linux):</h3>
+<h2 id="set-up-linux">Set up (Linux) </h2>
 
 1. Install and correctly set up docker following steps according to your linux distro
 2. Clone this repository

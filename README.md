@@ -2,20 +2,20 @@
 <img src="config/receipt_parser/static/icons/main_icon.png" style="width: 10%;"/>
 
 
-# Navigation
+## Navigation
 1. <a href="#current-features">Current Features </a>
 2. <a href="#how-it-looks">How it looks? </a>
 3. <a href="#set-up-windows">Set up (Windows) </a>
 4. <a href="#set-up-linux">Set up (Linux) </a>
 
-# How it looks?
+## How it looks?
 <h3>Add Receipt Page:</h3>
 <img src="readme_resources/receipt_parser_add_receipt_ver_0.10.7.png" height="250rem"/>
 
 <h3>Dashboard Page:</h3>
 <img src="readme_resources/receipt_parser_dashboard_ver_0.10.7.png" height="300rem"/>
 
-# Current Features
+## Current Features
 <h3 id="current-features">Currently implemented features are:</h3>
 
 * Receipt upload
@@ -24,7 +24,7 @@
 * A calendar with a heat map showing in which days there are receipts, total spending that day and ability to click on a specific day to see all related receipts
 * Per week/month/year total spending chart, divided in categories
   
-# Set up (Windows)
+## Set up (Windows)
 <h3 id="set-up-windows">Set up on a windows machine consists of following steps:</h3>
 
   1. Install and correctly set up python 3.11 and pip
@@ -36,7 +36,7 @@
      * `$ py manage.py migrate`
      * `$ py manage.py runserver`
 
-# Set up (Linux)
+## Set up (Linux)
 <h3 id="set-up-linux">Set up (Linux):</h3>
 
 1. Install and correctly set up docker following steps according to your linux distro

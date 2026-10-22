@@ -17,7 +17,7 @@
 
 <h2 id="current-features">Current Features </h2>
 
-* Receipt upload
+* Receipt persistance
 * Receipt parsing using locally running agent (mostly used gemma4:e2b and gemma4:e4b)
 * Form allowing user to view and modify model's inference result
 * A calendar with a heat map showing in which days there are receipts, total spending that day and ability to click on a specific day to see all related receipts

@@ -39,7 +39,9 @@ git pull origin master
 echo "Building Docker images..."
 docker compose build
 
-echo "Starting up Receipt Parser..."
+VERSION=$(head -n 1 CHANGELOG.md | sed 's/\*\*//g')
+
+echo "Starting up Receipt Parser ver $VERSION..."
 
 if [ -n "$1" ]; then
     docker compose up

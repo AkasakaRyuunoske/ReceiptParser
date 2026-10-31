@@ -4,20 +4,15 @@
 
 <div class="w-full min-w-0">
 
-    <!-- Image + loading information -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
-        <!-- Receipt image -->
         <div class="min-w-0 flex justify-center items-start">
-
             <img src="{{ image_path.url }}"
                 class="w-full max-w-md h-auto object-contain"
                 alt="Receipt image">
-
         </div>
 
 
-        <!-- Model status -->
         <div class="min-w-0 flex flex-col justify-center">
             <div
                 id="stream-container"
@@ -28,21 +23,12 @@
     </div>
 
 
-    <!-- JSON editor -->
     <div class="w-full min-w-0 overflow-hidden mb-6">
-
-        <pre
-            id="jsoneditor"
-            class="jsoneditor w-full"
-        ></pre>
-
+        <pre id="jsoneditor" class="jsoneditor w-full"></pre>
     </div>
 
 
-    <!-- Controls -->
     <div class="w-full space-y-4">
-
-        <!-- Image path -->
         <div class="min-w-0">
 
             <span>
@@ -56,8 +42,6 @@
 
         </div>
 
-
-        <!-- Buttons and controls -->
         <div
             class="
                 flex
@@ -68,7 +52,6 @@
                 sm:items-center
                 gap-3">
 
-            <!-- Load image -->
             <button
                 id="uploadButton"
                 class="
@@ -89,7 +72,6 @@
             </button>
 
 
-            <!-- Reinference -->
             <button
                 type="button"
                 class="
@@ -109,7 +91,6 @@
             </button>
 
 
-            <!-- Model -->
             <select
                 class="
                     border
@@ -129,7 +110,6 @@
             </select>
 
 
-            <!-- Inference checkbox -->
             <div class="flex items-center gap-2">
 
                 <label for="doInferenceMirror">

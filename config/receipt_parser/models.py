@@ -135,6 +135,8 @@ class Receipt(models.Model):
         return f"<{self.__class__.__name__} {fields}>"
 
 class ReceiptItems(models.Model):
+    receipt_item_id = models.AutoField(primary_key=True)
+
     item_id_fk = models.ForeignKey(
         Items,
         on_delete=models.DO_NOTHING,
@@ -151,8 +153,8 @@ class ReceiptItems(models.Model):
         related_name="rel_receipt_id_fk",
     )
 
-    quantity = models.PositiveIntegerField(default=1)
     insert_datetime = models.DateTimeField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(default=1)
     price = models.FloatField(null=False)
 
     def __str__(self):

@@ -11,10 +11,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 
-def get_date_ranges_for_calendar_chart() -> dict:
-    latest_receipt = Receipt.objects.order_by('-receipt_datetime').first()
-    newest_receipt = Receipt.objects.order_by('-receipt_datetime').last()
-
+def get_date_ranges_for_calendar_chart(latest_receipt: Receipt, newest_receipt: Receipt) -> dict:
     latest_date = None
     newest_date = None
     year_list = None

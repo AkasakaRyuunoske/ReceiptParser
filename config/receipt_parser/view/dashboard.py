@@ -23,7 +23,11 @@ def dashboard_page(request):
 
     # Calendar charts
     calendar_spending_data, receipt_lookup = get_calendar_spending_data()
-    date_ranges = get_date_ranges_for_calendar_chart()
+
+    most_recent_receipt: Receipt = Receipt.objects.order_by('-receipt_datetime').first()
+    oldest_receipt: Receipt = Receipt.objects.order_by('-receipt_datetime').last()
+
+    date_ranges = get_date_ranges_for_calendar_chart(most_recent_receipt, oldest_receipt)
 
     return render(request, 'dashboard.html',
                   context={

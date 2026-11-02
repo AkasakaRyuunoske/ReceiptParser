@@ -1,7 +1,8 @@
-from django.db.models import Count, QuerySet, Sum, FloatField, F, OuterRef, Subquery
+from django.db.models import Count, QuerySet, Sum, FloatField, F, OuterRef, Subquery, Prefetch
 from django.shortcuts import render
 
 from receipt_parser.models import StoreNames, Stores, Receipt, ReceiptItems, Items
+from services.receipts.dashboard_services import get_date_ranges_for_calendar_chart, get_calendar_spending_data
 
 
 def products_catalog_page(request):
@@ -79,13 +80,43 @@ def get_product_overview(request, product_id):
                 output_field=FloatField(),
             ),
         )
+        .prefetch_related(
+            Prefetch(
+                "rel_items_id_fk",
+                queryset=ReceiptItems.objects
+                .select_related("receipt_id_fk")
+                .order_by("-receipt_id_fk__receipt_datetime"),
+                to_attr="receipt_items",
+            )
+        )
         .get(item_id=product_id)
     )
 
+    receipts = [
+        receipt_item.receipt_id_fk
+        for receipt_item in related_item.receipt_items
+    ]
+
+    most_recent_receipt = (
+        related_item.receipt_items[0]
+        if related_item.receipt_items else None
+    ).receipt_id_fk
+
+    oldest_receipt = (
+        related_item.receipt_items[-1]
+        if related_item.receipt_items else None
+    ).receipt_id_fk
+
+    date_ranges = get_date_ranges_for_calendar_chart(most_recent_receipt, oldest_receipt)
+
+    calendar_spending_data, receipt_lookup = get_calendar_spending_data()
+
     context: dict = {
-        # "store": store,
-        # "related_receipts": related_receipts,
         "related_item": related_item,
+        "related_receipts": receipts,
+        "date_ranges": date_ranges,
+        "calendar_spending_data": calendar_spending_data,
+        "receipt_lookup": receipt_lookup,
     }
 
     return render(request,

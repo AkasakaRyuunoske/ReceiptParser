@@ -4,6 +4,8 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.min.js"></script>
+
     <div style="text-align:center; padding-top:3rem">
         <h1 class='hero glitch layers' data-text='Products Catalog'>Products Catalog</h1>
     </div>
@@ -64,7 +66,7 @@
     </main>
 
         <div id="product-overview-modal"
-             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeStoreModal()">
+             class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
 
             <div class="bg-zinc-900 border border-zinc-700 w-3/4 max-w-4xl rounded-lg p-6 relative"
                  onclick="event.stopPropagation()"

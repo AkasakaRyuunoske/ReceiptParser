@@ -1,13 +1,205 @@
 {% load math_filters %}
 
-<div class="grid grid-rows-2">
-  <h1>Detailed Product Overview:</h1>
+<h1 style="text-align: center;">Detailed Product Overview:</h1>
 
+<br>
+
+<div>
   <div class="grid grid-cols-2">
     <div class="grid grid-rows-2">
       <div> Product Image</div>
-      <div> Pepsi</div>
+      <div> {{ related_item.item_name }} </div>
     </div>
 
+    <div class="grid grid-rows-5">
+      <h3>Total Spent: €<span>{{ related_item.total_spent }}</span></h3>
+      <h3>Total Bought: <span>{{ related_item.total_quantity }}</span></h3>
+      <h3>Associated Stores: <span> {{ date_ranges }}</span></h3>
+      <h3>This Product Appears in:<span></span></h3>
+      <div>
+        <div id="calendarContainer"></div>
+      </div>
+    </div>
   </div>
 </div>
+
+{{ receipt_lookup|json_script:"receipt-data" }}
+
+<script>
+
+const dashboardCharts = [];
+var created_calendars_counter = 0;
+
+const calendar_spending_data =
+    {{ calendar_spending_data|safe }};
+
+/*
+ * Create yearly spending calendar.
+ */
+function create_spending_calendar_chart(daterange) {
+
+    created_calendars_counter++;
+
+    const calendar_container =
+        document.getElementById("calendarContainer");
+
+    let new_chart_id =
+        `spending_calendar_chart_${created_calendars_counter}`;
+
+
+    /*
+     * Give the calendar its own responsive class.
+     */
+    const new_calendar = `
+        <div
+            class="calendar-chart"
+            id="${new_chart_id}"
+            style="width:100%; height:15rem;">
+        </div>
+    `;
+
+    calendar_container.insertAdjacentHTML(
+        "beforeend",
+        new_calendar
+    );
+
+
+    const calendar_spending_chart =
+        echarts.init(
+            document.getElementById(new_chart_id)
+        );
+
+
+    /*
+     * Store calendar chart too.
+     */
+    dashboardCharts.push(calendar_spending_chart);
+
+
+    const option = {
+
+        visualMap: {
+
+            min: 0,
+            max: 100,
+
+            orient: "horizontal",
+
+            left: "center",
+            bottom: 20
+        },
+
+
+        calendar: {
+
+            range: daterange,
+
+            cellSize: ["auto", 25],
+
+            yearLabel: {
+                color: '#fff'
+            },
+
+            monthLabel: {
+                color: '#fff'
+            },
+
+            dayLabel: {
+                color: '#fff'
+            }
+        },
+
+
+        tooltip: {
+
+            backgroundColor: "#222",
+
+            formatter: function(params) {
+
+                const day = params.value[0];
+
+                const info =
+                    receiptLookup[day];
+
+
+                if (!info) {
+                    return day + "<br>No receipts";
+                }
+
+
+                let html =
+                    `<div style='background-color: #222; color: white'>
+                        <b>${day}</b><br>
+                        Total: €${Number(info.total).toFixed(2)}
+                    <div>`;
+
+
+                if (typeof(info.receipts) != "undefined") {
+
+                    info.receipts.forEach(function(r) {
+
+                        html +=
+                            `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
+
+                    });
+                }
+
+
+                return html;
+            }
+        },
+
+
+        series: [{
+
+            type: "heatmap",
+
+            coordinateSystem: "calendar",
+
+            data: calendar_spending_data
+        }]
+    };
+
+
+    calendar_spending_chart.setOption(option);
+
+
+    /*
+     * Clicking a day opens the receipt modal.
+     */
+    calendar_spending_chart.on(
+        'click',
+        function(params) {
+
+            const day = params.value[0];
+
+
+            document.getElementById('receipt-modal')
+                .classList.remove('hidden');
+
+
+            document.getElementById('receipt-modal')
+                .classList.add('flex');
+
+
+            htmx.ajax(
+                'GET',
+                `/receipts/day/${day}/`,
+                '#modal-content'
+            );
+        }
+    );
+}
+
+
+/*
+ * Create one calendar for every year.
+ */
+{% for year in date_ranges.years %}
+
+    create_spending_calendar_chart(
+        ["{{ year }}-01", "{{ year }}-13"]
+    );
+
+{% endfor %}
+</script>

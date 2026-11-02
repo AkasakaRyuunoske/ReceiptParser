@@ -1,3 +1,7 @@
+**0.12.0**
+- Added missing fields to product overview modal
+- *get_date_ranges_for_calendar_chart* start and end dates are now parameters 
+
 **0.11.7**
 - Added a padding-top to all pages headers
 

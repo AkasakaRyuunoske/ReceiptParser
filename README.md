@@ -17,19 +17,21 @@
 
 <h2 id="current-features">Current Features </h2>
 
-* Receipt persistance
+* Receipts persistance
 * Receipt parsing using locally running agent (mostly used gemma4:e2b and gemma4:e4b)
 * Form allowing user to view and modify model's inference result
 * A calendar with a heat map showing in which days there are receipts, total spending that day and ability to click on a specific day to see all related receipts
 * Per week/month/year total spending chart, divided in categories
+* Different aggregations for specific store items
   
 <h2 id="set-up-windows">Set up (Windows)</h2>
 
   1. Install and correctly set up python 3.11 and pip
   2. Install docker desktop
   3. Clone this repository
-     
+  
      `$ git clone https://github.com/AkasakaRyuunoske/ReceiptParser.git`
+     
   5. In project's root folder run:
      * `$ docker compose up`
      * `$ py manage.py migrate`

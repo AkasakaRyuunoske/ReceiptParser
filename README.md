@@ -41,5 +41,5 @@
 
 1. Install and correctly set up docker following steps according to your linux distro
 2. Clone this repository
-3. Stop everything that is using port 80 (most probably it's apache2 which can be stopped with `$ systemctl stop apache2`)
-4. run `$ docker compose up`
+3. Stop everything that is using port 80, probably it's apache2 which can be stopped with `$ systemctl stop apache2`
+5. run `$ docker compose up` or use autoupdater with `$ bash rp_autoupdater.sh` (with execute permission set) 

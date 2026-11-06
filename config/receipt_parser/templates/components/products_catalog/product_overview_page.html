@@ -1,205 +1,513 @@
 {% load math_filters %}
 
-<h1 style="text-align: center;">Detailed Product Overview:</h1>
+<style>
+    .product-overview {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
 
-<br>
+    .product-overview-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        min-width: 0;
+    }
 
-<div>
-  <div class="grid grid-cols-2">
-    <div class="grid grid-rows-2">
-      <div> Product Image</div>
-      <div> {{ related_item.item_name }} </div>
+    .product-info,
+    .product-statistics {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .product-info {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 1rem;
+    }
+
+    .product-statistics {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .product-statistics h3 {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* ==============================
+       Calendar charts
+       ============================== */
+
+    #productCalendarContainer {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .product-calendar-chart {
+        width: 100%;
+        height: 15rem;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    /* ==============================
+       Mobile
+       ============================== */
+
+    @media (max-width: 768px) {
+
+        .product-overview-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.25rem;
+        }
+
+        .product-info {
+            grid-template-rows: auto auto;
+        }
+
+        .product-statistics {
+            gap: 0.75rem;
+        }
+
+        .product-statistics h3 {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-calendar-chart {
+            height: 13rem;
+        }
+
+    }
+
+    /* ==============================
+       Small phones
+       ============================== */
+
+    @media (max-width: 480px) {
+
+        .product-overview h1 {
+            font-size: 1.4rem;
+        }
+
+        .product-calendar-chart {
+            height: 11rem;
+        }
+
+    }
+
+</style>
+
+<div class="product-overview">
+
+    <h1 class="text-center text-2xl font-bold">Detailed Product Overview:</h1>
+
+    <br>
+
+    <div class="product-overview-grid">
+
+        <div>
+          <div>
+            Product Image
+          </div>
+
+          <div class="text-xl font-bold break-words">
+            {{ related_item.item_name }}
+
+          </div>
+        </div>
+
+
+        <div class="product-statistics">
+
+            <h3>Total Spent: €
+              <span>{{ related_item.total_spent|floatformat:2 }}</span>
+            </h3>
+
+            <h3>Total Bought:
+              <span>{{ related_item.total_quantity }}</span>
+            </h3>
+
+            <h3>Associated Stores:<span>{{ date_ranges }}</span></h3>
+
+            <h3>This Product Appears in:</h3>
+
+            <div id="productCalendarContainer"></div>
+
+        </div>
+
     </div>
 
-    <div class="grid grid-rows-5">
-      <h3>Total Spent: €<span>{{ related_item.total_spent }}</span></h3>
-      <h3>Total Bought: <span>{{ related_item.total_quantity }}</span></h3>
-      <h3>Associated Stores: <span> {{ date_ranges }}</span></h3>
-      <h3>This Product Appears in:<span></span></h3>
-      <div>
-        <div id="calendarContainer"></div>
-      </div>
-    </div>
-  </div>
 </div>
 
-{{ receipt_lookup|json_script:"receipt-data" }}
+
+{{ receipt_lookup|json_script:"product-receipt-data" }}
+
 
 <script>
 
-const dashboardCharts = [];
-var created_calendars_counter = 0;
-
-const calendar_spending_data =
-    {{ calendar_spending_data|safe }};
-
-/*
- * Create yearly spending calendar.
- */
-function create_spending_calendar_chart(daterange) {
-
-    created_calendars_counter++;
-
-    const calendar_container =
-        document.getElementById("calendarContainer");
-
-    let new_chart_id =
-        `spending_calendar_chart_${created_calendars_counter}`;
-
+(function() {
 
     /*
-     * Give the calendar its own responsive class.
+     * Keep everything scoped to this template.
+     * This avoids global variable collisions when
+     * HTMX loads the modal multiple times.
      */
-    const new_calendar = `
-        <div
-            class="calendar-chart"
-            id="${new_chart_id}"
-            style="width:100%; height:15rem;">
-        </div>
-    `;
 
-    calendar_container.insertAdjacentHTML(
-        "beforeend",
-        new_calendar
-    );
+    const calendarContainer =
+        document.getElementById("productCalendarContainer");
+
+    if (!calendarContainer) {
+        return;
+    }
 
 
-    const calendar_spending_chart =
-        echarts.init(
-            document.getElementById(new_chart_id)
+    const calendarSpendingData =
+        {{ calendar_spending_data|safe }};
+
+    const receiptLookup =
+        JSON.parse(
+            document.getElementById(
+                "product-receipt-data"
+            ).textContent
         );
 
 
-    /*
-     * Store calendar chart too.
-     */
-    dashboardCharts.push(calendar_spending_chart);
+    const dashboardCharts = [];
 
-
-    const option = {
-
-        visualMap: {
-
-            min: 0,
-            max: 100,
-
-            orient: "horizontal",
-
-            left: "center",
-            bottom: 20
-        },
-
-
-        calendar: {
-
-            range: daterange,
-
-            cellSize: ["auto", 25],
-
-            yearLabel: {
-                color: '#fff'
-            },
-
-            monthLabel: {
-                color: '#fff'
-            },
-
-            dayLabel: {
-                color: '#fff'
-            }
-        },
-
-
-        tooltip: {
-
-            backgroundColor: "#222",
-
-            formatter: function(params) {
-
-                const day = params.value[0];
-
-                const info =
-                    receiptLookup[day];
-
-
-                if (!info) {
-                    return day + "<br>No receipts";
-                }
-
-
-                let html =
-                    `<div style='background-color: #222; color: white'>
-                        <b>${day}</b><br>
-                        Total: €${Number(info.total).toFixed(2)}
-                    <div>`;
-
-
-                if (typeof(info.receipts) != "undefined") {
-
-                    info.receipts.forEach(function(r) {
-
-                        html +=
-                            `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
-
-                    });
-                }
-
-
-                return html;
-            }
-        },
-
-
-        series: [{
-
-            type: "heatmap",
-
-            coordinateSystem: "calendar",
-
-            data: calendar_spending_data
-        }]
-    };
-
-
-    calendar_spending_chart.setOption(option);
+    let createdCalendarsCounter = 0;
 
 
     /*
-     * Clicking a day opens the receipt modal.
+     * Responsive chart configuration.
      */
-    calendar_spending_chart.on(
-        'click',
-        function(params) {
+
+    function getChartConfig() {
+
+        const mobile = window.matchMedia(
+            "(max-width: 768px)"
+        ).matches;
+
+        return {
+            mobile: mobile,
+            cellSize: mobile ? 16 : 25,
+            fontSize: mobile ? 9 : 12,
+            chartHeight: mobile ? 176 : 240
+        };
+
+    }
+
+
+    /*
+     * Create yearly spending calendar.
+     */
+
+    function createSpendingCalendarChart(daterange) {
+
+        createdCalendarsCounter++;
+
+        const chartId =
+            `product_spending_calendar_${createdCalendarsCounter}`;
+
+
+        /*
+         * Create calendar container.
+         */
+
+        const calendarElement =
+            document.createElement("div");
+
+        calendarElement.id = chartId;
+
+        calendarElement.className =
+            "product-calendar-chart";
+
+
+        calendarContainer.appendChild(
+            calendarElement
+        );
+
+
+        /*
+         * Initialize ECharts.
+         */
+
+        const chart = echarts.init(
+            calendarElement
+        );
+
+        dashboardCharts.push(chart);
+
+
+        /*
+         * Responsive chart options.
+         */
+
+        function getChartOptions() {
+
+            const config = getChartConfig();
+
+            return {
+
+                visualMap: {
+
+                    min: 0,
+                    max: 100,
+
+                    orient: "horizontal",
+
+                    left: "center",
+                    bottom: 5,
+
+                    itemWidth: config.mobile ? 12 : 18,
+                    itemHeight: config.mobile ? 8 : 12,
+
+                    textStyle: {
+                        color: "#fff",
+                        fontSize: config.fontSize
+                    }
+
+                },
+
+
+                calendar: {
+
+                    range: daterange,
+
+                    cellSize: [
+                        "auto",
+                        config.cellSize
+                    ],
+
+                    top: 30,
+                    left: config.mobile ? 20 : 35,
+                    right: 10,
+                    bottom: 40,
+
+                    yearLabel: {
+                        color: "#fff",
+                        fontSize: config.fontSize
+                    },
+
+                    monthLabel: {
+                        color: "#fff",
+                        fontSize: config.fontSize
+                    },
+
+                    dayLabel: {
+                        color: "#fff",
+                        fontSize: config.fontSize
+                    }
+
+                },
+
+
+                tooltip: {
+
+                    backgroundColor: "#222",
+
+                    textStyle: {
+                        color: "#fff"
+                    },
+
+                    formatter: function(params) {
+
+                        const day = params.value[0];
+
+                        const info = receiptLookup[day];
+
+
+                        if (!info) {
+                            return day + "<br>No receipts";
+                        }
+
+
+                        let html =
+                            `<div style="background-color:#222;color:white">
+                                <b>${day}</b><br>
+                                Total: €${Number(info.total).toFixed(2)}<br>
+                            </div>`;
+
+
+                        if (typeof info.receipts !== "undefined") {
+
+                            info.receipts.forEach(function(r) {
+
+                                html +=
+                                    `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
+
+                            });
+
+                        }
+
+                        return html;
+
+                    }
+
+                },
+
+
+                series: [{
+
+                    type: "heatmap",
+
+                    coordinateSystem: "calendar",
+
+                    data: calendarSpendingData
+
+                }]
+
+            };
+
+        }
+
+
+        /*
+         * Initial chart rendering.
+         */
+
+        chart.setOption(
+            getChartOptions()
+        );
+
+
+        /*
+         * Clicking a day opens the receipt modal.
+         */
+
+        chart.on("click", function(params) {
 
             const day = params.value[0];
 
+            const receiptModal =
+                document.getElementById("receipt-modal");
 
-            document.getElementById('receipt-modal')
-                .classList.remove('hidden');
+            if (receiptModal) {
 
+                receiptModal.classList.remove("hidden");
+                receiptModal.classList.add("flex");
 
-            document.getElementById('receipt-modal')
-                .classList.add('flex');
+            }
 
 
             htmx.ajax(
-                'GET',
+                "GET",
                 `/receipts/day/${day}/`,
-                '#modal-content'
+                "#modal-content"
             );
+
+        });
+
+
+        /*
+         * Update chart dimensions when its container
+         * or viewport changes.
+         */
+
+        return chart;
+
+    }
+
+
+    /*
+     * Create one calendar for every year.
+     */
+
+    {% for year in date_ranges.years %}
+
+        createSpendingCalendarChart(
+            ["{{ year }}-01", "{{ year }}-12"]
+        );
+
+    {% endfor %}
+
+
+    /*
+     * Resize charts after modal content becomes visible.
+     */
+
+    function resizeCharts() {
+
+        const config = getChartConfig();
+
+        dashboardCharts.forEach(function(chart) {
+
+            chart.resize();
+
+            chart.setOption({
+
+                calendar: {
+                    cellSize: [
+                        "auto",
+                        config.cellSize
+                    ]
+                }
+
+            });
+
+        });
+
+    }
+
+
+    /*
+     * Observe container dimensions.
+     *
+     * Useful when the modal changes size or the
+     * viewport switches between portrait/landscape.
+     */
+
+    const resizeObserver = new ResizeObserver(function() {
+
+        resizeCharts();
+
+    });
+
+    resizeObserver.observe(calendarContainer);
+
+
+    /*
+     * Initial resize after the modal has rendered.
+     */
+
+    requestAnimationFrame(function() {
+
+        resizeCharts();
+
+    });
+
+
+    /*
+     * Clean up when HTMX replaces this template.
+     */
+
+    document.body.addEventListener(
+        "htmx:beforeCleanupElement",
+        function(event) {
+
+            if (
+                event.detail.elt === calendarContainer ||
+                event.detail.elt.contains(calendarContainer)
+            ) {
+
+                resizeObserver.disconnect();
+
+                dashboardCharts.forEach(function(chart) {
+                    chart.dispose();
+                });
+
+            }
+
         }
     );
-}
 
 
-/*
- * Create one calendar for every year.
- */
-{% for year in date_ranges.years %}
+})();
 
-    create_spending_calendar_chart(
-        ["{{ year }}-01", "{{ year }}-13"]
-    );
-
-{% endfor %}
 </script>

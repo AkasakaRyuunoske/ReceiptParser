@@ -221,3 +221,35 @@ def get_per_month_spending_pie_chart():
     ]
 
     return monthly_spending_data
+
+def get_calendar_spending_data_by_item(item: ReceiptItems):
+    line_total = ExpressionWrapper(
+        F("quantity") * F("price"),
+        output_field=DecimalField(max_digits=12, decimal_places=2),
+    )
+
+    daily_data = (
+        ReceiptItems.objects
+        .annotate(day=TruncDate("receipt_id_fk__receipt_datetime"))
+        .filter(item_id_fk=item)
+        .values("day")
+        .annotate(total=Sum(line_total))
+        .order_by("day")
+    )
+
+    receipt_lookup = {}
+
+    for row in daily_data:
+        receipt_lookup[row["day"].isoformat()] = {
+            "total": float(row["total"])
+        }
+
+    calendar_data = [
+        [
+            row["day"].isoformat(),
+            float(row["total"])
+        ]
+        for row in daily_data
+    ]
+
+    return calendar_data, receipt_lookup

@@ -1,3 +1,6 @@
+**0.12.1**
+- Fixed product overview using generic dates instead of receipt specific
+
 **0.12.0**
 - Added missing fields to product overview modal
 - *get_date_ranges_for_calendar_chart* start and end dates are now parameters 

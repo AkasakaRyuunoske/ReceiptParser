@@ -1,109 +1,5 @@
 {% load math_filters %}
 
-<style>
-    .product-overview {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-    }
-
-    .product-overview-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-        width: 100%;
-        min-width: 0;
-    }
-
-    .product-info,
-    .product-statistics {
-        min-width: 0;
-        max-width: 100%;
-    }
-
-    .product-info {
-        display: grid;
-        grid-template-rows: 1fr auto;
-        gap: 1rem;
-    }
-
-    .product-statistics {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .product-statistics h3 {
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    /* ==============================
-       Calendar charts
-       ============================== */
-
-    #productCalendarContainer {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    .product-calendar-chart {
-        width: 100%;
-        height: 15rem;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    /* ==============================
-       Mobile
-       ============================== */
-
-    @media (max-width: 768px) {
-
-        .product-overview-grid {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 1.25rem;
-        }
-
-        .product-info {
-            grid-template-rows: auto auto;
-        }
-
-        .product-statistics {
-            gap: 0.75rem;
-        }
-
-        .product-statistics h3 {
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-
-        .product-calendar-chart {
-            height: 13rem;
-        }
-
-    }
-
-    /* ==============================
-       Small phones
-       ============================== */
-
-    @media (max-width: 480px) {
-
-        .product-overview h1 {
-            font-size: 1.4rem;
-        }
-
-        .product-calendar-chart {
-            height: 11rem;
-        }
-
-    }
-
-</style>
-
 <div class="product-overview">
 
     <h1 class="text-center text-2xl font-bold">Detailed Product Overview:</h1>
@@ -153,7 +49,6 @@
 <script>
 
 (function() {
-
     /*
      * Keep everything scoped to this template.
      * This avoids global variable collisions when
@@ -167,9 +62,7 @@
         return;
     }
 
-
-    const calendarSpendingData =
-        {{ calendar_spending_data|safe }};
+    const calendarSpendingData = {{ calendar_spending_data|safe }};
 
     const receiptLookup =
         JSON.parse(
@@ -180,7 +73,6 @@
 
 
     const dashboardCharts = [];
-
     let createdCalendarsCounter = 0;
 
 
@@ -189,7 +81,6 @@
      */
 
     function getChartConfig() {
-
         const mobile = window.matchMedia(
             "(max-width: 768px)"
         ).matches;
@@ -200,7 +91,6 @@
             fontSize: mobile ? 9 : 12,
             chartHeight: mobile ? 176 : 240
         };
-
     }
 
 
@@ -244,19 +134,15 @@
 
         dashboardCharts.push(chart);
 
-
         /*
          * Responsive chart options.
          */
 
         function getChartOptions() {
-
             const config = getChartConfig();
 
             return {
-
                 visualMap: {
-
                     min: 0,
                     max: 100,
 
@@ -272,14 +158,10 @@
                         color: "#fff",
                         fontSize: config.fontSize
                     }
-
                 },
 
-
                 calendar: {
-
                     range: daterange,
-
                     cellSize: [
                         "auto",
                         config.cellSize
@@ -304,14 +186,10 @@
                         color: "#fff",
                         fontSize: config.fontSize
                     }
-
                 },
 
-
                 tooltip: {
-
                     backgroundColor: "#222",
-
                     textStyle: {
                         color: "#fff"
                     },
@@ -319,7 +197,6 @@
                     formatter: function(params) {
 
                         const day = params.value[0];
-
                         const info = receiptLookup[day];
 
 
@@ -327,44 +204,28 @@
                             return day + "<br>No receipts";
                         }
 
-
                         let html =
                             `<div style="background-color:#222;color:white">
                                 <b>${day}</b><br>
                                 Total: €${Number(info.total).toFixed(2)}<br>
                             </div>`;
 
-
                         if (typeof info.receipts !== "undefined") {
-
                             info.receipts.forEach(function(r) {
-
-                                html +=
-                                    `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
-
+                                html += `${r.store}: €${Number(r.amount).toFixed(2)}<br>`;
                             });
-
                         }
 
                         return html;
-
                     }
-
                 },
 
-
                 series: [{
-
                     type: "heatmap",
-
                     coordinateSystem: "calendar",
-
                     data: calendarSpendingData
-
                 }]
-
             };
-
         }
 
 
@@ -404,88 +265,41 @@
 
         });
 
-
-        /*
-         * Update chart dimensions when its container
-         * or viewport changes.
-         */
-
         return chart;
-
     }
 
 
-    /*
-     * Create one calendar for every year.
-     */
-
     {% for year in date_ranges.years %}
-
         createSpendingCalendarChart(
             ["{{ year }}-01", "{{ year }}-12"]
         );
-
     {% endfor %}
 
-
-    /*
-     * Resize charts after modal content becomes visible.
-     */
-
     function resizeCharts() {
-
         const config = getChartConfig();
 
         dashboardCharts.forEach(function(chart) {
-
             chart.resize();
-
             chart.setOption({
-
                 calendar: {
                     cellSize: [
                         "auto",
                         config.cellSize
                     ]
                 }
-
             });
-
         });
-
     }
 
-
-    /*
-     * Observe container dimensions.
-     *
-     * Useful when the modal changes size or the
-     * viewport switches between portrait/landscape.
-     */
-
     const resizeObserver = new ResizeObserver(function() {
-
         resizeCharts();
-
     });
 
     resizeObserver.observe(calendarContainer);
 
-
-    /*
-     * Initial resize after the modal has rendered.
-     */
-
     requestAnimationFrame(function() {
-
         resizeCharts();
-
     });
-
-
-    /*
-     * Clean up when HTMX replaces this template.
-     */
 
     document.body.addEventListener(
         "htmx:beforeCleanupElement",
@@ -501,13 +315,9 @@
                 dashboardCharts.forEach(function(chart) {
                     chart.dispose();
                 });
-
             }
-
         }
     );
-
-
-})();
+})(); // <-- i hate javascr*pt
 
 </script>

@@ -4,6 +4,8 @@
 {% block title %}Receipt Parser - Add Receipt{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'product_overview.css' %}">
+
 <script src="https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.min.js"></script>
 
     <div style="text-align:center; padding-top:3rem">
@@ -122,8 +124,10 @@
     }
 
     function closeProductOverviewModal() {
-        document.getElementById(product_overview_modal_name).classList.add('hidden');
-        document.getElementById(product_overview_modal_name).classList.remove('flex');
+        let modalContainer = document.getElementById(product_overview_modal_name);
+
+        modalContainer.classList.add('hidden');
+        modalContainer.classList.remove('flex');
     }
 
 </script>

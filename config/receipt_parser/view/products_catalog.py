@@ -1,8 +1,10 @@
 from django.db.models import Count, QuerySet, Sum, FloatField, F, OuterRef, Subquery, Prefetch
 from django.shortcuts import render
+from django.views.decorators.cache import never_cache
 
 from receipt_parser.models import StoreNames, Stores, Receipt, ReceiptItems, Items
-from services.receipts.dashboard_services import get_date_ranges_for_calendar_chart, get_calendar_spending_data
+from services.receipts.dashboard_services import get_date_ranges_for_calendar_chart, get_calendar_spending_data, \
+    get_calendar_spending_data_by_item
 
 
 def products_catalog_page(request):
@@ -109,7 +111,7 @@ def get_product_overview(request, product_id):
 
     date_ranges = get_date_ranges_for_calendar_chart(most_recent_receipt, oldest_receipt)
 
-    calendar_spending_data, receipt_lookup = get_calendar_spending_data()
+    calendar_spending_data, receipt_lookup = get_calendar_spending_data_by_item(related_item)
 
     context: dict = {
         "related_item": related_item,
@@ -119,6 +121,4 @@ def get_product_overview(request, product_id):
         "receipt_lookup": receipt_lookup,
     }
 
-    return render(request,
-                  'components/products_catalog/product_overview_page.html',
-                  context)
+    return render(request, 'components/products_catalog/product_overview_page.html', context)

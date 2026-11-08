@@ -1,4 +1,4 @@
-<h1>Receipt Parser</h1>
+<h1 style="text-align: center;">Receipt Parser</h1>
 <img src="config/receipt_parser/static/icons/main_icon.png" style="width: 10%;"/>
 
 

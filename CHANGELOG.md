@@ -1,3 +1,6 @@
+**0.12.2**
+- Added a toggle readable font button to detailed product overview modal
+
 **0.12.1**
 - Fixed product overview using generic dates instead of receipt specific
 

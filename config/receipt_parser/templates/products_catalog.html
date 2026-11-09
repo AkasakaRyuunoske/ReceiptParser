@@ -74,10 +74,27 @@
                  onclick="event.stopPropagation()"
                  style="overflow: auto; max-width: 50rem; max-height: 45rem;">
 
-                <button onclick="closeProductOverviewModal()"
-                        class="absolute top-3 right-3 text-white text-xl">
-                    ✕
-                </button>
+                <div class="grid grid-cols-2 absolute top-3 right-3 text-white text-xl">
+                    <button onclick="toggleReadableFont()"
+                            class="text-white hover:text-gray-300 transition"
+                            title="Toggle readable font">
+                        <img
+                            id="to_readable_font_button_icon"
+                            src="{% static 'icons/to_readable_font_button_icon.svg' %}"
+                            class="w-10 h-10"
+                            alt="Toggle readable font icon">
+                        <img
+                            id="back_to_unreadable_font_button_icon"
+                            src="{% static 'icons/back_to_unreadable_font_button_icon.svg' %}"
+                            class="w-10 h-10 hidden"
+                            alt="Revert to unreadable font icon">
+                    </button>
+
+                    <button onclick="closeProductOverviewModal()"
+                        class="text-white hover:text-gray-300 transition">
+                        ✕
+                    </button>
+                </div>
 
                 <div id="modal-product-overview-content" class="text-white">
                     Loading...
@@ -85,6 +102,22 @@
             </div>
         </div>
 <script>
+    function toggleReadableFont(){
+        const product_overview_modal_container = document.getElementById("product-overview-modal");
+        const to_readable_font_button_icon = document.getElementById("to_readable_font_button_icon");
+        const back_to_unreadable_font_button_icon = document.getElementById("back_to_unreadable_font_button_icon");
+
+        if(product_overview_modal_container.style["fontFamily"].includes("JetBrains")){
+            product_overview_modal_container.style = "font-family: 'OldEnglishTextMT'";
+            to_readable_font_button_icon.classList.remove('hidden');
+            back_to_unreadable_font_button_icon.classList.add('hidden');
+        } else{
+            product_overview_modal_container.style = "font-family: 'JetBrains Mono Variable', monospace;";
+            to_readable_font_button_icon.classList.add('hidden');
+            back_to_unreadable_font_button_icon.classList.remove('hidden');
+        }
+    }
+
     const store_modal_name = 'store-modal'
 
     function openStoresModal(storeId) {

@@ -109,6 +109,11 @@ def get_product_overview(request, product_id):
         if related_item.receipt_items else None
     ).receipt_id_fk
 
+    related_stores = {
+        receipt_item.receipt_id_fk.store_id_fk
+        for receipt_item in related_item.receipt_items
+    }
+
     date_ranges = get_date_ranges_for_calendar_chart(most_recent_receipt, oldest_receipt)
 
     calendar_spending_data, receipt_lookup = get_calendar_spending_data_by_item(related_item)
@@ -116,6 +121,7 @@ def get_product_overview(request, product_id):
     context: dict = {
         "related_item": related_item,
         "related_receipts": receipts,
+        "related_stores": related_stores,
         "date_ranges": date_ranges,
         "calendar_spending_data": calendar_spending_data,
         "receipt_lookup": receipt_lookup,

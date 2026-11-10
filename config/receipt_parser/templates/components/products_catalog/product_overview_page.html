@@ -6,37 +6,28 @@
 
     <br>
 
-    <div class="product-overview-grid">
+    <div class="product-statistics">
 
-        <div>
-          <div>
-            Product Image
-          </div>
+        <h3>Total Spent: €
+          <span>{{ related_item.total_spent|floatformat:2 }}</span>
+        </h3>
 
-          <div class="text-xl font-bold break-words">
-            {{ related_item.item_name }}
+        <h3>Total Bought:
+          <span>{{ related_item.total_quantity }}</span>
+        </h3>
 
-          </div>
+        <h3>Associated Stores:</h3>
+
+        <div style="overflow: auto; max-height: 10rem;padding-left: 5rem;">
+            {% for related_store in related_stores %}
+                <span>- {{ related_store.store_name_id_fk.store_name }}</span> <br>
+            {% endfor %}
         </div>
 
 
-        <div class="product-statistics">
+        <h3>This Product Appears in:</h3>
 
-            <h3>Total Spent: €
-              <span>{{ related_item.total_spent|floatformat:2 }}</span>
-            </h3>
-
-            <h3>Total Bought:
-              <span>{{ related_item.total_quantity }}</span>
-            </h3>
-
-            <h3>Associated Stores:<span>{{ date_ranges }}</span></h3>
-
-            <h3>This Product Appears in:</h3>
-
-            <div id="productCalendarContainer"></div>
-
-        </div>
+        <div id="productCalendarContainer"></div>
 
     </div>
 

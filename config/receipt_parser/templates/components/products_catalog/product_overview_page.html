@@ -66,11 +66,6 @@
     const dashboardCharts = [];
     let createdCalendarsCounter = 0;
 
-
-    /*
-     * Responsive chart configuration.
-     */
-
     function getChartConfig() {
         const mobile = window.matchMedia(
             "(max-width: 768px)"
@@ -85,21 +80,12 @@
     }
 
 
-    /*
-     * Create yearly spending calendar.
-     */
-
     function createSpendingCalendarChart(daterange) {
 
         createdCalendarsCounter++;
 
         const chartId =
             `product_spending_calendar_${createdCalendarsCounter}`;
-
-
-        /*
-         * Create calendar container.
-         */
 
         const calendarElement =
             document.createElement("div");
@@ -114,20 +100,11 @@
             calendarElement
         );
 
-
-        /*
-         * Initialize ECharts.
-         */
-
         const chart = echarts.init(
             calendarElement
         );
 
         dashboardCharts.push(chart);
-
-        /*
-         * Responsive chart options.
-         */
 
         function getChartOptions() {
             const config = getChartConfig();
@@ -219,19 +196,9 @@
             };
         }
 
-
-        /*
-         * Initial chart rendering.
-         */
-
         chart.setOption(
             getChartOptions()
         );
-
-
-        /*
-         * Clicking a day opens the receipt modal.
-         */
 
         chart.on("click", function(params) {
 

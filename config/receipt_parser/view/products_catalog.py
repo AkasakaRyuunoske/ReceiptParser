@@ -118,6 +118,9 @@ def get_product_overview(request, product_id):
 
     calendar_spending_data, receipt_lookup = get_calendar_spending_data_by_item(related_item)
 
+    print(f"calendar_spending_data => {calendar_spending_data}")
+    print(f"receipt_lookup => {receipt_lookup}")
+
     context: dict = {
         "related_item": related_item,
         "related_receipts": receipts,

@@ -1,3 +1,9 @@
+**0.12.3**
+- Simplified product overview modal to a single column
+- Removed image placeholder from product overview modal
+- Fixed related stores display in product overview
+- Fixed calendar dates display
+
 **0.12.2**
 - Added a toggle readable font button to detailed product overview modal
 

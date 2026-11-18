@@ -28,7 +28,7 @@
 
   1. Install and correctly set up python 3.11 and pip
   2. Install docker desktop
-  3. Clone this repository
+  3. Clone this repository:
   
      `$ git clone https://github.com/AkasakaRyuunoske/ReceiptParser.git`
      

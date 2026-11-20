@@ -1,3 +1,6 @@
+**0.12.4**
+- Added toggle readable font button to dashboard modal
+
 **0.12.3**
 - Simplified product overview modal to a single column
 - Removed image placeholder from product overview modal

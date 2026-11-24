@@ -312,11 +312,11 @@ def create_receipt(request):
                 ReceiptItems.objects.filter(receipt_id_fk=receipt).delete()
 
             row_pattern = re.compile(r"^item_name_(?:new_)?(\d+)$")
-            indices = [
-                int(m.group(1))
-                for key in request.POST
-                if (m := row_pattern.match(key))
-            ]
+            # indices = [
+            #     int(m.group(1))
+            #     for key in request.POST
+            #     if (m := row_pattern.match(key))
+            # ]
 
             request_row_pattern = re.compile(r"^item_name_(new_)?(\d+)$")
 
@@ -336,24 +336,24 @@ def create_receipt(request):
 
                 if is_new:
                     category_name = request.POST.get(f"item_category_name_new_{index}", "").strip()
-                    category_description = request.POST.get(f"item_category_description_new_{index}", "")
+                    iva = request.POST.get(f"item_iva_new_{index}", "")
                     qty = int(request.POST.get(f"item_qty_new_{index}", 1) or 1)
                     unit_price = float(request.POST.get(f"item_unit_price_new_{index}", 0) or 0)
                 else:
                     category_name = request.POST.get(f"item_category_name_{index}", "").strip()
-                    category_description = request.POST.get(f"item_category_description_{index}", "")
+                    iva = request.POST.get(f"item_iva_{index}", "")
                     qty = int(request.POST.get(f"item_qty_{index}", 1) or 1)
                     unit_price = float(request.POST.get(f"item_unit_price_{index}", 0) or 0)
 
                 category_obj, _ = ItemCategories.objects.get_or_create(
                     item_category_name=category_name,
-                    defaults={"item_category_description": category_description},
                 )
 
                 item_obj, _ = Items.objects.get_or_create(
                     item_name=item_name,
                     category_id_fk=category_obj,
                     item_price=unit_price,
+                    item_iva=iva
                 )
 
                 ReceiptItems.objects.create(
@@ -361,6 +361,7 @@ def create_receipt(request):
                     receipt_id_fk=receipt,
                     quantity=qty,
                     price=unit_price,
+                    iva=iva
                 )
 
             logger.info("created the receipt with VALID form.")

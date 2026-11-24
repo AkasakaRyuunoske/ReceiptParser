@@ -2,7 +2,7 @@ from django.urls import path
 
 from .view.dashboard import dashboard_page, receipts_for_day
 from .view.products_catalog import products_catalog_page, get_store_data_and_associated_products, get_product_overview
-from .views import home, stream_inference, debugg, add_receipt_page, receipts_page, receipts_storage, \
+from .views import stream_inference, debugg, add_receipt_page, receipts_page, receipts_storage, \
     settings_page, upload_input_image, create_receipt, load_receipt
 
 urlpatterns = [

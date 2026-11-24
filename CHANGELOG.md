@@ -1,3 +1,8 @@
+**0.12.5**
+- Fixed single item price display
+- Added IVA handling
+- Added new IVA field in ReceiptItems and Items
+
 **0.12.4**
 - Added toggle readable font button to dashboard modal
 

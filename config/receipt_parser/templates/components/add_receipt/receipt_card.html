@@ -63,7 +63,7 @@
 
             <span class="col-span-2">Item</span>
             <span class="col-span-2">Category</span>
-            <span>Description</span>
+            <span>IVA</span>
             <span>Qty</span>
             <span>UP</span>
             <span>Price</span>
@@ -130,21 +130,21 @@
                 </div>
 
 
-                <!-- Description -->
+                <!-- IVA -->
                 <div class="col-span-2 lg:col-span-1 min-w-0">
 
                     <label class="block lg:hidden text-xs mb-1">
-                        Description
+                        IVA
                     </label>
 
-                    <input type="text"
+                    <input type="number"
                            class="
                                 w-full
                                 min-w-0
                                 bg-black"
-                           id="item_category_description_{{ rel.receipt_item_id }}"
-                           name="item_category_description_{{ rel.receipt_item_id }}"
-                           value="{{ rel.item_id_fk.category_id_fk.item_category_description|default:'-' }}">
+                           id="item_iva_{{ rel.receipt_item_id }}"
+                           name="item_iva_{{ rel.receipt_item_id }}"
+                           value="{{ rel.item_id_fk.item_iva|default:'0' }}">
                 </div>
 
 
@@ -250,18 +250,18 @@
                 </div>
 
 
-                <!-- Description -->
+                <!-- IVA -->
                 <div class="col-span-2 lg:col-span-1 min-w-0">
 
                     <label class="block lg:hidden text-xs mb-1">
-                        Description
+                        IVA
                     </label>
 
-                    <input type="text"
+                    <input type="number"
                            class="w-full min-w-0 bg-black"
-                           id="item_category_description_new_1"
-                           name="item_category_description_new_1"
-                           value="-">
+                           id="item_iva_new_1"
+                           name="item_iva_new_1"
+                           value="0">
                 </div>
 
 
@@ -350,8 +350,8 @@
                     Grand Total
                 </strong>
 
-                <div id="grandTotalWrapper">
-                    -
+                <div>
+                    <span id="grandTotalWrapper">-</span>
                 </div>
             </div>
 
@@ -362,7 +362,7 @@
                 </strong>
 
                 <div>
-                    {{ receipt.receipt_resource_id_fk.raw_text_json.financial_summary.tax_details.vat_total|default:"-" }}
+                    <span id="totalIVAWrapper">-</span>
                 </div>
             </div>
 
@@ -566,6 +566,7 @@
 
 function updateTotals() {
     updateGrandTotal();
+    updateTotalIVA();
 }
 
 function updateGrandTotal() {
@@ -580,6 +581,18 @@ function updateGrandTotal() {
     grandTotalWrapper.textContent = grandTotalValue.toFixed(2);
 }
 
+function updateTotalIVA() {
+    const totalIVAWrapper = document.getElementById("totalIVAWrapper");
+
+    let totalIVAValue = 0.0;
+    document.querySelectorAll("input[id^='item_total_price_']").forEach(function (totalItemPrice) {
+            let itemIva = document.querySelector("#item_iva_" + totalItemPrice.id.replace("item_total_price_", ""));
+            totalIVAValue += Number(totalItemPrice.value * (itemIva.value / 100));
+    });
+
+    totalIVAWrapper.textContent = totalIVAValue.toFixed(2);
+
+}
 
 var newItemsAddedCounter = 2;
 
@@ -609,10 +622,10 @@ function addReceiptItem() {
         '    </div>' +
 
         '    <div class="col-span-2 lg:col-span-1 min-w-0">' +
-        '        <label class="block lg:hidden text-xs mb-1">Description</label>' +
-        '        <input type="text" class="w-full min-w-0 bg-black" id="item_category_description_new_' +
+        '        <label class="block lg:hidden text-xs mb-1">IVA</label>' +
+        '        <input type="number" class="w-full min-w-0 bg-black" id="item_iva_new_' +
         newItemsAddedCounter +
-        '" name="item_category_description_new_' +
+        '" name="item_iva_new_' +
         newItemsAddedCounter +
         '" value="-" />' +
         '    </div>' +
@@ -647,42 +660,39 @@ function addReceiptItem() {
         '</div>';
 
 
-    selectedRow.insertAdjacentHTML(
-        "afterend",
-        newItem
-    );
+    selectedRow.insertAdjacentHTML("afterend", newItem);
 
 
-    let prefix =
-        "new_" + newItemsAddedCounter;
+    let prefix = "new_" + newItemsAddedCounter;
 
 
-    let qtyInput =
-        document.getElementById(
-            `item_qty_${prefix}`
-        );
+    let qtyInput = document.getElementById(`item_qty_${prefix}`);
 
 
     qtyInput.addEventListener(
         "input",
         function () {
-
             updateTotal(prefix);
             updateTotals();
-
         }
     );
 
+    let ivaInput = document.getElementById(`item_iva_${prefix}`);
 
-    document
-        .getElementById(`item_unit_price_${prefix}`)
+    ivaInput.addEventListener(
+        "input",
+        function () {
+            updateTotal(prefix);
+            updateTotals();
+        }
+    );
+
+    document.getElementById(`item_unit_price_${prefix}`)
         .addEventListener(
             "input",
             function () {
-
                 updateTotal(prefix);
                 updateTotals();
-
             }
         );
 
@@ -815,7 +825,6 @@ function updateTotal(prefix) {
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
         document.querySelectorAll("input[id^='item_qty_']").forEach(function (qtyInput) {
 
             const id = qtyInput.id.replace("item_qty_", "");
@@ -826,10 +835,8 @@ document.addEventListener(
             qtyInput.addEventListener(
                 "input",
                 function () {
-
                     updateTotal(id);
                     updateTotals();
-
                 }
             );
 
@@ -838,6 +845,12 @@ document.addEventListener(
                         updateTotal(id);
                         updateTotals();
                     });
+
+            document.getElementById(`item_iva_${id}`)
+                .addEventListener("input", function () {
+                    updateTotal(id);
+                    updateTotals();
+            });
         });
 
     }
